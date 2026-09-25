@@ -1,0 +1,85 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+*.userprefs
+
+# VS Code
+.vscode/
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+
+# Test results
+TestResults/
+*.trx
+
+# Coverage
+coverage/
+*.coverage
+*.coveragexml
+
+# Avalonia generated files
+**/avares://*/
+# Generated Avalonia assets / build artifacts
+**/Generated/
+**/generated/
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+
+# Publish output
+publish/
+[ Pp]ublish/
+
+# .NET local tools
+.dotnet/
+
+# MSBuild
+*.binlog
+
+# Secrets / local configuration
+appsettings.Development.json
+appsettings.Local.json
+.env
+.env.*
+
+# User-specific project files
+*.csproj.user
+*.fsproj.user
+*.vbproj.user
+
+# Rider coverage
+.idea/**/shelf/
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml

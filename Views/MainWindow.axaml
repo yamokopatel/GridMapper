@@ -2,7 +2,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:GridMapper.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:gridmapper="using:GridMapper"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:tabs="using:GridMapper.Views.Tabs"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="GridMapper.Views.MainWindow"
         x:DataType="vm:MainViewModel"
@@ -15,8 +17,22 @@
         <vm:MainViewModel />
     </Design.DataContext>
 
-    <TextBox Text="{Binding Greeting}"
+    <!-- <TextBox Text="{Binding Greeting}"
              HorizontalAlignment="Center"
-             VerticalAlignment="Center" />
+             VerticalAlignment="Center" /> -->
+    <TabControl VerticalAlignment="Top">
+        <TabItem Header="File Browser">
+            <tabs:FileBrowser />
+        </TabItem>
+        <TabItem Header="Map Options">
+
+        </TabItem>
+        <TabItem Header="Map Structures">
+
+        </TabItem>
+        <TabItem Header="Map Objects">
+
+        </TabItem>
+    </TabControl>
 
 </Window>

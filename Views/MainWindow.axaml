@@ -5,6 +5,7 @@
         xmlns:gridmapper="using:GridMapper"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:tabs="using:GridMapper.Views.Tabs"
+        xmlns:components="using:GridMapper.Views.Components"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="GridMapper.Views.MainWindow"
         x:DataType="vm:MainViewModel"
@@ -28,7 +29,7 @@
 
         </TabItem>
         <TabItem Header="Map Structures">
-
+            <components:BorderedButton CellByte="83" Height="64" Width="64">Button</components:BorderedButton>
         </TabItem>
         <TabItem Header="Map Objects">
 

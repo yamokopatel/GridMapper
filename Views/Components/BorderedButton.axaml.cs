@@ -7,7 +7,7 @@ using Avalonia.Media;
 
 namespace GridMapper.Views.Components;
 
-public class BorderedButton : Button
+public partial class BorderedButton : UserControl
 {
     public static readonly StyledProperty<byte> CellByteProperty = AvaloniaProperty.Register<BorderedButton, byte>(nameof(CellByte));
     public byte CellByte
@@ -15,31 +15,23 @@ public class BorderedButton : Button
         get => GetValue(CellByteProperty);
         set => SetValue(CellByteProperty, value);
     }
+    public IBrush LeftBorderBrush{ get; set; }
+    public IBrush TopBorderBrush{ get; set; }
+    public IBrush RightBorderBrush{ get; set; }
+    public IBrush BottomBorderBrush{ get; set; }
     public BorderedButton()
     {
-        var content = Content;
-        DockPanel panel = new DockPanel();
-
-        panel.Children.Add(new ContentPresenter{Content = content});
-
-        panel.Children.Add(new Border{
-            [DockPanel.DockProperty] = Dock.Left, 
-            BorderThickness = new Thickness(1,0,0,0), 
-            BorderBrush = BorderColor((byte)((CellByte >> 6) & 0b11))});
-        panel.Children.Add(new Border{
-            [DockPanel.DockProperty] = Dock.Top, 
-            BorderThickness = new Thickness(0,1,0,0), 
-            BorderBrush = BorderColor((byte)((CellByte >> 4) & 0b11))});
-        panel.Children.Add(new Border{
-            [DockPanel.DockProperty] = Dock.Right, 
-            BorderThickness = new Thickness(0,0,1,0), 
-            BorderBrush = BorderColor((byte)((CellByte >> 2) & 0b11))});
-        panel.Children.Add(new Border{
-            [DockPanel.DockProperty] = Dock.Bottom, 
-            BorderThickness = new Thickness(0,0,0,1), 
-            BorderBrush = BorderColor((byte)(CellByte & 0b11))});
-
-        Content = panel;
+        // Console.Error.WriteLine($"BORDERED BUTTON CREATED: {CellByte}");
+        // throw new Exception("BORDERED BUTTON CREATED");
+        // LeftBorderBrush = BorderColor((byte)((CellByte >> 6) & 0b11));
+        LeftBorderBrush = Brushes.Brown;
+        // TopBorderBrush = BorderColor((byte)((CellByte >> 4) & 0b11));
+        TopBorderBrush = Brushes.Brown;
+        // RightBorderBrush = BorderColor((byte)((CellByte >> 2) & 0b11));
+        RightBorderBrush = Brushes.White;
+        // BottomBorderBrush = BorderColor((byte)(CellByte & 0b11));
+        BottomBorderBrush = Brushes.Cyan;
+        InitializeComponent();
     }
 
     public byte GetCellByte() => CellByte;

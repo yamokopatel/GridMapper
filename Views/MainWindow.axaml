@@ -30,16 +30,7 @@
         </TabItem>
         <TabItem Header="Map Structures">
             <!-- <components:BorderedButton CellByte="83" Height="64" Width="64">Button</components:BorderedButton> -->
-             <Button CornerRadius="0" Background="Transparent" Margin="0" Padding="0" Width="44" Height="44">
-                <DockPanel>
-                    <Border BorderThickness="3,0,0,0" BorderBrush="Brown" DockPanel.Dock="Left" />
-                    <Border BorderThickness="0,3,0,0" BorderBrush="Brown" DockPanel.Dock="Top" />
-                    <Border BorderThickness="0,0,3,0" BorderBrush="White" DockPanel.Dock="Right" />
-                    <Border BorderThickness="0,0,0,3" BorderBrush="Cyan" DockPanel.Dock="Bottom" />
-                    <!-- <TextBlock Text="Кнопка" /> -->
-                    <Image Source="/Assets/Chest.png" />
-                </DockPanel>
-             </Button>
+            <components:BorderedButton CellByte="82"></components:BorderedButton>
         </TabItem>
         <TabItem Header="Map Objects">
 

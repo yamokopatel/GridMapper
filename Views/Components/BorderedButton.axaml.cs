@@ -1,5 +1,7 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 
@@ -15,19 +17,23 @@ public class BorderedButton : Button
     }
     public BorderedButton()
     {
+        var content = Content;
         DockPanel panel = new DockPanel();
+
+        panel.Children.Add(new ContentPresenter{Content = content});
+
         panel.Children.Add(new Border{
             [DockPanel.DockProperty] = Dock.Left, 
             BorderThickness = new Thickness(1,0,0,0), 
-            BorderBrush = BorderColor((byte)((CellByte & 0b11) >> 6))});
+            BorderBrush = BorderColor((byte)((CellByte >> 6) & 0b11))});
         panel.Children.Add(new Border{
             [DockPanel.DockProperty] = Dock.Top, 
             BorderThickness = new Thickness(0,1,0,0), 
-            BorderBrush = BorderColor((byte)((CellByte & 0b11) >> 4))});
+            BorderBrush = BorderColor((byte)((CellByte >> 4) & 0b11))});
         panel.Children.Add(new Border{
             [DockPanel.DockProperty] = Dock.Right, 
             BorderThickness = new Thickness(0,0,1,0), 
-            BorderBrush = BorderColor((byte)((CellByte & 0b11) >> 2))});
+            BorderBrush = BorderColor((byte)((CellByte >> 2) & 0b11))});
         panel.Children.Add(new Border{
             [DockPanel.DockProperty] = Dock.Bottom, 
             BorderThickness = new Thickness(0,0,0,1), 

@@ -9,31 +9,62 @@ namespace GridMapper.Views.Components;
 
 public partial class BorderedButton : UserControl
 {
-    public static readonly StyledProperty<byte> CellByteProperty = AvaloniaProperty.Register<BorderedButton, byte>(nameof(CellByte));
+    public static readonly StyledProperty<byte> CellByteProperty = 
+        AvaloniaProperty.Register<BorderedButton, byte>(nameof(CellByte));
     public byte CellByte
     {
         get => GetValue(CellByteProperty);
         set => SetValue(CellByteProperty, value);
     }
-    public IBrush LeftBorderBrush{ get; set; }
-    public IBrush TopBorderBrush{ get; set; }
-    public IBrush RightBorderBrush{ get; set; }
-    public IBrush BottomBorderBrush{ get; set; }
+    public static readonly StyledProperty<IBrush> LeftBorderBrushProperty =
+        AvaloniaProperty.Register<BorderedButton, IBrush>(nameof(LeftBorderBrush));
+    
+    public IBrush LeftBorderBrush
+    {
+        get => GetValue(LeftBorderBrushProperty); 
+        set => SetValue(LeftBorderBrushProperty, value); 
+    }
+    public static readonly StyledProperty<IBrush> TopBorderBrushProperty = 
+        AvaloniaProperty.Register<BorderedButton, IBrush>(nameof(TopBorderBrush));
+    public IBrush TopBorderBrush
+    { 
+        get => GetValue(TopBorderBrushProperty); 
+        set => SetValue(TopBorderBrushProperty, value); 
+    }
+    public static readonly StyledProperty<IBrush> RightBorderBrushProperty =
+        AvaloniaProperty.Register<BorderedButton, IBrush>(nameof(RightBorderBrush));
+    public IBrush RightBorderBrush
+    { 
+        get => GetValue(RightBorderBrushProperty); 
+        set => SetValue(RightBorderBrushProperty, value); 
+    }
+    public static readonly StyledProperty<IBrush> BottomBorderBrushProperty =
+        AvaloniaProperty.Register<BorderedButton, IBrush>(nameof(BottomBorderBrush));
+    public IBrush BottomBorderBrush
+    { 
+        get => GetValue(BottomBorderBrushProperty); 
+        set => SetValue(BottomBorderBrushProperty, value); 
+    }
     public BorderedButton()
     {
-        // Console.Error.WriteLine($"BORDERED BUTTON CREATED: {CellByte}");
-        // throw new Exception("BORDERED BUTTON CREATED");
-        // LeftBorderBrush = BorderColor((byte)((CellByte >> 6) & 0b11));
-        LeftBorderBrush = Brushes.Brown;
-        // TopBorderBrush = BorderColor((byte)((CellByte >> 4) & 0b11));
-        TopBorderBrush = Brushes.Brown;
-        // RightBorderBrush = BorderColor((byte)((CellByte >> 2) & 0b11));
-        RightBorderBrush = Brushes.White;
-        // BottomBorderBrush = BorderColor((byte)(CellByte & 0b11));
-        BottomBorderBrush = Brushes.Cyan;
         InitializeComponent();
     }
 
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+        if(change.Property == CellByteProperty)
+        {
+            SetBorderColors();
+        }
+    }
+    private void SetBorderColors()
+    {
+        LeftBorderBrush = BorderColor((byte)((CellByte >> 6) & 0b11));
+        TopBorderBrush = BorderColor((byte)((CellByte >> 4) & 0b11));
+        RightBorderBrush = BorderColor((byte)((CellByte >> 2) & 0b11));
+        BottomBorderBrush = BorderColor((byte)(CellByte & 0b11));
+    }
     public byte GetCellByte() => CellByte;
     public void SetCellByte(byte cellByte){CellByte = cellByte;}
     private IBrush BorderColor(byte value)

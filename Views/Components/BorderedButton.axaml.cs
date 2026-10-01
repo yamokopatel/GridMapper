@@ -2,6 +2,7 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 
@@ -9,6 +10,8 @@ namespace GridMapper.Views.Components;
 
 public partial class BorderedButton : UserControl
 {
+    //  PARAMETERS
+    //  cell byte
     public static readonly StyledProperty<byte> CellByteProperty = 
         AvaloniaProperty.Register<BorderedButton, byte>(nameof(CellByte));
     public byte CellByte
@@ -16,6 +19,7 @@ public partial class BorderedButton : UserControl
         get => GetValue(CellByteProperty);
         set => SetValue(CellByteProperty, value);
     }
+    //  left border color
     public static readonly StyledProperty<IBrush> LeftBorderBrushProperty =
         AvaloniaProperty.Register<BorderedButton, IBrush>(nameof(LeftBorderBrush));
     
@@ -24,6 +28,7 @@ public partial class BorderedButton : UserControl
         get => GetValue(LeftBorderBrushProperty); 
         set => SetValue(LeftBorderBrushProperty, value); 
     }
+    //  top border color
     public static readonly StyledProperty<IBrush> TopBorderBrushProperty = 
         AvaloniaProperty.Register<BorderedButton, IBrush>(nameof(TopBorderBrush));
     public IBrush TopBorderBrush
@@ -31,6 +36,7 @@ public partial class BorderedButton : UserControl
         get => GetValue(TopBorderBrushProperty); 
         set => SetValue(TopBorderBrushProperty, value); 
     }
+    //  right border color
     public static readonly StyledProperty<IBrush> RightBorderBrushProperty =
         AvaloniaProperty.Register<BorderedButton, IBrush>(nameof(RightBorderBrush));
     public IBrush RightBorderBrush
@@ -38,6 +44,7 @@ public partial class BorderedButton : UserControl
         get => GetValue(RightBorderBrushProperty); 
         set => SetValue(RightBorderBrushProperty, value); 
     }
+    //  bottom border color
     public static readonly StyledProperty<IBrush> BottomBorderBrushProperty =
         AvaloniaProperty.Register<BorderedButton, IBrush>(nameof(BottomBorderBrush));
     public IBrush BottomBorderBrush
@@ -45,11 +52,15 @@ public partial class BorderedButton : UserControl
         get => GetValue(BottomBorderBrushProperty); 
         set => SetValue(BottomBorderBrushProperty, value); 
     }
+
+    //  CONSTRUCTOR
     public BorderedButton()
     {
         InitializeComponent();
     }
 
+    //  EVENT LISTENER
+    //  value changed
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
@@ -58,6 +69,8 @@ public partial class BorderedButton : UserControl
             SetBorderColors();
         }
     }
+
+    //  FUNCTIONS
     private void SetBorderColors()
     {
         LeftBorderBrush = BorderColor((byte)((CellByte >> 6) & 0b11));

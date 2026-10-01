@@ -3,19 +3,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="GridMapper.Views.Tabs.FileBrowser">
+             x:Class="GridMapper.Views.Tabs.FileBrowser"
+             x:Name="root"
+             x:CompileBindings="False">
     <Grid RowDefinitions="auto,auto, auto">
         <StackPanel Orientation="Horizontal" Grid.Row="0">
             <Button Content="Select Map Metadata" />
-            <TextBlock />
+            <TextBlock Text="{Binding MapMetadataFilePath, ElementName=root}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="1">
             <Button Content="Select Map Structure Data" />
-            <TextBlock />
+            <TextBlock Text="{Binding MapStructureFilePath, ElementName=root}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="2">
             <Button Content="Select Cell Metadata" />
-            <TextBlock />
+            <TextBlock Text="{Binding CellMetadataFilePath, ElementName=root}" />
         </StackPanel>
     </Grid>
 

@@ -8,7 +8,7 @@
              x:CompileBindings="False">
     <Grid RowDefinitions="auto,auto, auto">
         <StackPanel Orientation="Horizontal" Grid.Row="0">
-            <Button Content="Select Map Metadata" />
+            <Button Content="Select Map Metadata" Click="SelectMapMeta_Clicked" />
             <TextBlock Text="{Binding MapMetadataFilePath}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="1">

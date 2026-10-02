@@ -37,4 +37,36 @@ public partial class FileBrowser : UserControl
             fbvm.MapMetadataFilePath = files[0].Path.LocalPath;
         }
     }
+    //  Select Map Struct
+    private async void SelectMapStruct_Clicked(object sender, RoutedEventArgs args)
+    {
+        TopLevel topLevel = TopLevel.GetTopLevel(this)!;
+
+        IReadOnlyList<IStorageFile> files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            Title = "Select Map Structure Data File",
+            AllowMultiple = false,
+            FileTypeFilter = new[] { new FilePickerFileType("BIN files"){Patterns = new[]{"*.bin", "*.bytes"}}},
+        });
+        if(files.Count >= 1)
+        {
+            fbvm.MapStructureFilePath = files[0].Path.LocalPath;
+        }
+    }
+    //  Select Cell Meta
+    private async void SelectCellMeta_Clicked(object sender, RoutedEventArgs args)
+    {
+        TopLevel topLevel = TopLevel.GetTopLevel(this)!;
+
+        IReadOnlyList<IStorageFile> files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            Title = "Select Cell Metadata File",
+            AllowMultiple = false,
+            FileTypeFilter = new[] {FilePickerFileTypes.Json},
+        });
+        if(files.Count >= 1)
+        {
+            fbvm.CellMetadataFilePath = files[0].Path.LocalPath;
+        }
+    }
 }

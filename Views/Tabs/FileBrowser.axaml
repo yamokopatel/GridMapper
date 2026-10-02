@@ -12,11 +12,11 @@
             <TextBlock Text="{Binding MapMetadataFilePath}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="1">
-            <Button Content="Select Map Structure Data" />
+            <Button Content="Select Map Structure Data" Click="SelectMapStruct_Clicked" />
             <TextBlock Text="{Binding MapStructureFilePath}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="2">
-            <Button Content="Select Cell Metadata" />
+            <Button Content="Select Cell Metadata" Click="SelectCellMeta_Clicked" />
             <TextBlock Text="{Binding CellMetadataFilePath}" />
         </StackPanel>
     </Grid>

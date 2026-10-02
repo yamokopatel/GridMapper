@@ -9,15 +9,15 @@
     <Grid RowDefinitions="auto,auto, auto">
         <StackPanel Orientation="Horizontal" Grid.Row="0">
             <Button Content="Select Map Metadata" />
-            <TextBlock Text="{Binding MapMetadataFilePath, ElementName=root}" />
+            <TextBlock Text="{Binding MapMetadataFilePath}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="1">
             <Button Content="Select Map Structure Data" />
-            <TextBlock Text="{Binding MapStructureFilePath, ElementName=root}" />
+            <TextBlock Text="{Binding MapStructureFilePath}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="2">
             <Button Content="Select Cell Metadata" />
-            <TextBlock Text="{Binding CellMetadataFilePath, ElementName=root}" />
+            <TextBlock Text="{Binding CellMetadataFilePath}" />
         </StackPanel>
     </Grid>
 

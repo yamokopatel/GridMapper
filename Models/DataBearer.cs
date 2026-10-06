@@ -34,41 +34,29 @@ public class DataBearer
 
     //  SETTERS
     public void SetChanged(bool changed){IsChanged = changed;}
-    //  Checker
-    private bool CheckPathNotNull(string? path)
+    //  Generifier?
+    private bool CheckPathNotNull(ref string? path, string newPath)
     {
-        return path != null && IsChanged;
+        if(path != null && IsChanged)
+        {
+            return true;
+        }
+        path = newPath;
+        TryLaodFiles();
+        return false;
     }
     //  Paths
     public bool SetMapMetaPath(string newPath)
     {
-        if (!CheckPathNotNull(MapMetadataFilePath))
-        {
-            MapMetadataFilePath = newPath;
-            TryLaodFiles();
-            return false;
-        }
-        return true;
+        return CheckPathNotNull(ref MapMetadataFilePath, newPath);
     }
     public bool SetStructurePath(string newPath)
     {
-        if (!CheckPathNotNull(MapStructureFilePath))
-        {
-            MapStructureFilePath = newPath;
-            TryLaodFiles();
-            return false;
-        }
-        return true;
+        return CheckPathNotNull(ref MapStructureFilePath, newPath);
     }
     public bool SetCellMetaPath(string newPath)
     {
-        if (!CheckPathNotNull(CellMetadataFilePath))
-        {
-            CellMetadataFilePath = newPath;
-            TryLaodFiles();
-            return false;
-        }
-        return true;
+        return CheckPathNotNull(ref CellMetadataFilePath, newPath);
     }
 
     //  FUNCTIONS

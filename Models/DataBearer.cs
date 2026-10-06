@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 
 public class DataBearer
 {
@@ -35,30 +34,53 @@ public class DataBearer
 
     //  SETTERS
     public void SetChanged(bool changed){IsChanged = changed;}
-    //  Checker, will be necessary later
-    private async Task<bool> CheckPathNotNull(string? path)
+    //  Checker
+    private bool CheckPathNotNull(string? path)
     {
-        if(path != null)
-        {
-            if (IsChanged)
-            {
-                return true;
-            }
-            return false;
-        }
-        return false;
+        return path != null && IsChanged;
     }
     //  Paths
-    public void SetMapMetaPath(string newPath)
+    public bool SetMapMetaPath(string newPath)
     {
-        MapMetadataFilePath = newPath;
+        if (!CheckPathNotNull(MapMetadataFilePath))
+        {
+            MapMetadataFilePath = newPath;
+            TryLaodFiles();
+            return false;
+        }
+        return true;
     }
-    public void SetStructurePath(string newPath)
+    public bool SetStructurePath(string newPath)
     {
-        MapStructureFilePath = newPath;
+        if (!CheckPathNotNull(MapStructureFilePath))
+        {
+            MapStructureFilePath = newPath;
+            TryLaodFiles();
+            return false;
+        }
+        return true;
     }
-    public void SetCellMetaPath(string newPath)
+    public bool SetCellMetaPath(string newPath)
     {
-        CellMetadataFilePath = newPath;
+        if (!CheckPathNotNull(CellMetadataFilePath))
+        {
+            CellMetadataFilePath = newPath;
+            TryLaodFiles();
+            return false;
+        }
+        return true;
+    }
+
+    //  FUNCTIONS
+    private void TryLaodFiles()
+    {
+        if(!string.IsNullOrWhiteSpace(MapMetadataFilePath)
+            && !string.IsNullOrWhiteSpace(MapStructureFilePath)
+            && !string.IsNullOrWhiteSpace(CellMetadataFilePath))
+        {
+            MapMetadataFile = new FileInfo(MapMetadataFilePath);
+            MapStructureFile = new FileInfo(MapStructureFilePath);
+            CellMetadataFile = new FileInfo(CellMetadataFilePath);
+        }
     }
 }

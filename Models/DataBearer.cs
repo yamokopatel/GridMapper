@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 public class DataBearer
 {
     //  PARAMETERS
+    private bool IsChanged = false;
     //  File Paths
     private string? MapMetadataFilePath;
     private string? MapStructureFilePath;
@@ -21,6 +23,7 @@ public class DataBearer
     public DataBearer(){}
 
     // GETTERS
+    public bool GetChanged() => IsChanged;
     //  Paths
     public string? GetMapMetadataPath() => MapMetadataFilePath;
     public string? GetMapStructurePath() => MapStructureFilePath;
@@ -31,12 +34,17 @@ public class DataBearer
     public List<BaseObject>? GetMapObjects() => MapObjects;
 
     //  SETTERS
+    public void SetChanged(bool changed){IsChanged = changed;}
     //  Checker, will be necessary later
-    private bool CheckPathNotNull(string? path)
+    private async Task<bool> CheckPathNotNull(string? path)
     {
         if(path != null)
         {
-            return true;
+            if (IsChanged)
+            {
+                return true;
+            }
+            return false;
         }
         return false;
     }

@@ -1,13 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 public class DataBearer
 {
-    private const ushort version = 0x7D_01;
+    private const ushort VERSION = 0x7D_01;
     //  PARAMETERS
     private bool IsChanged = false;
     //  File Paths
@@ -76,22 +74,82 @@ public class DataBearer
             CellMetadataFile = new FileInfo(CellMetadataFilePath);
         }
     }
-    public void TryLoadData()
+    public bool TryLoadData()
     {
+        bool result = false;
         if(MapMetadataFile != null
             && MapStructureFile != null
             && CellMetadataFile != null)
         {
-            FileStream stream = MapMetadataFile.OpenRead();
-            Maps = JsonSerializer.Deserialize<Container<Map>>(stream)!.GetValues();
-            stream = MapStructureFile.OpenRead();
-            stream.Seek(2, SeekOrigin.Begin);
-            byte[] bytes = new byte[stream.Length - 2];
-            stream.ReadExactly(bytes);
-            MapStructures = bytes.ToList();
-            stream = CellMetadataFile.OpenRead();
-            MapObjects = JsonSerializer.Deserialize<Container<BaseObject>>(stream)!.GetValues();
-            stream.Dispose();
+            result = LoadMaps() && LoadStructures() && LoadCells();
         }
+        return result;
+    }
+    private bool LoadMaps()
+    {
+        bool result = false;
+        FileStream stream = MapMetadataFile!.OpenRead();
+        if(stream.Length == 0)
+        {
+            Maps = new List<Map>();
+            result = true;
+        }
+        else
+        {
+            Container<Map> maps = JsonSerializer.Deserialize<Container<Map>>(stream)!;
+            if (maps.GetVersion().Equals(VERSION))
+            {
+                Maps = maps.GetValues();
+                result = true;
+            }
+        }
+        stream.Dispose();
+        return result;
+    }
+    private bool LoadCells()
+    {
+        bool result = false;
+        FileStream stream = CellMetadataFile!.OpenRead();
+        if(stream.Length == 0)
+        {
+            MapObjects = new List<BaseObject>();
+            result = true;
+        }
+        else
+        {
+            Container<BaseObject> cells = JsonSerializer.Deserialize<Container<BaseObject>>(stream)!;
+            if (cells.GetVersion().Equals(VERSION))
+            {
+                MapObjects = cells.GetValues();
+                result = true;
+            }
+        }
+        stream.Dispose();
+        return result;
+    }
+    private bool LoadStructures()
+    {
+        bool result = false;
+        FileStream stream = MapStructureFile!.OpenRead();
+        if(stream.Length == 0)
+        {
+            MapStructures = new List<byte>();
+            result = true;
+        }
+        else
+        {
+            byte[] v = new byte[2];
+            stream.ReadExactly(v);
+            if(v[0] * 256 + v[1] == VERSION)
+            {
+                stream.Seek(2, SeekOrigin.Begin);
+                byte[] bytes = new byte[stream.Length - 2];
+                stream.ReadExactly(bytes);
+                MapStructures = bytes.ToList();
+                result = true;
+            }
+        }
+        stream.Dispose();
+        return result;
     }
 }

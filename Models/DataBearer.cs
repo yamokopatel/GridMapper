@@ -1,8 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 public class DataBearer
 {
+    private const ushort version = 0x7D_01;
     //  PARAMETERS
     private bool IsChanged = false;
     //  File Paths
@@ -69,6 +74,24 @@ public class DataBearer
             MapMetadataFile = new FileInfo(MapMetadataFilePath);
             MapStructureFile = new FileInfo(MapStructureFilePath);
             CellMetadataFile = new FileInfo(CellMetadataFilePath);
+        }
+    }
+    public void TryLoadData()
+    {
+        if(MapMetadataFile != null
+            && MapStructureFile != null
+            && CellMetadataFile != null)
+        {
+            FileStream stream = MapMetadataFile.OpenRead();
+            Maps = JsonSerializer.Deserialize<Container<Map>>(stream)!.GetValues();
+            stream = MapStructureFile.OpenRead();
+            stream.Seek(2, SeekOrigin.Begin);
+            byte[] bytes = new byte[stream.Length - 2];
+            stream.ReadExactly(bytes);
+            MapStructures = bytes.ToList();
+            stream = CellMetadataFile.OpenRead();
+            MapObjects = JsonSerializer.Deserialize<Container<BaseObject>>(stream)!.GetValues();
+            stream.Dispose();
         }
     }
 }

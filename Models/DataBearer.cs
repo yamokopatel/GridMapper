@@ -63,6 +63,7 @@ public class DataBearer
     }
 
     //  FUNCTIONS
+    //  Loaders
     private void TryLaodFiles()
     {
         if(!string.IsNullOrWhiteSpace(MapMetadataFilePath)
@@ -132,5 +133,15 @@ public class DataBearer
         }
         stream.Dispose();
         return isValid;
+    }
+    //  Savers
+    private void SaveStructires()
+    {
+        byte[] bytes = new byte[MapStructures!.Count + 2];
+        bytes[0] = VERSION / 256; bytes[1] = VERSION & 0xFF;
+        MapStructures.CopyTo(bytes, 2);
+        FileStream stream = MapStructureFile!.OpenWrite();
+        stream.Write(bytes);
+        stream.Dispose();
     }
 }

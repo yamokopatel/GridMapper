@@ -76,65 +76,46 @@ public class DataBearer
     }
     public bool TryLoadData()
     {
-        bool result = false;
+        bool areValid = false;
         if(MapMetadataFile != null
             && MapStructureFile != null
             && CellMetadataFile != null)
         {
-            result = LoadMaps() && LoadStructures() && LoadCells();
+            areValid = LoadList<Map>(MapMetadataFile, ref Maps) 
+                && LoadStructures() 
+                && LoadList<BaseObject>(CellMetadataFile, ref MapObjects);
         }
-        return result;
+        return areValid;
     }
-    private bool LoadMaps()
+    private bool LoadList<T>(FileInfo file, ref List<T>? values)
     {
-        bool result = false;
-        FileStream stream = MapMetadataFile!.OpenRead();
+        bool isValid = false;
+        FileStream stream = file!.OpenRead();
         if(stream.Length == 0)
         {
-            Maps = new List<Map>();
-            result = true;
+            values = new List<T>();
+            isValid = true;
         }
         else
         {
-            Container<Map> maps = JsonSerializer.Deserialize<Container<Map>>(stream)!;
-            if (maps.GetVersion().Equals(VERSION))
+            Container<T> container = JsonSerializer.Deserialize<Container<T>>(stream)!;
+            if(container.GetVersion() == VERSION)
             {
-                Maps = maps.GetValues();
-                result = true;
+                values = container.GetValues();
+                isValid = true;
             }
         }
         stream.Dispose();
-        return result;
-    }
-    private bool LoadCells()
-    {
-        bool result = false;
-        FileStream stream = CellMetadataFile!.OpenRead();
-        if(stream.Length == 0)
-        {
-            MapObjects = new List<BaseObject>();
-            result = true;
-        }
-        else
-        {
-            Container<BaseObject> cells = JsonSerializer.Deserialize<Container<BaseObject>>(stream)!;
-            if (cells.GetVersion().Equals(VERSION))
-            {
-                MapObjects = cells.GetValues();
-                result = true;
-            }
-        }
-        stream.Dispose();
-        return result;
+        return isValid;
     }
     private bool LoadStructures()
     {
-        bool result = false;
+        bool isValid = false;
         FileStream stream = MapStructureFile!.OpenRead();
         if(stream.Length == 0)
         {
             MapStructures = new List<byte>();
-            result = true;
+            isValid = true;
         }
         else
         {
@@ -146,10 +127,10 @@ public class DataBearer
                 byte[] bytes = new byte[stream.Length - 2];
                 stream.ReadExactly(bytes);
                 MapStructures = bytes.ToList();
-                result = true;
+                isValid = true;
             }
         }
         stream.Dispose();
-        return result;
+        return isValid;
     }
 }

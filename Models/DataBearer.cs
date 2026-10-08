@@ -88,6 +88,18 @@ public class DataBearer
         }
         return areValid;
     }
+    public void SaveData()
+    {
+        if(MapMetadataFile != null
+            && MapStructureFile != null
+            && CellMetadataFile != null
+            && IsChanged)
+        {
+            SaveList<Map>(ref MapMetadataFile, Maps!);
+            SaveStructires();
+            SaveList<BaseObject>(ref CellMetadataFile, MapObjects!);
+        }
+    }
     private bool LoadList<T>(FileInfo file, ref List<T>? values)
     {
         bool isValid = false;
@@ -135,6 +147,15 @@ public class DataBearer
         return isValid;
     }
     //  Savers
+    private void SaveList<T>(ref FileInfo file, List<T> values)
+    {
+        Container<T> container = new Container<T>(VERSION, values.ToArray());
+        FileStream stream = file.OpenWrite();
+        StreamWriter writer = new StreamWriter(stream);
+        string jsonContainer = JsonSerializer.Serialize<Container<T>>(container);
+        writer.Write(jsonContainer);
+        writer.Dispose(); stream.Dispose();
+    }
     private void SaveStructires()
     {
         byte[] bytes = new byte[MapStructures!.Count + 2];

@@ -111,12 +111,14 @@ public class DataBearer
         }
         else
         {
-            Container<T> container = JsonSerializer.Deserialize<Container<T>>(stream)!;
+            StreamReader reader = new StreamReader(stream);
+            Container<T> container = JsonSerializer.Deserialize<Container<T>>(reader.ReadToEnd())!;
             if(container.GetVersion() == VERSION)
             {
                 values = container.GetValues();
                 isValid = true;
             }
+            reader.Dispose();
         }
         stream.Dispose();
         return isValid;

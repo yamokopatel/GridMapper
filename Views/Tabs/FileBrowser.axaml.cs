@@ -10,12 +10,20 @@ namespace GridMapper.Views.Tabs;
 
 public partial class FileBrowser : UserControl
 {
+    public static readonly StyledProperty<DataBearer> BearerInProperty =
+        AvaloniaProperty.Register<FileBrowser, DataBearer>(nameof(BearerIn));
+    public DataBearer BearerIn
+    {
+        get => GetValue(BearerInProperty);
+        set => SetValue(BearerInProperty, value);
+    }
     private FileBrowserViewModel fbvm;
     //  CONSTRUCTOR
     public FileBrowser()
     {
         fbvm = new FileBrowserViewModel();
         DataContext = fbvm;
+        fbvm.BearerIn = BearerIn;
         InitializeComponent();
     }
 

@@ -10,7 +10,8 @@
         x:Class="GridMapper.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="GridMapper">
+        Title="GridMapper"
+        x:Name="root">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -23,7 +24,7 @@
              VerticalAlignment="Center" /> -->
     <TabControl VerticalAlignment="Top">
         <TabItem Header="File Browser">
-            <tabs:FileBrowser />
+            <tabs:FileBrowser BearerIn="{Binding BearerOut, ElementName=root}" />
         </TabItem>
         <TabItem Header="Map Options">
 

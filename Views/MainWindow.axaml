@@ -13,11 +13,11 @@
         Title="GridMapper"
         x:Name="root">
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+    <!-- <Design.DataContext>
+         This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) 
         <vm:MainViewModel />
-    </Design.DataContext>
+    </Design.DataContext> -->
 
     <!-- <TextBox Text="{Binding Greeting}"
              HorizontalAlignment="Center"
@@ -41,12 +41,14 @@
                 ColumnDefinitions="auto, auto">
             <Button VerticalAlignment="Top" 
                     Grid.Column="0" 
-                    FontSize="14">
+                    FontSize="14"
+                    Background="{Binding SaveUndoColor, ElementName=root}">
                 Save
             </Button>
             <Button VerticalAlignment="Top" 
                     Grid.Column="1" 
-                    FontSize="14">
+                    FontSize="14"
+                    Background="{Binding SaveUndoColor, ElementName=root}">
                 Undo
             </Button>
         </Grid>

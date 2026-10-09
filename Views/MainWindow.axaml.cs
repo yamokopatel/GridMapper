@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Media;
 using GridMapper.ViewModels;
 
 namespace GridMapper.Views;
@@ -13,11 +14,28 @@ public partial class MainWindow : Window
         get => GetValue(BearerOutProperty);
         set => SetValue(BearerOutProperty, value);
     }
+    public static readonly StyledProperty<IBrush> SaveUndoColorProperty = 
+        AvaloniaProperty.Register<MainWindow, IBrush>(nameof(SaveUndoColor));
+    public IBrush SaveUndoColor
+    {
+        get => GetValue(SaveUndoColorProperty);
+        set => SetValue(SaveUndoColorProperty, value);
+    }
     public MainWindow()
     {
         MainViewModel mvm = new MainViewModel();
         DataContext = mvm;
         BearerOut = mvm.BearerOut;
+        SetSaveUndoColor();
         InitializeComponent();
+        BearerOut.DataChanged += (changed) =>
+        {
+            SetSaveUndoColor();
+        };
+    }
+
+    private void SetSaveUndoColor()
+    {
+        SaveUndoColor = (BearerOut.GetChanged() ? Brushes.LightGray : Brushes.DarkGray);
     }
 }

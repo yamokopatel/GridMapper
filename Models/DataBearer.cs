@@ -41,7 +41,10 @@ public class DataBearer
     public List<BaseObject>? GetMapObjects() => MapObjects;
 
     //  SETTERS
-    public void SetChanged(bool changed){IsChanged = changed;}
+    public void SetChanged(bool changed){
+        IsChanged = changed;
+        OnDataChanged(changed);
+    }
     //  Generifier?
     private bool CheckPathNotNull(ref string? path, string newPath)
     {

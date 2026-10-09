@@ -6,7 +6,7 @@
              x:Class="GridMapper.Views.Tabs.FileBrowser"
              x:Name="root"
              x:CompileBindings="False">
-    <Grid RowDefinitions="auto,auto, auto">
+    <Grid RowDefinitions="auto, auto, auto">
         <StackPanel Orientation="Horizontal" Grid.Row="0">
             <Button Content="Select Map Metadata" Click="SelectMapMeta_Clicked" />
             <TextBlock Text="{Binding MapMetadataFilePath}" />

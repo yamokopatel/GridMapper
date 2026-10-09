@@ -22,20 +22,34 @@
     <!-- <TextBox Text="{Binding Greeting}"
              HorizontalAlignment="Center"
              VerticalAlignment="Center" /> -->
-    <TabControl VerticalAlignment="Top">
-        <TabItem Header="File Browser">
-            <tabs:FileBrowser BearerIn="{Binding BearerOut, ElementName=root}" />
-        </TabItem>
-        <TabItem Header="Map Options">
+    <Grid ColumnDefinitions="auto, auto">
+        <TabControl VerticalAlignment="Top" Grid.Column="0">
+            <TabItem Header="File Browser">
+                <tabs:FileBrowser BearerIn="{Binding BearerOut, ElementName=root}" />
+            </TabItem>
+            <TabItem Header="Map Options">
 
-        </TabItem>
-        <TabItem Header="Map Structures">
-            <!-- <components:BorderedButton CellByte="83" Height="64" Width="64">Button</components:BorderedButton> -->
-            <components:BorderedButton CellByte="114"></components:BorderedButton>
-        </TabItem>
-        <TabItem Header="Map Objects">
+            </TabItem>
+            <TabItem Header="Map Structures">
+                <components:BorderedButton CellByte="114"></components:BorderedButton>
+            </TabItem>
+            <TabItem Header="Map Objects">
 
-        </TabItem>
-    </TabControl>
+            </TabItem>
+        </TabControl>
+        <Grid Grid.Column="1" 
+                ColumnDefinitions="auto, auto">
+            <Button VerticalAlignment="Top" 
+                    Grid.Column="0" 
+                    FontSize="14">
+                Save
+            </Button>
+            <Button VerticalAlignment="Top" 
+                    Grid.Column="1" 
+                    FontSize="14">
+                Undo
+            </Button>
+        </Grid>
+    </Grid>
 
 </Window>

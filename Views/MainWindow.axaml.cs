@@ -17,6 +17,7 @@ public partial class MainWindow : Window
     {
         MainViewModel mvm = new MainViewModel();
         DataContext = mvm;
+        BearerOut = mvm.BearerOut;
         InitializeComponent();
     }
 }

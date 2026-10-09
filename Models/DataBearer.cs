@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,7 +8,11 @@ public class DataBearer
 {
     private const ushort VERSION = 0x7D_01;
     //  PARAMETERS
+    //  Eventable
     private bool IsChanged = false;
+    private int MapInProcessingIndex = 0;
+    private int CellInProcessingIndex = 0;
+    private int ObjectInProcessingIndex = 0;
     //  File Paths
     private string? MapMetadataFilePath;
     private string? MapStructureFilePath;
@@ -166,5 +171,31 @@ public class DataBearer
         FileStream stream = MapStructureFile!.OpenWrite();
         stream.Write(bytes);
         stream.Dispose();
+    }
+
+    //  EVENT SENDERS
+    //  Changed
+    public event Action<bool>? DataChanged;
+    protected virtual void OnDataChanged(bool isChanged)
+    {
+        DataChanged?.Invoke(isChanged);
+    }
+    //  Map
+    public event Action<int>? SelectedMapChanged;
+    protected virtual void OnSelectedMapChanged(int selectedMap)
+    {
+        SelectedMapChanged?.Invoke(selectedMap);
+    }
+    //  Cell
+    public event Action<int>? SelectedCellChanged;
+    protected virtual void OnSelectedCellChanged(int selectedCell)
+    {
+        SelectedCellChanged?.Invoke(selectedCell);
+    }
+    //  Object
+    public event Action<int>? SelectedObjectChabged;
+    protected virtual void OnSelectedObjectChanged(int selectedObject)
+    {
+        SelectedObjectChabged?.Invoke(selectedObject);
     }
 }

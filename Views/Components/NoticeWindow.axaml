@@ -1,0 +1,16 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:GridMapper.ViewModels.Components"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="150"
+        x:Class="GridMapper.Views.Components.NoticeWindow"
+        x:DataType="vm:NoticeWindowViewModel"
+        Title="Notice">
+    <!-- <Design.DataContext>
+        <vm:NoticeWindowViewModel />
+    </Design.DataContext> -->
+    <TextBlock  HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Text="{Binding NotificationText}" />
+</Window>

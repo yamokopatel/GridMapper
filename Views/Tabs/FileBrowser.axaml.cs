@@ -40,7 +40,7 @@ public partial class FileBrowser : UserControl
         });
         if(files.Count >= 1)
         {
-            fbvm.MapMetadataFilePath = files[0].Path.LocalPath;
+            fbvm.SetMapMetadataFilePath(files[0].Path.LocalPath);
         }
     }
     //  Select Map Struct
@@ -56,7 +56,7 @@ public partial class FileBrowser : UserControl
         });
         if(files.Count >= 1)
         {
-            fbvm.MapStructureFilePath = files[0].Path.LocalPath;
+            fbvm.SetMapStructureFilePath(files[0].Path.LocalPath);
         }
     }
     //  Select Cell Meta
@@ -72,7 +72,7 @@ public partial class FileBrowser : UserControl
         });
         if(files.Count >= 1)
         {
-            fbvm.CellMetadataFilePath = files[0].Path.LocalPath;
+            fbvm.SetCellMetadataFilePath(files[0].Path.LocalPath);
         }
     }
 }

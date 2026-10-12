@@ -7,6 +7,7 @@ namespace GridMapper.Views;
 
 public partial class MainWindow : Window
 {
+    private MainViewModel mvm;
     public static readonly StyledProperty<DataBearer> BearerOutProperty =
         AvaloniaProperty.Register<MainWindow, DataBearer>(nameof(BearerOut));
     public DataBearer BearerOut
@@ -23,7 +24,7 @@ public partial class MainWindow : Window
     }
     public MainWindow()
     {
-        MainViewModel mvm = new MainViewModel();
+        mvm = new MainViewModel();
         DataContext = mvm;
         BearerOut = mvm.BearerOut;
         SetSaveUndoColor();

@@ -42,13 +42,15 @@
             <Button VerticalAlignment="Top" 
                     Grid.Column="0" 
                     FontSize="14"
-                    Background="{Binding SaveUndoColor, ElementName=root}">
+                    Background="{Binding SaveUndoColor, ElementName=root}"
+                    Command="{Binding SaveCommand}">
                 Save
             </Button>
             <Button VerticalAlignment="Top" 
                     Grid.Column="1" 
                     FontSize="14"
-                    Background="{Binding SaveUndoColor, ElementName=root}">
+                    Background="{Binding SaveUndoColor, ElementName=root}"
+                    Command="{Binding UndoCommand}">
                 Undo
             </Button>
         </Grid>

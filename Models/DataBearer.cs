@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using GridMapper.ViewModels.Components;
+using GridMapper.Views.Components;
 
 public class DataBearer
 {
@@ -54,6 +56,7 @@ public class DataBearer
         }
         path = newPath;
         TryLaodFiles();
+        TryLoadData();
         return false;
     }
     //  Paths
@@ -71,6 +74,13 @@ public class DataBearer
     }
 
     //  FUNCTIONS
+    private void Notify(string text)
+    {
+        NoticeWindow notice = new NoticeWindow();
+        NoticeWindowViewModel nwvm = new NoticeWindowViewModel(text);
+        notice.DataContext = nwvm;
+        notice.Show();
+    }
     //  Loaders
     private void TryLaodFiles()
     {
@@ -81,6 +91,10 @@ public class DataBearer
             MapMetadataFile = new FileInfo(MapMetadataFilePath);
             MapStructureFile = new FileInfo(MapStructureFilePath);
             CellMetadataFile = new FileInfo(CellMetadataFilePath);
+        }
+        else
+        {
+            Notify("Any of provided paths is not valid.");
         }
     }
     public bool TryLoadData()
@@ -106,6 +120,10 @@ public class DataBearer
             SaveList<Map>(ref MapMetadataFile, Maps!);
             SaveStructires();
             SaveList<BaseObject>(ref CellMetadataFile, MapObjects!);
+        }
+        else
+        {
+            Notify("Nothing to save. Change some data firstly.");
         }
     }
     private bool LoadList<T>(FileInfo file, ref List<T>? values)

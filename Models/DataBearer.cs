@@ -12,9 +12,8 @@ public class DataBearer
     //  PARAMETERS
     //  Eventable
     private bool IsChanged = false;
-    private int MapInProcessingIndex = 0;
-    private int CellInProcessingIndex = 0;
-    private int ObjectInProcessingIndex = 0;
+    private int? MapInProcessingIndex = null;
+    private int? CellInProcessingIndex = null;
     //  File Paths
     private string? MapMetadataFilePath;
     private string? MapStructureFilePath;
@@ -212,11 +211,5 @@ public class DataBearer
     protected virtual void OnSelectedCellChanged(int selectedCell)
     {
         SelectedCellChanged?.Invoke(selectedCell);
-    }
-    //  Object
-    public event Action<int>? SelectedObjectChabged;
-    protected virtual void OnSelectedObjectChanged(int selectedObject)
-    {
-        SelectedObjectChabged?.Invoke(selectedObject);
     }
 }

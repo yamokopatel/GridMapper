@@ -11,28 +11,36 @@
                 <!-- Content should be generated programly -->    
             </ComboBox>
         </StackPanel>
-        <Grid RowDefinitions="auto, auto"
-              ColumnDefinitions="auto, auto"
-              Margin="12">
-            <!-- Map Biome ID -->
-            <TextBlock  Text="Biome ID" 
-                        Grid.Column="0"
-                        Grid.Row="0" />
-            <NumericUpDown  Minimum="0"
-                            Maximum="255"
-                            Increment="1"
-                            FormatString="N0"
-                            Grid.Column="1"
-                            Grid.Row="0" />
+        <!-- Map Biome ID -->
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal"
+                        Margin="3">
+                <TextBlock  Text="Biome ID:" 
+                            Grid.Column="0"
+                            Grid.Row="0"
+                            Padding="8" />
+                <NumericUpDown  Minimum="0"
+                                Maximum="255"
+                                Increment="1"
+                                FormatString="N0"
+                                Grid.Column="1"
+                                Grid.Row="0"
+                                Width="110" />
+            </StackPanel>
             <!-- Map Name -->
-            <TextBlock  Text="Map name" 
-                        Grid.Column="0"
-                        Grid.Row="1" />
-            <TextBox PlaceholderText="This map name"
-                     MaxLength="64"
-                     TextWrapping="NoWrap"
-                     Grid.Column="1"
-                     Grid.Row="1" />
-        </Grid>
+            <StackPanel Orientation="Horizontal"
+                        Margin="3">
+                <TextBlock  Text="Map name:" 
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            Padding="8" />
+                <TextBox    PlaceholderText="This map name"
+                            MaxLength="64"
+                            TextWrapping="NoWrap"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Width="216" />
+            </StackPanel>
+        </StackPanel>
     </StackPanel>
 </UserControl>

@@ -16,9 +16,9 @@ public partial class MapEditor : UserControl
     private MapEditorViewModel mevm;
     public MapEditor()
     {
+        InitializeComponent();
         mevm = new MapEditorViewModel();
         DataContext = mevm;
-        InitializeComponent();
         mevm.BearerIn = BearerIn;
     }
 }

@@ -12,8 +12,8 @@ public class DataBearer
     //  PARAMETERS
     //  Eventable
     private bool IsChanged = false;
-    private int? MapInProcessingIndex = null;
-    private int? CellInProcessingIndex = null;
+    private int MapInProcessingIndex = -1;
+    private int CellInProcessingIndex = -1;
     //  File Paths
     private string? MapMetadataFilePath;
     private string? MapStructureFilePath;
@@ -30,7 +30,7 @@ public class DataBearer
     //  CONSTRUCTOR
     public DataBearer(){}
 
-    // GETTERS
+    #region GETTERS
     public bool GetChanged() => IsChanged;
     //  Paths
     public string? GetMapMetadataPath() => MapMetadataFilePath;
@@ -40,8 +40,9 @@ public class DataBearer
     public List<Map>? GetMaps() => Maps;
     public List<byte>? GetStructures() => MapStructures;
     public List<BaseObject>? GetMapObjects() => MapObjects;
+    #endregion
 
-    //  SETTERS
+    #region SETTERS
     public void SetChanged(bool changed){
         IsChanged = changed;
         OnDataChanged(changed);
@@ -71,8 +72,14 @@ public class DataBearer
     {
         return CheckPathNotNull(ref CellMetadataFilePath, newPath);
     }
+    public void SetProcessingMap(int index)
+    {
+        MapInProcessingIndex = index;
+        SelectedMapChanged!(index);
+    }
+    #endregion
 
-    //  FUNCTIONS
+    #region FUNCTIONS
     private void Notify(string text)
     {
         NoticeWindow notice = new NoticeWindow();
@@ -196,8 +203,9 @@ public class DataBearer
         stream.Write(bytes);
         stream.Dispose();
     }
+    #endregion
 
-    //  EVENT SENDERS
+    #region EVENT SENDERS
     //  Changed
     public event Action<bool>? DataChanged;
     protected virtual void OnDataChanged(bool isChanged)
@@ -217,9 +225,10 @@ public class DataBearer
         SelectedCellChanged?.Invoke(selectedCell);
     }
     //  Files Loaded
-    public event Action FilesLoaded;
+    public event Action? FilesLoaded;
     protected virtual void OnFilesLoaded()
     {
         FilesLoaded?.Invoke();
     }
+    #endregion
 }

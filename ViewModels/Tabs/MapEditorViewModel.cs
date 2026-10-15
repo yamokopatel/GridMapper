@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -13,12 +14,25 @@ public partial class MapEditorViewModel : ViewModelBase
     [ObservableProperty]
     public partial List<ComboBoxItem> MapOptions { get; set; } = new List<ComboBoxItem>();
     [ObservableProperty]
+    public partial int SelectedMap { get; set; } = -1;
+    [ObservableProperty]
     public partial bool SettingsVisible { get; set; } = false;
+    [ObservableProperty]
+    public partial string ExcString { get; set; } = ""; // Extra field to see this view errors
 
     public MapEditorViewModel()
     {
-        BearerIn!.FilesLoaded += () => {
+        BearerIn!.FilesLoaded += () => 
+        {
             MapsToItems();
+        };
+        BearerIn!.SelectedMapChanged += (index) =>
+        {
+        
+            if(index > -1)
+            {
+                SettingsVisible = true;
+            }
         };
     }
 

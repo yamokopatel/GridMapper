@@ -11,6 +11,7 @@
             <Button Content="New" />
             <ComboBox   MaxDropDownHeight="128"
                         ItemsSource="{Binding MapOptions}"
+                        SelectedItem="{Binding SelectedMap}"
                         Width="160">
                 <!-- Content should be generated programly -->    
             </ComboBox>
@@ -47,5 +48,6 @@
                             Width="216" />
             </StackPanel>
         </StackPanel>
+        <TextBlock Text="{Binding ExcString}" />
     </StackPanel>
 </UserControl>

@@ -8,7 +8,7 @@ namespace GridMapper.ViewModels.Tabs;
 
 public partial class MapEditorViewModel : ViewModelBase
 {
-    public DataBearer? BearerIn;
+    public DataBearer BearerIn;
 
     //  PROPERTIES
     [ObservableProperty]
@@ -20,20 +20,28 @@ public partial class MapEditorViewModel : ViewModelBase
     [ObservableProperty]
     public partial string ExcString { get; set; } = ""; // Extra field to see this view errors
 
-    public MapEditorViewModel()
+    public  MapEditorViewModel(DataBearer bearerIn)
     {
-        BearerIn!.FilesLoaded += () => 
+        BearerIn = bearerIn;
+        try
         {
-            MapsToItems();
-        };
-        BearerIn!.SelectedMapChanged += (index) =>
-        {
-        
-            if(index > -1)
+            BearerIn.FilesLoaded += () => 
             {
-                SettingsVisible = true;
-            }
-        };
+                MapsToItems();
+            };
+            BearerIn.SelectedMapChanged += (index) =>
+            {
+        
+                if(index > -1)
+                {
+                    SettingsVisible = true;
+                }
+            };
+        }
+        catch(Exception e)
+        {
+            ExcString = e.ToString();
+        }
     }
 
     [RelayCommand]
@@ -45,7 +53,7 @@ public partial class MapEditorViewModel : ViewModelBase
     private void MapsToItems()
     {
         MapOptions.Clear();
-        for(int a = 0; a < BearerIn!.GetMaps()!.Count; a++)
+        for(int a = 0; a < BearerIn.GetMaps()!.Count; a++)
         {
             ComboBoxItem item = new ComboBoxItem();
             item.Content = $"{BearerIn.GetMaps()![a].GetMapName()} ({BearerIn.GetMaps()![a].GetMapId()})";

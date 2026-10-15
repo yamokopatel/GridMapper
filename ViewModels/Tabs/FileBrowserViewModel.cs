@@ -4,14 +4,19 @@ namespace GridMapper.ViewModels.Tabs;
 
 public partial class FileBrowserViewModel : ViewModelBase
 {
-    public DataBearer? BearerIn;
+    public DataBearer BearerIn;
     //  PROPERTIES
     [ObservableProperty]
-    public partial string MapMetadataFilePath { get; private set; }
+    public partial string MapMetadataFilePath { get; private set; } = "";
     [ObservableProperty]
-    public partial string MapStructureFilePath { get; private set; }
+    public partial string MapStructureFilePath { get; private set; } = "";
     [ObservableProperty]
-    public partial string CellMetadataFilePath { get; private set; }
+    public partial string CellMetadataFilePath { get; private set; } = "";
+
+    public FileBrowserViewModel(DataBearer bearerIn)
+    {
+        BearerIn = bearerIn;
+    }
 
     public void SetMapMetadataFilePath(string path)
     {

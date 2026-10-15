@@ -20,9 +20,8 @@ public partial class FileBrowser : UserControl
     //  CONSTRUCTOR
     public FileBrowser()
     {
-        fbvm = new FileBrowserViewModel();
+        fbvm = new FileBrowserViewModel(BearerIn);
         DataContext = fbvm;
-        fbvm.BearerIn = BearerIn;
         InitializeComponent();
     }
 

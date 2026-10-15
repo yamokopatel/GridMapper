@@ -107,6 +107,10 @@ public class DataBearer
                 && LoadStructures() 
                 && LoadList<BaseObject>(CellMetadataFile, ref MapObjects);
         }
+        if (areValid)
+        {
+            OnFilesLoaded();
+        }
         return areValid;
     }
     public void SaveData()
@@ -211,5 +215,11 @@ public class DataBearer
     protected virtual void OnSelectedCellChanged(int selectedCell)
     {
         SelectedCellChanged?.Invoke(selectedCell);
+    }
+    //  Files Loaded
+    public event Action FilesLoaded;
+    protected virtual void OnFilesLoaded()
+    {
+        FilesLoaded?.Invoke();
     }
 }

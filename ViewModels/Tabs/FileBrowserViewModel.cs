@@ -12,10 +12,13 @@ public partial class FileBrowserViewModel : ViewModelBase
     public partial string MapStructureFilePath { get; private set; } = "";
     [ObservableProperty]
     public partial string CellMetadataFilePath { get; private set; } = "";
+    // [ObservableProperty]
+    // public partial string DebugText { get; set; } = "";
 
     public FileBrowserViewModel(DataBearer bearerIn)
     {
         BearerIn = bearerIn;
+        // DebugText = (BearerIn == null).ToString();
     }
 
     public void SetMapMetadataFilePath(string path)

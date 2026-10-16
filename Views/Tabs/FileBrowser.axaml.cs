@@ -16,13 +16,21 @@ public partial class FileBrowser : UserControl
         get => GetValue(BearerInProperty);
         set => SetValue(BearerInProperty, value);
     }
-    private FileBrowserViewModel fbvm;
+    private FileBrowserViewModel fbvm = null!;
     //  CONSTRUCTOR
     public FileBrowser()
     {
-        fbvm = new FileBrowserViewModel(BearerIn);
-        DataContext = fbvm;
         InitializeComponent();
+    }
+
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+        if(change.Property == BearerInProperty)
+        {
+            fbvm = new FileBrowserViewModel(BearerIn);
+            DataContext = fbvm;
+        }
     }
 
     //  BUTTON FUNCTIONS

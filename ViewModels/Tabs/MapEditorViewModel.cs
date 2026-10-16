@@ -17,31 +17,31 @@ public partial class MapEditorViewModel : ViewModelBase
     public partial int SelectedMap { get; set; } = -1;
     [ObservableProperty]
     public partial bool SettingsVisible { get; set; } = false;
-    [ObservableProperty]
-    public partial string ExcString { get; set; } = ""; // Extra field to see this view errors
+    // [ObservableProperty]
+    // public partial string DebugText { get; set; } = ""; // Extra field to see this view errors
 
     public  MapEditorViewModel(DataBearer bearerIn)
     {
         BearerIn = bearerIn;
-        try
+        // try
+        // {
+        BearerIn.FilesLoaded += () => 
         {
-            BearerIn.FilesLoaded += () => 
-            {
-                MapsToItems();
-            };
-            BearerIn.SelectedMapChanged += (index) =>
-            {
-        
-                if(index > -1)
-                {
-                    SettingsVisible = true;
-                }
-            };
-        }
-        catch(Exception e)
+            MapsToItems();
+        };
+        BearerIn.SelectedMapChanged += (index) =>
         {
-            ExcString = e.ToString();
-        }
+    
+            if(index > -1)
+            {
+                SettingsVisible = true;
+            }
+        };
+    //     }
+    //     catch(Exception e)
+    //     {
+    //         DebugText = e.ToString();
+    //     }
     }
 
     [RelayCommand]

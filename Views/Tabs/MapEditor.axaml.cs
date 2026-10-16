@@ -13,11 +13,19 @@ public partial class MapEditor : UserControl
         get => GetValue(BearerInProperty);
         set => SetValue(BearerInProperty, value);
     }
-    private MapEditorViewModel mevm;
+    private MapEditorViewModel mevm = null!;
     public MapEditor()
     {
-        mevm = new MapEditorViewModel(BearerIn);
-        DataContext = mevm;
         InitializeComponent();
+    }
+
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+        if(change.Property == BearerInProperty)
+        {
+            mevm = new MapEditorViewModel(BearerIn);
+            DataContext = mevm;
+        }
     }
 }

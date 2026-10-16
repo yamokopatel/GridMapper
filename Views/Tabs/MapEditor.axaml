@@ -48,6 +48,6 @@
                             Width="216" />
             </StackPanel>
         </StackPanel>
-        <TextBlock Text="{Binding ExcString}" />
+        <!-- <TextBlock Text="{Binding DebugText}" /> -->
     </StackPanel>
 </UserControl>

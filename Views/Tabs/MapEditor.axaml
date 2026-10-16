@@ -31,7 +31,8 @@
                                 FormatString="N0"
                                 Grid.Column="1"
                                 Grid.Row="0"
-                                Width="110" />
+                                Width="110"
+                                Value="{Binding MapBiomeID}" />
             </StackPanel>
             <!-- Map Name -->
             <StackPanel Orientation="Horizontal"
@@ -45,7 +46,8 @@
                             TextWrapping="NoWrap"
                             Grid.Column="1"
                             Grid.Row="1"
-                            Width="216" />
+                            Width="216"
+                            Text="{Binding MapName}" />
             </StackPanel>
         </StackPanel>
         <!-- <TextBlock Text="{Binding DebugText}" /> -->

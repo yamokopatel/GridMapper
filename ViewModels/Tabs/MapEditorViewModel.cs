@@ -17,6 +17,10 @@ public partial class MapEditorViewModel : ViewModelBase
     public partial int SelectedMap { get; set; } = -1;
     [ObservableProperty]
     public partial bool SettingsVisible { get; set; } = false;
+    [ObservableProperty]
+    public partial decimal? MapBiomeID { get; set; } = null;
+    [ObservableProperty]
+    public partial string MapName { get; set; } = "";
     // [ObservableProperty]
     // public partial string DebugText { get; set; } = ""; // Extra field to see this view errors
 
@@ -31,10 +35,17 @@ public partial class MapEditorViewModel : ViewModelBase
         };
         BearerIn.SelectedMapChanged += (index) =>
         {
-    
             if(index > -1)
             {
                 SettingsVisible = true;
+                MapBiomeID = (decimal?)BearerIn.GetMaps()![index].GetBiomeId();
+                MapName = BearerIn.GetMaps()![index].GetMapName();
+            }
+            else
+            {
+                SettingsVisible = false;
+                MapBiomeID = null;
+                MapName = "";
             }
         };
     //     }

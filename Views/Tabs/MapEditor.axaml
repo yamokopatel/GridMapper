@@ -18,19 +18,24 @@
         </StackPanel>
         <StackPanel Orientation="Vertical"
                     IsVisible="{Binding SettingsVisible}">
+            <!-- Map ID -->
+            <StackPanel Orientation="Horizontal"
+                        Margin="3">
+                <TextBlock  Text="Map ID:"
+                            Padding="8" />
+                <TextBlock  Background="LightGray"
+                            Width="44"
+                            Text="{Binding MapID}" />
+            </StackPanel>
             <!-- Map Biome ID -->
             <StackPanel Orientation="Horizontal"
                         Margin="3">
                 <TextBlock  Text="Biome ID:" 
-                            Grid.Column="0"
-                            Grid.Row="0"
                             Padding="8" />
                 <NumericUpDown  Minimum="0"
                                 Maximum="255"
                                 Increment="1"
                                 FormatString="N0"
-                                Grid.Column="1"
-                                Grid.Row="0"
                                 Width="110"
                                 Value="{Binding MapBiomeID}" />
             </StackPanel>
@@ -38,14 +43,10 @@
             <StackPanel Orientation="Horizontal"
                         Margin="3">
                 <TextBlock  Text="Map name:" 
-                            Grid.Column="0"
-                            Grid.Row="1"
                             Padding="8" />
                 <TextBox    PlaceholderText="This map name"
                             MaxLength="64"
                             TextWrapping="NoWrap"
-                            Grid.Column="1"
-                            Grid.Row="1"
                             Width="216"
                             Text="{Binding MapName}" />
             </StackPanel>

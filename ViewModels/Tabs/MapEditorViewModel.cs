@@ -18,6 +18,8 @@ public partial class MapEditorViewModel : ViewModelBase
     [ObservableProperty]
     public partial bool SettingsVisible { get; set; } = false;
     [ObservableProperty]
+    public partial byte? MapID { get; set; } = null;
+    [ObservableProperty]
     public partial decimal? MapBiomeID { get; set; } = null;
     [ObservableProperty]
     public partial string MapName { get; set; } = "";

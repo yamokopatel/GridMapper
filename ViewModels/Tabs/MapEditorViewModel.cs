@@ -22,9 +22,12 @@ public partial class MapEditorViewModel : ViewModelBase
     partial void OnSelectedMapChanged(int value)
     {
         BearerIn.SetProcessingMap(value);
+        AbleToDelete = value > -1;
     }
     [ObservableProperty]
     public partial bool SettingsVisible { get; set; } = false;
+    [ObservableProperty]
+    public partial bool AbleToDelete { get; set; } = false;
     [ObservableProperty]
     public partial byte? MapID { get; set; } = null;
     [ObservableProperty]
@@ -85,7 +88,7 @@ public partial class MapEditorViewModel : ViewModelBase
         if(freeId != null)
         {
             byte newId = freeId.Value;
-            int newOffset = 2; 
+            int newOffset = 0; 
             if(BearerIn.GetMaps()!.Count > 0)
             {
                 newOffset = BearerIn.GetMaps()![^1].GetByteOffset() + 256;
@@ -103,6 +106,21 @@ public partial class MapEditorViewModel : ViewModelBase
             NoticeWindowViewModel nwvm = new NoticeWindowViewModel("Can not create new map. Map limit is reached.");
             notice.DataContext = nwvm;
         }
+    }
+    [RelayCommand]
+    private void DeleteMap()
+    {
+        int deletable = SelectedMap;
+        SelectedMap = -1;
+        BearerIn.GetStructures()!.RemoveRange(BearerIn.GetMaps()![deletable].GetByteOffset(), 256);
+        for(int a = deletable; a < BearerIn.GetMaps()!.Count; a++)
+        {
+            BearerIn.GetMaps()![a].SetByteOffset(BearerIn.GetMaps()![a].GetByteOffset() - 256);
+        }
+        BearerIn.GetMaps()!.RemoveAt(deletable);
+        SelectedMap =   ((BearerIn.GetMaps()!.Count >= deletable) 
+                        ? deletable 
+                        : deletable - 1);
     }
 
     private void MapsToItems()

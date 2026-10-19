@@ -8,7 +8,8 @@
                 x:DataType="vm:MapEditorViewModel">
     <StackPanel Orientation="Vertical">
         <StackPanel Orientation="Horizontal">
-            <Button Content="New" />
+            <Button Content="New"
+                    Command="{Binding NewMapCommand}" />
             <ComboBox   MaxDropDownHeight="128"
                         ItemsSource="{Binding MapOptions}"
                         SelectedItem="{Binding SelectedMap}"

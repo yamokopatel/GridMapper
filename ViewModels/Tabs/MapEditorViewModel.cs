@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GridMapper.ViewModels.Components;
+using GridMapper.Views.Components;
 
 namespace GridMapper.ViewModels.Tabs;
 
@@ -15,6 +18,10 @@ public partial class MapEditorViewModel : ViewModelBase
     public partial List<ComboBoxItem> MapOptions { get; set; } = new List<ComboBoxItem>();
     [ObservableProperty]
     public partial int SelectedMap { get; set; } = -1;
+    partial void OnSelectedMapChanged(int value)
+    {
+        BearerIn.SetProcessingMap(value);
+    }
     [ObservableProperty]
     public partial bool SettingsVisible { get; set; } = false;
     [ObservableProperty]
@@ -60,7 +67,39 @@ public partial class MapEditorViewModel : ViewModelBase
     [RelayCommand]
     private void NewMap()
     {
-        
+        List<int> existedIds = new List<int>();
+        byte? freeId = null;
+        for(int a = 0; a < BearerIn.GetMaps()!.Count; a++)
+        {
+            existedIds.Add(BearerIn.GetMaps()![a].GetMapId());
+        }
+        for(int a = 0; a < 256; a++)
+        {
+            if (!existedIds.Contains(a))
+            {
+                freeId = (byte)a;
+                break;
+            }
+        }
+        if(freeId != null)
+        {
+            byte newId = freeId.Value;
+            int newOffset = 2; 
+            if(BearerIn.GetMaps()!.Count > 0)
+            {
+                newOffset = BearerIn.GetMaps()![^1].GetByteOffset() + 256;
+            }
+            Map newMap = new Map(newId, 0, newOffset, "");
+            BearerIn.GetMaps()!.Add(newMap);
+            MapsToItems();
+            SelectedMap = MapOptions.Count - 1;
+        }
+        else
+        {
+            NoticeWindow notice = new NoticeWindow();
+            NoticeWindowViewModel nwvm = new NoticeWindowViewModel("Can not create new map. Map limit is reached.");
+            notice.DataContext = nwvm;
+        }
     }
 
     private void MapsToItems()

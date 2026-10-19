@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -91,6 +92,8 @@ public partial class MapEditorViewModel : ViewModelBase
             }
             Map newMap = new Map(newId, 0, newOffset, "");
             BearerIn.GetMaps()!.Add(newMap);
+            BearerIn.GetStructures()!.AddRange(Enumerable.Repeat<byte>(0, 256));
+            BearerIn.SetChanged(true);
             MapsToItems();
             SelectedMap = MapOptions.Count - 1;
         }

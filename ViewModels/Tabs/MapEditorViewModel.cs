@@ -32,8 +32,22 @@ public partial class MapEditorViewModel : ViewModelBase
     public partial byte? MapID { get; set; } = null;
     [ObservableProperty]
     public partial decimal? MapBiomeID { get; set; } = null;
+    partial void OnMapBiomeIDChanged(decimal? value)
+    {
+        if(SelectedMap != -1)
+        {
+            BearerIn.GetMaps()![SelectedMap].SetBiomeId((byte)value!.Value);
+        }
+    }
     [ObservableProperty]
     public partial string MapName { get; set; } = "";
+    partial void OnMapNameChanged(string value)
+    {
+        if(SelectedMap != -1)
+        {
+            BearerIn.GetMaps()![SelectedMap].SetMapName(value);
+        }
+    }
     // [ObservableProperty]
     // public partial string DebugText { get; set; } = ""; // Extra field to see this view errors
 

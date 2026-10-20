@@ -14,11 +14,11 @@
                         ItemsSource="{Binding MapOptions}"
                         SelectedItem="{Binding SelectedMap}"
                         Width="160">
+                <!-- Content should be generated programly -->    
+            </ComboBox>
             <Button Content="Delete"
                     IsVisible="{Binding AbleToDelete}"
                     Command="{Binding DeleteMapCommand}" />
-                <!-- Content should be generated programly -->    
-            </ComboBox>
         </StackPanel>
         <StackPanel Orientation="Vertical"
                     IsVisible="{Binding SettingsVisible}">

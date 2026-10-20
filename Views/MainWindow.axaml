@@ -31,7 +31,8 @@
                 <tabs:MapEditor BearerIn="{Binding BearerOut, ElementName=root}" />
             </TabItem>
             <TabItem Header="Map Structures">
-                <components:BorderedButton CellByte="114"></components:BorderedButton>
+                <!-- <components:BorderedButton CellByte="114"></components:BorderedButton> -->
+                <tabs:StructureEditor BearerIn="{Binding BearerOut, ElementName=root}" />
             </TabItem>
             <TabItem Header="Map Objects">
 

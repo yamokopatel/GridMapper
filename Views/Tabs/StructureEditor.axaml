@@ -13,37 +13,46 @@
                     Width="220"
                     PlaceholderText="Select map"
                     Margin="3" />
-        <!-- West -->
-        <StackPanel Orientation="Horizontal"
-                    Margin="3" >
+        <Grid   RowDefinitions="auto, auto, auto, auto"
+                ColumnDefinitions="auto, auto"
+                RowSpacing="4"
+                Margin="2">
+            <!-- West -->
             <TextBlock  Text="At west:"
-                        Padding="5" />
+                        Padding="5"
+                        Grid.Column="0"
+                        Grid.Row="0" />
             <ComboBox   MaxDropDownHeight="72"
-                        Width="108" />
-        </StackPanel>
-        <!-- North -->
-        <StackPanel Orientation="Horizontal"
-                    Margin="3">
+                        Width="108"
+                        Grid.Column="1"
+                        Grid.Row="0" />
+            <!-- North -->
             <TextBlock  Text="At north:"
-                        Padding="5" />
+                        Padding="5"
+                        Grid.Column="0"
+                        Grid.Row="1" />
             <ComboBox   MaxDropDownHeight="72"
-                        Width="108" />
-        </StackPanel>
-        <!-- East -->
-        <StackPanel Orientation="Horizontal"
-                    Margin="3">
+                        Width="108"
+                        Grid.Column="1"
+                        Grid.Row="1" />
+            <!-- East -->
             <TextBlock  Text="At east:"
-                        Padding="5" />
+                        Padding="5"
+                        Grid.Column="0"
+                        Grid.Row="2" />
             <ComboBox   MaxDropDownHeight="72"
-                        Width="108" />
-        </StackPanel>
-        <!-- South -->
-        <StackPanel Orientation="Horizontal" 
-                    Margin="3">
+                        Width="108"
+                        Grid.Column="1"
+                        Grid.Row="2" />
+            <!-- South -->
             <TextBlock  Text="At south:"
-                        Padding="5" />
+                        Padding="5"
+                        Grid.Column="0"
+                        Grid.Row="3" />
             <ComboBox   MaxDropDownHeight="72"
-                        Width="108" />
-        </StackPanel>
+                        Width="108"
+                        Grid.Column="1"
+                        Grid.Row="3" />
+        </Grid>
     </StackPanel>
 </UserControl>

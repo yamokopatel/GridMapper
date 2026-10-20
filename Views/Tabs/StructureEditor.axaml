@@ -7,5 +7,43 @@
                 xmlns:vm="using:GridMapper.ViewModels.Tabs"
                 xmlns:components="using:GridMapper.Views.Components"
                 x:DataType="vm:StructureEditorViewModel">
-    Welcome to Avalonia!
+    <StackPanel Orientation="Vertical">
+        <!-- Map Choose -->
+        <ComboBox   MaxDropDownHeight="128"
+                    Width="220"
+                    PlaceholderText="Select map"
+                    Margin="3" />
+        <!-- West -->
+        <StackPanel Orientation="Horizontal"
+                    Margin="3" >
+            <TextBlock  Text="At west:"
+                        Padding="5" />
+            <ComboBox   MaxDropDownHeight="72"
+                        Width="108" />
+        </StackPanel>
+        <!-- North -->
+        <StackPanel Orientation="Horizontal"
+                    Margin="3">
+            <TextBlock  Text="At north:"
+                        Padding="5" />
+            <ComboBox   MaxDropDownHeight="72"
+                        Width="108" />
+        </StackPanel>
+        <!-- East -->
+        <StackPanel Orientation="Horizontal"
+                    Margin="3">
+            <TextBlock  Text="At east:"
+                        Padding="5" />
+            <ComboBox   MaxDropDownHeight="72"
+                        Width="108" />
+        </StackPanel>
+        <!-- South -->
+        <StackPanel Orientation="Horizontal" 
+                    Margin="3">
+            <TextBlock  Text="At south:"
+                        Padding="5" />
+            <ComboBox   MaxDropDownHeight="72"
+                        Width="108" />
+        </StackPanel>
+    </StackPanel>
 </UserControl>

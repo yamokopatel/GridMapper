@@ -12,7 +12,9 @@
         <ComboBox   MaxDropDownHeight="128"
                     Width="220"
                     PlaceholderText="Select map"
-                    Margin="3" />
+                    Margin="3"
+                    ItemsSource="{Binding MapOptions}"
+                    SelectedIndex="{Binding SelectedMap}" />
         <Grid   RowDefinitions="auto, auto, auto, auto"
                 ColumnDefinitions="auto, auto"
                 RowSpacing="4"
@@ -25,7 +27,9 @@
             <ComboBox   MaxDropDownHeight="72"
                         Width="108"
                         Grid.Column="1"
-                        Grid.Row="0" />
+                        Grid.Row="0"
+                        ItemsSource="{Binding WallTypes}"
+                        SelectedIndex="{Binding WestTypeIndex}" />
             <!-- North -->
             <TextBlock  Text="At north:"
                         Padding="5"
@@ -34,7 +38,9 @@
             <ComboBox   MaxDropDownHeight="72"
                         Width="108"
                         Grid.Column="1"
-                        Grid.Row="1" />
+                        Grid.Row="1"
+                        ItemsSource="{Binding WallTypes}"
+                        SelectedIndex="{Binding NorthTypeIndex}"  />
             <!-- East -->
             <TextBlock  Text="At east:"
                         Padding="5"
@@ -43,7 +49,9 @@
             <ComboBox   MaxDropDownHeight="72"
                         Width="108"
                         Grid.Column="1"
-                        Grid.Row="2" />
+                        Grid.Row="2"
+                        ItemsSource="{Binding WallTypes}"
+                        SelectedIndex="{Binding EastTypeIndex}"  />
             <!-- South -->
             <TextBlock  Text="At south:"
                         Padding="5"
@@ -52,7 +60,9 @@
             <ComboBox   MaxDropDownHeight="72"
                         Width="108"
                         Grid.Column="1"
-                        Grid.Row="3" />
+                        Grid.Row="3"
+                        ItemsSource="{Binding WallTypes}"
+                        SelectedIndex="{Binding SouthTypeIndex}"  />
         </Grid>
     </StackPanel>
 </UserControl>

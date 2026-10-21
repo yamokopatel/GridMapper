@@ -77,6 +77,15 @@ public class DataBearer
         MapInProcessingIndex = index;
         SelectedMapChanged!(index);
     }
+    public void SetSelectedCelWalls(byte w, byte n, byte e, byte s)
+    {
+        byte cellState = (byte)((w<<6) | (n<<4) | (e<<2) | s);
+        if(CellInProcessingIndex > -1)
+        {
+            MapStructures![CellInProcessingIndex] = cellState;
+            OnCellModified(cellState);
+        }
+    }
     #endregion
 
     #region FUNCTIONS
@@ -229,6 +238,11 @@ public class DataBearer
     protected virtual void OnFilesLoaded()
     {
         FilesLoaded?.Invoke();
+    }
+    public event Action<byte>? CellModified;
+    protected virtual void OnCellModified(byte cellState)
+    {
+        CellModified?.Invoke(cellState);
     }
     #endregion
 }

@@ -13,6 +13,13 @@ public partial class StructureEditor : UserControl
         get => GetValue(BearerInProperty);
         set => SetValue(BearerInProperty, value);
     }
+    public static readonly StyledProperty<DataBearer> BearerOutProperty =
+        AvaloniaProperty.Register<FileBrowser, DataBearer>(nameof(BearerOut));
+    public DataBearer BearerOut
+    {
+        get => GetValue(BearerOutProperty);
+        set => SetValue(BearerOutProperty, value);
+    }
     private StructureEditorViewModel sevm = null!;
 
     public StructureEditor()
@@ -27,6 +34,7 @@ public partial class StructureEditor : UserControl
         {
             sevm = new StructureEditorViewModel(BearerIn);
             DataContext = sevm;
+            BearerOut = BearerIn;
         }
     }
 }

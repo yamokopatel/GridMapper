@@ -6,63 +6,69 @@
                 x:Class="GridMapper.Views.Tabs.StructureEditor"
                 xmlns:vm="using:GridMapper.ViewModels.Tabs"
                 xmlns:components="using:GridMapper.Views.Components"
-                x:DataType="vm:StructureEditorViewModel">
-    <StackPanel Orientation="Vertical">
-        <!-- Map Choose -->
-        <ComboBox   MaxDropDownHeight="128"
-                    Width="220"
-                    PlaceholderText="Select map"
-                    Margin="3"
-                    ItemsSource="{Binding MapOptions}"
-                    SelectedIndex="{Binding SelectedMap}" />
-        <Grid   RowDefinitions="auto, auto, auto, auto"
-                ColumnDefinitions="auto, auto"
-                RowSpacing="4"
-                Margin="2">
-            <!-- West -->
-            <TextBlock  Text="At west:"
-                        Padding="5"
-                        Grid.Column="0"
-                        Grid.Row="0" />
-            <ComboBox   MaxDropDownHeight="72"
-                        Width="108"
-                        Grid.Column="1"
-                        Grid.Row="0"
-                        ItemsSource="{Binding WestWallTypes}"
-                        SelectedIndex="{Binding WestTypeIndex}" />
-            <!-- North -->
-            <TextBlock  Text="At north:"
-                        Padding="5"
-                        Grid.Column="0"
-                        Grid.Row="1" />
-            <ComboBox   MaxDropDownHeight="72"
-                        Width="108"
-                        Grid.Column="1"
-                        Grid.Row="1"
-                        ItemsSource="{Binding NorthWallTypes}"
-                        SelectedIndex="{Binding NorthTypeIndex}"  />
-            <!-- East -->
-            <TextBlock  Text="At east:"
-                        Padding="5"
-                        Grid.Column="0"
-                        Grid.Row="2" />
-            <ComboBox   MaxDropDownHeight="72"
-                        Width="108"
-                        Grid.Column="1"
-                        Grid.Row="2"
-                        ItemsSource="{Binding EastWallTypes}"
-                        SelectedIndex="{Binding EastTypeIndex}"  />
-            <!-- South -->
-            <TextBlock  Text="At south:"
-                        Padding="5"
-                        Grid.Column="0"
-                        Grid.Row="3" />
-            <ComboBox   MaxDropDownHeight="72"
-                        Width="108"
-                        Grid.Column="1"
-                        Grid.Row="3"
-                        ItemsSource="{Binding SouthWallTypes}"
-                        SelectedIndex="{Binding SouthTypeIndex}"  />
-        </Grid>
+                x:DataType="vm:StructureEditorViewModel"
+                x:Name="root">
+    <StackPanel Orientation="Horizontal">
+        <!-- Button Field -->
+        <components:ButtonField BearerIn="{Binding BearerOut, ElementName=root}" />
+        <!-- Editing Work Desk -->
+         <StackPanel Orientation="Vertical">
+            <!-- Map Choose -->
+            <ComboBox   MaxDropDownHeight="128"
+                        Width="220"
+                        PlaceholderText="Select map"
+                        Margin="3"
+                        ItemsSource="{Binding MapOptions}"
+                        SelectedIndex="{Binding SelectedMap}" />
+            <Grid   RowDefinitions="auto, auto, auto, auto"
+                    ColumnDefinitions="auto, auto"
+                    RowSpacing="4"
+                    Margin="2">
+                <!-- West -->
+                <TextBlock  Text="At west:"
+                            Padding="5"
+                            Grid.Column="0"
+                            Grid.Row="0" />
+                <ComboBox   MaxDropDownHeight="72"
+                            Width="108"
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            ItemsSource="{Binding WestWallTypes}"
+                            SelectedIndex="{Binding WestTypeIndex}" />
+                <!-- North -->
+                <TextBlock  Text="At north:"
+                            Padding="5"
+                            Grid.Column="0"
+                            Grid.Row="1" />
+                <ComboBox   MaxDropDownHeight="72"
+                            Width="108"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            ItemsSource="{Binding NorthWallTypes}"
+                            SelectedIndex="{Binding NorthTypeIndex}"  />
+                <!-- East -->
+                <TextBlock  Text="At east:"
+                            Padding="5"
+                            Grid.Column="0"
+                            Grid.Row="2" />
+                <ComboBox   MaxDropDownHeight="72"
+                            Width="108"
+                            Grid.Column="1"
+                            Grid.Row="2"
+                            ItemsSource="{Binding EastWallTypes}"
+                            SelectedIndex="{Binding EastTypeIndex}"  />
+                <!-- South -->
+                <TextBlock  Text="At south:"
+                            Padding="5"
+                            Grid.Column="0"
+                            Grid.Row="3" />
+                <ComboBox   MaxDropDownHeight="72"
+                            Width="108"
+                            Grid.Column="1"
+                            Grid.Row="3"
+                            ItemsSource="{Binding SouthWallTypes}"
+                            SelectedIndex="{Binding SouthTypeIndex}"  />
+            </Grid>
+        </StackPanel>
     </StackPanel>
 </UserControl>

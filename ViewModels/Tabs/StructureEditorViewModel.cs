@@ -7,13 +7,6 @@ namespace GridMapper.ViewModels.Tabs;
 public partial class StructureEditorViewModel : ViewModelBase
 {
     private DataBearer BearerIn;
-    // private static readonly ComboBoxItem[] WallTypes = [
-    //     new ComboBoxItem{Content = "Empty"},
-    //     new ComboBoxItem{Content = "Wall"},
-    //     new ComboBoxItem{Content = "Door"},
-    //     new ComboBoxItem{Content = "Secret door"}
-    // ];
-    // private static readonly string[] WallTypes = ["Empty", "Wall", "Door", "Secret door"];
     //  PROPERTIES
     [ObservableProperty]
     public partial List<ComboBoxItem> MapOptions { get; set; } = new List<ComboBoxItem>();

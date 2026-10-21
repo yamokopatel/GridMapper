@@ -28,7 +28,7 @@
                         Width="108"
                         Grid.Column="1"
                         Grid.Row="0"
-                        ItemsSource="{Binding WallTypes}"
+                        ItemsSource="{Binding WestWallTypes}"
                         SelectedIndex="{Binding WestTypeIndex}" />
             <!-- North -->
             <TextBlock  Text="At north:"
@@ -39,7 +39,7 @@
                         Width="108"
                         Grid.Column="1"
                         Grid.Row="1"
-                        ItemsSource="{Binding WallTypes}"
+                        ItemsSource="{Binding NorthWallTypes}"
                         SelectedIndex="{Binding NorthTypeIndex}"  />
             <!-- East -->
             <TextBlock  Text="At east:"
@@ -50,7 +50,7 @@
                         Width="108"
                         Grid.Column="1"
                         Grid.Row="2"
-                        ItemsSource="{Binding WallTypes}"
+                        ItemsSource="{Binding EastWallTypes}"
                         SelectedIndex="{Binding EastTypeIndex}"  />
             <!-- South -->
             <TextBlock  Text="At south:"
@@ -61,7 +61,7 @@
                         Width="108"
                         Grid.Column="1"
                         Grid.Row="3"
-                        ItemsSource="{Binding WallTypes}"
+                        ItemsSource="{Binding SouthWallTypes}"
                         SelectedIndex="{Binding SouthTypeIndex}"  />
         </Grid>
     </StackPanel>

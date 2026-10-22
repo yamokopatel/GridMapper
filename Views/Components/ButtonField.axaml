@@ -4,9 +4,12 @@
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                 xmlns:vm="using:GridMapper.ViewModels.Components"
                 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-                x:Class="GridMapper.Views.Components.ButtonField">
+                x:Class="GridMapper.Views.Components.ButtonField"
+                x:Name="root">
     <Grid   RowDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*"
             ColumnDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*">
-        <!-- Buttons should be generated programmly -->
+        <ItemsControl ItemsSource="{Binding ButtonList, ElementName=root}">
+            <!-- Buttons should be generated programmly -->
+        </ItemsControl>
     </Grid>
 </UserControl>

@@ -77,6 +77,11 @@ public class DataBearer
         MapInProcessingIndex = index;
         SelectedMapChanged!(index);
     }
+    public void SetProcessingCell(int index)
+    {
+        CellInProcessingIndex = index;
+        OnSelectedCellChanged(index);
+    }
     public void SetSelectedCelWalls(byte w, byte n, byte e, byte s)
     {
         byte cellState = (byte)((w<<6) | (n<<4) | (e<<2) | s);

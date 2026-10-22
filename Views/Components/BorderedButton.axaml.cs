@@ -1,19 +1,29 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Interactivity;
 
 namespace GridMapper.Views.Components;
 
 public partial class BorderedButton : UserControl
 {
+    private byte CellByte = 0;
     //  PARAMETERS
-    //  cell byte
-    public static readonly StyledProperty<byte> CellByteProperty = 
-        AvaloniaProperty.Register<BorderedButton, byte>(nameof(CellByte));
-    public byte CellByte
+    //  data bearer
+    public static readonly StyledProperty<DataBearer> BearerInProperty =
+        AvaloniaProperty.Register<BorderedButton, DataBearer>(nameof(BearerIn));
+    public DataBearer BearerIn
     {
-        get => GetValue(CellByteProperty);
-        set => SetValue(CellByteProperty, value);
+        get => GetValue(BearerInProperty);
+        set => SetValue(BearerInProperty, value);
+    }
+    //  cell index
+    public static readonly StyledProperty<int> CellIndexProperty = 
+        AvaloniaProperty.Register<BorderedButton, int>(nameof(CellIndex));
+    public int CellIndex
+    {
+        get => GetValue(CellIndexProperty);
+        set => SetValue(CellIndexProperty, value);
     }
     //  left border color
     public static readonly StyledProperty<IBrush> LeftBorderBrushProperty =
@@ -53,16 +63,27 @@ public partial class BorderedButton : UserControl
     public BorderedButton()
     {
         InitializeComponent();
+        BearerIn.CellModified += (cellIndex) =>
+        {
+            if(cellIndex == CellIndex)
+            {
+                CellByte = BearerIn.GetStructures()![CellIndex];
+                SetBorderColors();
+            }
+        };
     }
 
     //  EVENT LISTENER
-    //  value changed
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
-        if(change.Property == CellByteProperty)
+        if(change.Property == CellIndexProperty)
         {
-            SetBorderColors();
+            if(BearerInProperty != null)
+            {
+                CellByte = BearerIn.GetStructures()![CellIndex];
+                SetBorderColors();
+            }
         }
     }
 
@@ -74,8 +95,6 @@ public partial class BorderedButton : UserControl
         RightBorderBrush = BorderColor((byte)((CellByte >> 2) & 0b11));
         BottomBorderBrush = BorderColor((byte)(CellByte & 0b11));
     }
-    public byte GetCellByte() => CellByte;
-    public void SetCellByte(byte cellByte){CellByte = cellByte;}
     private IBrush BorderColor(byte value)
     {
         switch (value)
@@ -86,5 +105,11 @@ public partial class BorderedButton : UserControl
             case 3: return Brushes.Violet;
             default: return Brushes.White;
         }
+    }
+
+    //  Select Cell
+    private void Cell_Select(object sender, RoutedEventArgs args)
+    {
+        BearerIn.SetProcessingCell(CellIndex);
     }
 }

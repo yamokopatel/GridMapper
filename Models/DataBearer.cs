@@ -239,10 +239,10 @@ public class DataBearer
     {
         FilesLoaded?.Invoke();
     }
-    public event Action<byte>? CellModified;
-    protected virtual void OnCellModified(byte cellState)
+    public event Action<int>? CellModified;
+    protected virtual void OnCellModified(int cellIndex)
     {
-        CellModified?.Invoke(cellState);
+        CellModified?.Invoke(cellIndex);
     }
     #endregion
 }

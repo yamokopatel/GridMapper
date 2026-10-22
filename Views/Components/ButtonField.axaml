@@ -4,8 +4,7 @@
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                 xmlns:vm="using:GridMapper.ViewModels.Components"
                 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-                x:Class="GridMapper.Views.Components.ButtonField"
-                x:DataType="vm:ButtonFieldViewModel">
+                x:Class="GridMapper.Views.Components.ButtonField">
     <Grid   RowDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*"
             ColumnDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*">
         <!-- Buttons should be generated programmly -->

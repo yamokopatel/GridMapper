@@ -6,5 +6,109 @@
                 x:Class="GridMapper.Views.Tabs.ObjectEditor"
                 xmlns:vm="using:GridMapper.ViewModels.Tabs"
                 x:DataType="vm:ObjectEditorViewModel">
-    Welcome to Avalonia!
+    <StackPanel Orientation="Vertical">
+        <ComboBox   MaxDropDownHeight="128"
+                    Width="220"
+                    PlaceholderText="Select map"
+                    Margin="3" />
+        <StackPanel Orientation="Vertical">
+            <ComboBox   MaxDropDownHeight="128"
+                        Width="150"
+                        PlaceholderText="Select object"
+                        Margin="3">
+                <ComboBoxItem>No object</ComboBoxItem>
+                <ComboBoxItem>Chest</ComboBoxItem>
+                <ComboBoxItem>Group</ComboBoxItem>
+                <ComboBoxItem>Transition</ComboBoxItem>
+            </ComboBox>
+            <!-- Chest -->
+            <StackPanel Orientation="Vertical"
+                        Margin="3">
+                <ListBox x:Name="Subjects" />
+                <Button Content="Add" />
+                <StackPanel Orientation="Horizontal">
+                    <NumericUpDown  Minimum="0"
+                                    Maximum="255"
+                                    Increment="1"
+                                    FormatString="N0"
+                                    Width="110" />
+                    <Button Content="Delete" />
+                </StackPanel>
+            </StackPanel>
+            <!-- Group -->
+            <StackPanel Orientation="Vertical"
+                        Margin="3">
+                <ListBox x:Name="Enemies" />
+                <Button Content="Add" />
+                <StackPanel Orientation="Horizontal">
+                    <NumericUpDown  Minimum="0"
+                                    Maximum="255"
+                                    Increment="1"
+                                    FormatString="N0"
+                                    Width="110" />
+                    <Button Content="Delete" />
+                </StackPanel>
+            </StackPanel>
+            <!-- Transition -->
+            <StackPanel Orientation="Vertical">
+                <ComboBox   MaxDropDownHeight="120"
+                    Width="220"
+                    PlaceholderText="Select next map"
+                    Margin="3" />
+                <Grid   RowDefinitions="auto, auto, auto, auto"
+                        ColumnDefinitions="auto, auto"
+                        RowSpacing="3"
+                        ColumnSpacing="2">
+                    <!-- x -->
+                    <TextBlock  Text="Next X:"
+                                Grid.Column="0"
+                                Grid.Row="0"
+                                Padding="5" />
+                    <NumericUpDown  Minimum="0"
+                                    Maximum="15"
+                                    Increment="1"
+                                    FormatString="N0"
+                                    Width="110"
+                                    Grid.Column="1"
+                                    Grid.Row="0" />
+                    <!-- y -->
+                    <TextBlock  Text="Next Y:"
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                Padding="5" />
+                    <NumericUpDown  Minimum="0"
+                                    Maximum="15"
+                                    Increment="1"
+                                    FormatString="N0"
+                                    Width="110"
+                                    Grid.Column="1"
+                                    Grid.Row="1" />
+                    <!-- x direction -->
+                    <TextBlock  Text="Next X dir.:"
+                                Grid.Column="0"
+                                Grid.Row="2"
+                                Padding="5" />
+                    <NumericUpDown  Minimum="-1"
+                                    Maximum="1"
+                                    Increment="2"
+                                    FormatString="N0"
+                                    Width="110"
+                                    Grid.Column="1"
+                                    Grid.Row="2" />
+                    <!-- y direction -->
+                    <TextBlock  Text="Next Y dir.:"
+                                Grid.Column="0"
+                                Grid.Row="3"
+                                Padding="5" />
+                    <NumericUpDown  Minimum="-1"
+                                    Maximum="1"
+                                    Increment="2"
+                                    FormatString="N0"
+                                    Width="110"
+                                    Grid.Column="1"
+                                    Grid.Row="3" />
+                </Grid>
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
 </UserControl>

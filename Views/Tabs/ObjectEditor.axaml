@@ -15,7 +15,8 @@
             <ComboBox   MaxDropDownHeight="128"
                         Width="150"
                         PlaceholderText="Select object"
-                        Margin="3">
+                        Margin="3"
+                        SelectedIndex="{Binding SelectedObjectType}">
                 <ComboBoxItem>No object</ComboBoxItem>
                 <ComboBoxItem>Chest</ComboBoxItem>
                 <ComboBoxItem>Group</ComboBoxItem>
@@ -23,38 +24,46 @@
             </ComboBox>
             <!-- Chest -->
             <StackPanel Orientation="Vertical"
-                        Margin="3">
-                <ListBox x:Name="Subjects" />
+                        Margin="3"
+                        IsVisible="{Binding ChestChosen}">
+                <ListBox    x:Name="Subjects"
+                            SelectedIndex="{Binding SelectedSubject}" />
                 <Button Content="Add" />
                 <StackPanel Orientation="Horizontal">
                     <NumericUpDown  Minimum="0"
                                     Maximum="255"
                                     Increment="1"
                                     FormatString="N0"
-                                    Width="110" />
+                                    Width="110"
+                                    Value="{Binding SubjectId}" />
                     <Button Content="Delete" />
                 </StackPanel>
             </StackPanel>
             <!-- Group -->
             <StackPanel Orientation="Vertical"
-                        Margin="3">
-                <ListBox x:Name="Enemies" />
+                        Margin="3"
+                        IsVisible="{Binding GroupChosen}">
+                <ListBox    x:Name="Enemies"
+                            SelectedIndex="{Binding SelectedEnemy}" />
                 <Button Content="Add" />
                 <StackPanel Orientation="Horizontal">
                     <NumericUpDown  Minimum="0"
                                     Maximum="255"
                                     Increment="1"
                                     FormatString="N0"
-                                    Width="110" />
+                                    Width="110"
+                                    Value="{Binding EnemyId}" />
                     <Button Content="Delete" />
                 </StackPanel>
             </StackPanel>
             <!-- Transition -->
-            <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Vertical"
+                        IsVisible="{Binding TransitionChosen}">
                 <ComboBox   MaxDropDownHeight="120"
                     Width="220"
                     PlaceholderText="Select next map"
-                    Margin="3" />
+                    Margin="3"
+                    SelectedIndex="{Binding SelectedNextMap}" />
                 <Grid   RowDefinitions="auto, auto, auto, auto"
                         ColumnDefinitions="auto, auto"
                         RowSpacing="3"
@@ -70,7 +79,8 @@
                                     FormatString="N0"
                                     Width="110"
                                     Grid.Column="1"
-                                    Grid.Row="0" />
+                                    Grid.Row="0"
+                                    Value="{Binding NextXValue}" />
                     <!-- y -->
                     <TextBlock  Text="Next Y:"
                                 Grid.Column="0"
@@ -82,7 +92,8 @@
                                     FormatString="N0"
                                     Width="110"
                                     Grid.Column="1"
-                                    Grid.Row="1" />
+                                    Grid.Row="1"
+                                    Value="{Binding NextYValue}" />
                     <!-- x direction -->
                     <TextBlock  Text="Next X dir.:"
                                 Grid.Column="0"
@@ -94,7 +105,8 @@
                                     FormatString="N0"
                                     Width="110"
                                     Grid.Column="1"
-                                    Grid.Row="2" />
+                                    Grid.Row="2"
+                                    Value="{Binding NextXDirValue}" />
                     <!-- y direction -->
                     <TextBlock  Text="Next Y dir.:"
                                 Grid.Column="0"
@@ -106,7 +118,8 @@
                                     FormatString="N0"
                                     Width="110"
                                     Grid.Column="1"
-                                    Grid.Row="3" />
+                                    Grid.Row="3"
+                                    Value="{Binding NextYDirValue}" />
                 </Grid>
             </StackPanel>
         </StackPanel>

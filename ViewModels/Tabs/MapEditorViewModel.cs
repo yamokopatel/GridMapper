@@ -125,6 +125,11 @@ public partial class MapEditorViewModel : ViewModelBase
         int deletable = SelectedMap;
         SelectedMap = -1;
         BearerIn.GetStructures()!.RemoveRange(BearerIn.GetMaps()![deletable].GetByteOffset(), 256);
+        List<BaseObject> objectsWithoutMap = BearerIn.GetMapObjects()!.FindAll(owm => owm.GetMapId() == deletable);
+        for(int a = 0; a < objectsWithoutMap.Count; a++)
+        {
+            BearerIn.GetMapObjects()!.Remove(objectsWithoutMap[a]);
+        }
         for(int a = deletable; a < BearerIn.GetMaps()!.Count; a++)
         {
             BearerIn.GetMaps()![a].SetByteOffset(BearerIn.GetMaps()![a].GetByteOffset() - 256);

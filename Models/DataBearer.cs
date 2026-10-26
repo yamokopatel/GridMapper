@@ -88,7 +88,22 @@ public class DataBearer
         if(CellInProcessingIndex > -1)
         {
             MapStructures![CellInProcessingIndex] = cellState;
-            OnCellModified(cellState);
+            OnCellModified(CellInProcessingIndex);
+        }
+    }
+    public void SetSelectedCellObject(BaseObject? mapObject)
+    {
+        if(mapObject == null)
+        {
+            MapObjects!.RemoveAt(CellInProcessingIndex);
+            CellInProcessingIndex = -1;
+            OnSelectedCellChanged(CellInProcessingIndex);
+            OnCellModified(CellInProcessingIndex);
+        }
+        else
+        {
+            MapObjects![CellInProcessingIndex] = mapObject;
+            OnCellModified(CellInProcessingIndex);
         }
     }
     #endregion

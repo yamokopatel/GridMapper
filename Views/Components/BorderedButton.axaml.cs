@@ -90,6 +90,7 @@ public partial class BorderedButton : UserControl
                     {
                         CellByte = BearerIn.GetStructures()![CellIndex];
                         SetBorderColors();
+                        ButtonImage = objectIcon();
                     }
                 };
             }
@@ -101,6 +102,16 @@ public partial class BorderedButton : UserControl
                 CellByte = BearerIn.GetStructures()![CellIndex];
                 SetBorderColors();
                 ButtonImage = objectIcon();
+                
+                BearerIn.CellModified += (cellIndex) =>
+                {
+                    if(cellIndex == CellIndex)
+                    {
+                        CellByte = BearerIn.GetStructures()![CellIndex];
+                        SetBorderColors();
+                        ButtonImage = objectIcon();
+                    }
+                };
             }
         }
     }

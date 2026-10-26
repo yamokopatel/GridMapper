@@ -15,6 +15,13 @@ public partial class ObjectEditor : UserControl
         get => GetValue(BearerInProperty);
         set => SetValue(BearerInProperty, value);
     }
+    public static readonly StyledProperty<DataBearer> BearerOutProperty =
+        AvaloniaProperty.Register<FileBrowser, DataBearer>(nameof(BearerOut));
+    public DataBearer BearerOut
+    {
+        get => GetValue(BearerOutProperty);
+        set => SetValue(BearerOutProperty, value);
+    }
     public ObjectEditor()
     {
         InitializeComponent();

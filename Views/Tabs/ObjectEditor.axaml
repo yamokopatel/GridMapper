@@ -4,123 +4,130 @@
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                 x:Class="GridMapper.Views.Tabs.ObjectEditor"
+                xmlns:components="using:GridMapper.Views.Components"
                 xmlns:vm="using:GridMapper.ViewModels.Tabs"
-                x:DataType="vm:ObjectEditorViewModel">
-    <StackPanel Orientation="Vertical">
-        <ComboBox   MaxDropDownHeight="128"
-                    Width="220"
-                    PlaceholderText="Select map"
-                    Margin="3" />
+                x:DataType="vm:ObjectEditorViewModel"
+                x:Name="root">
+    <StackPanel Orientation="Horizontal">
+        <!-- Button Field -->
+        <components:ButtonField BearerIn="{Binding BearerOut, ElementName=root}" />
+        <!-- Editing Work Desk -->
         <StackPanel Orientation="Vertical">
             <ComboBox   MaxDropDownHeight="128"
-                        Width="150"
-                        PlaceholderText="Select object"
-                        Margin="3"
-                        SelectedIndex="{Binding SelectedObjectType}">
-                <ComboBoxItem>No object</ComboBoxItem>
-                <ComboBoxItem>Chest</ComboBoxItem>
-                <ComboBoxItem>Group</ComboBoxItem>
-                <ComboBoxItem>Transition</ComboBoxItem>
-            </ComboBox>
-            <!-- Chest -->
-            <StackPanel Orientation="Vertical"
-                        Margin="3"
-                        IsVisible="{Binding ChestChosen}">
-                <ListBox    x:Name="Subjects"
-                            SelectedIndex="{Binding SelectedSubject}" />
-                <Button Content="Add" />
-                <StackPanel Orientation="Horizontal">
-                    <NumericUpDown  Minimum="0"
-                                    Maximum="255"
-                                    Increment="1"
-                                    FormatString="N0"
-                                    Width="110"
-                                    Value="{Binding SubjectId}" />
-                    <Button Content="Delete" />
+                        Width="220"
+                        PlaceholderText="Select map"
+                        Margin="3" />
+            <StackPanel Orientation="Vertical">
+                <ComboBox   MaxDropDownHeight="128"
+                            Width="150"
+                            PlaceholderText="Select object"
+                            Margin="3"
+                            SelectedIndex="{Binding SelectedObjectType}">
+                    <ComboBoxItem>No object</ComboBoxItem>
+                    <ComboBoxItem>Chest</ComboBoxItem>
+                    <ComboBoxItem>Group</ComboBoxItem>
+                    <ComboBoxItem>Transition</ComboBoxItem>
+                </ComboBox>
+                <!-- Chest -->
+                <StackPanel Orientation="Vertical"
+                            Margin="3"
+                            IsVisible="{Binding ChestChosen}">
+                    <ListBox    x:Name="Subjects"
+                                SelectedIndex="{Binding SelectedSubject}" />
+                    <Button Content="Add" />
+                    <StackPanel Orientation="Horizontal">
+                        <NumericUpDown  Minimum="0"
+                                        Maximum="255"
+                                        Increment="1"
+                                        FormatString="N0"
+                                        Width="110"
+                                        Value="{Binding SubjectId}" />
+                        <Button Content="Delete" />
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
-            <!-- Group -->
-            <StackPanel Orientation="Vertical"
-                        Margin="3"
-                        IsVisible="{Binding GroupChosen}">
-                <ListBox    x:Name="Enemies"
-                            SelectedIndex="{Binding SelectedEnemy}" />
-                <Button Content="Add" />
-                <StackPanel Orientation="Horizontal">
-                    <NumericUpDown  Minimum="0"
-                                    Maximum="255"
-                                    Increment="1"
-                                    FormatString="N0"
-                                    Width="110"
-                                    Value="{Binding EnemyId}" />
-                    <Button Content="Delete" />
+                <!-- Group -->
+                <StackPanel Orientation="Vertical"
+                            Margin="3"
+                            IsVisible="{Binding GroupChosen}">
+                    <ListBox    x:Name="Enemies"
+                                SelectedIndex="{Binding SelectedEnemy}" />
+                    <Button Content="Add" />
+                    <StackPanel Orientation="Horizontal">
+                        <NumericUpDown  Minimum="0"
+                                        Maximum="255"
+                                        Increment="1"
+                                        FormatString="N0"
+                                        Width="110"
+                                        Value="{Binding EnemyId}" />
+                        <Button Content="Delete" />
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
-            <!-- Transition -->
-            <StackPanel Orientation="Vertical"
-                        IsVisible="{Binding TransitionChosen}">
-                <ComboBox   MaxDropDownHeight="120"
-                    Width="220"
-                    PlaceholderText="Select next map"
-                    Margin="3"
-                    SelectedIndex="{Binding SelectedNextMap}" />
-                <Grid   RowDefinitions="auto, auto, auto, auto"
-                        ColumnDefinitions="auto, auto"
-                        RowSpacing="3"
-                        ColumnSpacing="2">
-                    <!-- x -->
-                    <TextBlock  Text="Next X:"
-                                Grid.Column="0"
-                                Grid.Row="0"
-                                Padding="5" />
-                    <NumericUpDown  Minimum="0"
-                                    Maximum="15"
-                                    Increment="1"
-                                    FormatString="N0"
-                                    Width="110"
-                                    Grid.Column="1"
+                <!-- Transition -->
+                <StackPanel Orientation="Vertical"
+                            IsVisible="{Binding TransitionChosen}">
+                    <ComboBox   MaxDropDownHeight="120"
+                        Width="220"
+                        PlaceholderText="Select next map"
+                        Margin="3"
+                        SelectedIndex="{Binding SelectedNextMap}" />
+                    <Grid   RowDefinitions="auto, auto, auto, auto"
+                            ColumnDefinitions="auto, auto"
+                            RowSpacing="3"
+                            ColumnSpacing="2">
+                        <!-- x -->
+                        <TextBlock  Text="Next X:"
+                                    Grid.Column="0"
                                     Grid.Row="0"
-                                    Value="{Binding NextXValue}" />
-                    <!-- y -->
-                    <TextBlock  Text="Next Y:"
-                                Grid.Column="0"
-                                Grid.Row="1"
-                                Padding="5" />
-                    <NumericUpDown  Minimum="0"
-                                    Maximum="15"
-                                    Increment="1"
-                                    FormatString="N0"
-                                    Width="110"
-                                    Grid.Column="1"
+                                    Padding="5" />
+                        <NumericUpDown  Minimum="0"
+                                        Maximum="15"
+                                        Increment="1"
+                                        FormatString="N0"
+                                        Width="110"
+                                        Grid.Column="1"
+                                        Grid.Row="0"
+                                        Value="{Binding NextXValue}" />
+                        <!-- y -->
+                        <TextBlock  Text="Next Y:"
+                                    Grid.Column="0"
                                     Grid.Row="1"
-                                    Value="{Binding NextYValue}" />
-                    <!-- x direction -->
-                    <TextBlock  Text="Next X dir.:"
-                                Grid.Column="0"
-                                Grid.Row="2"
-                                Padding="5" />
-                    <NumericUpDown  Minimum="-1"
-                                    Maximum="1"
-                                    Increment="2"
-                                    FormatString="N0"
-                                    Width="110"
-                                    Grid.Column="1"
+                                    Padding="5" />
+                        <NumericUpDown  Minimum="0"
+                                        Maximum="15"
+                                        Increment="1"
+                                        FormatString="N0"
+                                        Width="110"
+                                        Grid.Column="1"
+                                        Grid.Row="1"
+                                        Value="{Binding NextYValue}" />
+                        <!-- x direction -->
+                        <TextBlock  Text="Next X dir.:"
+                                    Grid.Column="0"
                                     Grid.Row="2"
-                                    Value="{Binding NextXDirValue}" />
-                    <!-- y direction -->
-                    <TextBlock  Text="Next Y dir.:"
-                                Grid.Column="0"
-                                Grid.Row="3"
-                                Padding="5" />
-                    <NumericUpDown  Minimum="-1"
-                                    Maximum="1"
-                                    Increment="2"
-                                    FormatString="N0"
-                                    Width="110"
-                                    Grid.Column="1"
+                                    Padding="5" />
+                        <NumericUpDown  Minimum="-1"
+                                        Maximum="1"
+                                        Increment="2"
+                                        FormatString="N0"
+                                        Width="110"
+                                        Grid.Column="1"
+                                        Grid.Row="2"
+                                        Value="{Binding NextXDirValue}" />
+                        <!-- y direction -->
+                        <TextBlock  Text="Next Y dir.:"
+                                    Grid.Column="0"
                                     Grid.Row="3"
-                                    Value="{Binding NextYDirValue}" />
-                </Grid>
+                                    Padding="5" />
+                        <NumericUpDown  Minimum="-1"
+                                        Maximum="1"
+                                        Increment="2"
+                                        FormatString="N0"
+                                        Width="110"
+                                        Grid.Column="1"
+                                        Grid.Row="3"
+                                        Value="{Binding NextYDirValue}" />
+                    </Grid>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </StackPanel>

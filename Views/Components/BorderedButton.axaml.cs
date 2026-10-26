@@ -2,6 +2,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
+using System;
+using Avalonia.Platform;
+using Avalonia.Media.Imaging;
 
 namespace GridMapper.Views.Components;
 
@@ -58,31 +61,46 @@ public partial class BorderedButton : UserControl
         get => GetValue(BottomBorderBrushProperty); 
         set => SetValue(BottomBorderBrushProperty, value); 
     }
+    //  button image
+    public static readonly StyledProperty<IImage?> ButtonImageProperty = 
+        AvaloniaProperty.Register<BorderedButton, IImage?>(nameof(ButtonImage));
+    public IImage? ButtonImage
+    {
+        get => GetValue(ButtonImageProperty);
+        set => SetValue(ButtonImageProperty, value);
+    }
 
     //  CONSTRUCTOR
     public BorderedButton()
     {
         InitializeComponent();
-        BearerIn.CellModified += (cellIndex) =>
-        {
-            if(cellIndex == CellIndex)
-            {
-                CellByte = BearerIn.GetStructures()![CellIndex];
-                SetBorderColors();
-            }
-        };
     }
 
     //  EVENT LISTENER
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
+        if(change.Property == BearerInProperty)
+        {
+            if(CellIndexProperty != null)
+            {
+                BearerIn.CellModified += (cellIndex) =>
+                {
+                    if(cellIndex == CellIndex)
+                    {
+                        CellByte = BearerIn.GetStructures()![CellIndex];
+                        SetBorderColors();
+                    }
+                };
+            }
+        }
         if(change.Property == CellIndexProperty)
         {
             if(BearerInProperty != null)
             {
                 CellByte = BearerIn.GetStructures()![CellIndex];
                 SetBorderColors();
+                ButtonImage = objectIcon();
             }
         }
     }
@@ -104,6 +122,21 @@ public partial class BorderedButton : UserControl
             case 2: return Brushes.Cyan;
             case 3: return Brushes.Violet;
             default: return Brushes.White;
+        }
+    }
+    private Bitmap? objectIcon()
+    {
+        int m = CellIndex / 256, x = CellIndex % 256 % 16, z = CellIndex % 256 / 16;
+        byte mid = BearerIn.GetMaps()![m].GetMapId();
+        switch (BearerIn.GetMapObjects()!.Find
+            (o => o.GetMapId() == mid 
+            && o.GetX() == x
+            && o.GetZ() == z))
+        {
+            case Chest: return new Bitmap(AssetLoader.Open(new Uri("/Assets/Chest.png")));
+            case Group: return new Bitmap(AssetLoader.Open(new Uri("/Assets/Group.png")));
+            case Transition: return new Bitmap(AssetLoader.Open(new Uri("/Assets/Transition.png")));
+            default: return null;
         }
     }
 

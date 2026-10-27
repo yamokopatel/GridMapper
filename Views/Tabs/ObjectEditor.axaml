@@ -33,7 +33,8 @@
                             Margin="3"
                             IsVisible="{Binding ChestChosen}">
                     <ListBox    x:Name="Subjects"
-                                SelectedIndex="{Binding SelectedSubject}" />
+                                SelectedIndex="{Binding SelectedSubject}"
+                                SelectionMode="Single" />
                     <Button Content="Add" />
                     <StackPanel Orientation="Horizontal">
                         <NumericUpDown  Minimum="0"
@@ -50,7 +51,8 @@
                             Margin="3"
                             IsVisible="{Binding GroupChosen}">
                     <ListBox    x:Name="Enemies"
-                                SelectedIndex="{Binding SelectedEnemy}" />
+                                SelectedIndex="{Binding SelectedEnemy}"
+                                SelectionMode="Single" />
                     <Button Content="Add" />
                     <StackPanel Orientation="Horizontal">
                         <NumericUpDown  Minimum="0"

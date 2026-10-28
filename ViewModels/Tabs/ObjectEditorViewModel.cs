@@ -100,16 +100,17 @@ public partial class ObjectEditorViewModel : ViewModelBase
         }
         else
         {
+            ClearFields();
             switch (mapObject)
             {
-                case Chest:
-
+                case Chest chest:
+                    SubjectList = chest.GetSubjectIds();
                     break;
-                case Group:
-
+                case Group group:
+                    EnemyList = group.GetEnemyIds();
                     break;
-                case Transition:
-
+                case Transition transition:
+                    FillTransition(transition);
                     break;
                 default:
 
@@ -123,10 +124,14 @@ public partial class ObjectEditorViewModel : ViewModelBase
     [ObservableProperty]
     public partial int SelectedSubject { get; set; } = -1;
     [ObservableProperty]
+    public partial List<byte> SubjectList { get; set; } = new List<byte>();
+    [ObservableProperty]
     public partial decimal? SubjectId { get; set; } = null;
     //  Group
     [ObservableProperty]
     public partial int SelectedEnemy { get; set; } = -1;
+    [ObservableProperty]
+    public partial List<byte> EnemyList { get; set; } = new List<byte>();
     [ObservableProperty]
     public partial decimal? EnemyId { get; set; } = null;
     //  Transition
@@ -222,4 +227,29 @@ public partial class ObjectEditorViewModel : ViewModelBase
             }
         };
     }
+
+    #region FUNCTIONS
+    private void ClearFields()
+    {
+        //chest
+        SelectedSubject = -1;
+        SubjectId = null;
+        SubjectList = new List<byte>();
+        //group
+        SelectedEnemy = -1;
+        EnemyId = null;
+        EnemyList = new List<byte>();
+        //transition
+        SelectedNextMap = -1;
+        NextXValue = NextZValue = null;
+        NextXDirValue = null;
+
+    }
+    private void FillTransition(Transition obj)
+    {
+        SelectedNextMap = BearerIn.GetMaps()!.FindIndex(t => t.GetMapId() == obj!.GetMapId());
+        NextXValue = obj.GetNextX(); NextZValue = obj.GetNextZ();
+        NextXDirValue = obj.GetNextDirection().X; NextZDirValue = obj.GetNextDirection().Z;
+    }
+    #endregion
 }

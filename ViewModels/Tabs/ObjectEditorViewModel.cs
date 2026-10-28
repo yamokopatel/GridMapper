@@ -142,25 +142,45 @@ public partial class ObjectEditorViewModel : ViewModelBase
     public partial decimal? NextXValue { get; set; } = null;
     //  y
     [ObservableProperty]
-    public partial decimal? NextYValue { get; set; } = null;
+    public partial decimal? NextZValue { get; set; } = null;
     //  x direction
     [ObservableProperty]
     public partial decimal? NextXDirValue { get; set; } = null;
-    partial void OnNextXDirValueChanged(decimal? value)
+    partial void OnNextXDirValueChanged(decimal? oldValue, decimal? newValue)
     {
-        if(NextYDirValue != 0)
+        if(oldValue != newValue)
         {
-            NextYDirValue = 0;
+            if(newValue != null)
+            {
+                if(newValue != 0 && NextZDirValue != 0)
+                {
+                    NextZDirValue = 0;
+                }
+            }
+            else if(NextZDirValue != null)
+            {
+                NextZDirValue = null;
+            }
         }
     }
     //  y direction
     [ObservableProperty]
-    public partial decimal? NextYDirValue { get; set; } = null;
-    partial void OnNextYDirValueChanged(decimal? value)
+    public partial decimal? NextZDirValue { get; set; } = null;
+    partial void OnNextZDirValueChanged(decimal? oldValue, decimal? newValue)
     {
-        if(NextXDirValue != 0)
+        if(oldValue != newValue)
         {
-            NextXDirValue = 0;
+            if(newValue != null)
+            {
+                if(newValue != 0 && NextXDirValue != 0)
+                {
+                    NextXDirValue = 0;
+                }
+            }
+            else if(NextXDirValue != null)
+            {
+                NextXDirValue = null;
+            }
         }
     }
     //  VISIBILITY

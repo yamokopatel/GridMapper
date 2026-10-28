@@ -101,7 +101,7 @@
                                         Width="110"
                                         Grid.Column="1"
                                         Grid.Row="1"
-                                        Value="{Binding NextYValue}" />
+                                        Value="{Binding NextZValue}" />
                         <!-- x direction -->
                         <TextBlock  Text="Next X dir.:"
                                     Grid.Column="0"
@@ -127,7 +127,7 @@
                                         Width="110"
                                         Grid.Column="1"
                                         Grid.Row="3"
-                                        Value="{Binding NextYDirValue}" />
+                                        Value="{Binding NextZDirValue}" />
                     </Grid>
                 </StackPanel>
             </StackPanel>

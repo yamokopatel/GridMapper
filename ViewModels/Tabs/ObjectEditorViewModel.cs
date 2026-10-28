@@ -10,6 +10,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
     private DataBearer BearerIn;
     private int CellIndex = -1;
     private BaseObject? mapObject;
+    private bool isObjLoaded = false;
 
     #region PROPERTIES
     //  CHOSES
@@ -24,75 +25,97 @@ public partial class ObjectEditorViewModel : ViewModelBase
     }
     partial void OnSelectedObjectTypeChanged(int oldValue, int newValue)
     {
-        if(oldValue != newValue)
+        if(!isObjLoaded)
         {
-            if(oldValue == 0)
+            if(oldValue != newValue)
             {
-                int m = CellIndex / 256, x = CellIndex % 256 % 16, z = CellIndex % 256 / 16;
-                int mid = BearerIn.GetMaps()![m].GetMapId();
-                List<ushort> occupedObjIds = new List<ushort>();
-                for(int a = 0; a < BearerIn.GetMapObjects()!.Count; a++)
+                if(oldValue == 0)
                 {
-                    occupedObjIds.Add(BearerIn.GetMapObjects()![a].GetObjectId());
-                }
-                int newObjId = -1;
-                for(int a = 0; a < 65_536; a++)
-                {
-                    if (!occupedObjIds.Contains((ushort)a))
+                    int m = CellIndex / 256, x = CellIndex % 256 % 16, z = CellIndex % 256 / 16;
+                    int mid = BearerIn.GetMaps()![m].GetMapId();
+                    List<ushort> occupedObjIds = new List<ushort>();
+                    for(int a = 0; a < BearerIn.GetMapObjects()!.Count; a++)
                     {
-                        newObjId = (ushort)a;
-                        break;
+                        occupedObjIds.Add(BearerIn.GetMapObjects()![a].GetObjectId());
                     }
-                }
-                if(newObjId != -1)
-                {
-                    BaseObject newObject = null!;
-                    switch (newValue)
+                    int newObjId = -1;
+                    for(int a = 0; a < 65_536; a++)
                     {
-                        case 1: newObject = new Chest((ushort)newObjId, (byte)mid, (byte)x, (byte)z, []); break;
-                        case 2: newObject = new Group((ushort)newObjId, (byte)mid, (byte)x, (byte)z, []); break;
-                        case 3: newObject = new Transition((ushort)newObjId, (byte)mid, (byte)x, (byte)z,0, 0, 0, new Direction()); break;
+                        if (!occupedObjIds.Contains((ushort)a))
+                        {
+                            newObjId = (ushort)a;
+                            break;
+                        }
                     }
-                    BearerIn.GetMapObjects()!.Add(newObject);
-                    mapObject = BearerIn.GetMapObjects()![BearerIn.GetMapObjects()!.Count - 1];
+                    if(newObjId != -1)
+                    {
+                        BaseObject newObject = null!;
+                        switch (newValue)
+                        {
+                            case 1: newObject = new Chest((ushort)newObjId, (byte)mid, (byte)x, (byte)z, []); break;
+                            case 2: newObject = new Group((ushort)newObjId, (byte)mid, (byte)x, (byte)z, []); break;
+                            case 3: newObject = new Transition((ushort)newObjId, (byte)mid, (byte)x, (byte)z,0, 0, 0, new Direction()); break;
+                        }
+                        BearerIn.GetMapObjects()!.Add(newObject);
+                        mapObject = BearerIn.GetMapObjects()![BearerIn.GetMapObjects()!.Count - 1];
+                    }
+                    else
+                    {
+                        NoticeWindow notice = new NoticeWindow();
+                        NoticeWindowViewModel nwvm = new NoticeWindowViewModel("New map object will be out of limit.");
+                        notice.DataContext = nwvm;
+                    }
                 }
                 else
                 {
-                    NoticeWindow notice = new NoticeWindow();
-                    NoticeWindowViewModel nwvm = new NoticeWindowViewModel("New map object will be out of limit.");
-                    notice.DataContext = nwvm;
-                }
-            }
-            else
-            {
-                if(newValue == 0)
-                {
-                    BearerIn.GetMapObjects()!.Remove(mapObject!);
-                    mapObject = null;
-                }
-                else
-                {
-                    int currentIndex = BearerIn.GetMapObjects()!.FindIndex(obj => obj == mapObject);
-                    BaseObject newObj = null!;
-                    switch (newValue)
+                    if(newValue == 0)
                     {
-                        case 1:
-                            newObj = new Chest(mapObject!.GetObjectId(), mapObject.GetMapId(),
-                                mapObject.GetX(), mapObject.GetZ(), []);
-                            break;
-                        case 2:
-                            newObj = new Chest(mapObject!.GetObjectId(), mapObject.GetMapId(),
-                                mapObject.GetX(), mapObject.GetZ(), []);
-                            break;
-                        case 3:
-                            newObj = new Transition(mapObject!.GetObjectId(), mapObject.GetMapId(),
-                                mapObject.GetX(), mapObject.GetZ(), 0, 0, 0, new Direction());
-                            break;
+                        BearerIn.GetMapObjects()!.Remove(mapObject!);
+                        mapObject = null;
                     }
-                    BearerIn.GetMapObjects()![currentIndex] = newObj;
-                    mapObject = BearerIn.GetMapObjects()![currentIndex];
+                    else
+                    {
+                        int currentIndex = BearerIn.GetMapObjects()!.FindIndex(obj => obj == mapObject);
+                        BaseObject newObj = null!;
+                        switch (newValue)
+                        {
+                            case 1:
+                                newObj = new Chest(mapObject!.GetObjectId(), mapObject.GetMapId(),
+                                    mapObject.GetX(), mapObject.GetZ(), []);
+                                break;
+                            case 2:
+                                newObj = new Chest(mapObject!.GetObjectId(), mapObject.GetMapId(),
+                                    mapObject.GetX(), mapObject.GetZ(), []);
+                                break;
+                            case 3:
+                                newObj = new Transition(mapObject!.GetObjectId(), mapObject.GetMapId(),
+                                    mapObject.GetX(), mapObject.GetZ(), 0, 0, 0, new Direction());
+                                break;
+                        }
+                        BearerIn.GetMapObjects()![currentIndex] = newObj;
+                        mapObject = BearerIn.GetMapObjects()![currentIndex];
+                    }
                 }
             }
+        }
+        else
+        {
+            switch (mapObject)
+            {
+                case Chest:
+
+                    break;
+                case Group:
+
+                    break;
+                case Transition:
+
+                    break;
+                default:
+
+                    break;
+            }
+            isObjLoaded = false;
         }
     }
     //  PARAMETERS
@@ -168,6 +191,14 @@ public partial class ObjectEditorViewModel : ViewModelBase
                 mapObject = BearerIn.GetMapObjects()!.Find(mo => mo.GetMapId() == mid 
                     && mo.GetX() == x 
                     && mo.GetZ() == z);
+                isObjLoaded = true;
+                switch (mapObject)
+                {
+                    case null: SelectedObjectType = 0; break;
+                    case Chest: SelectedObjectType = 1; break;
+                    case Group: SelectedObjectType = 2; break;
+                    case Transition: SelectedObjectType = 3; break;
+                }
             }
         };
     }

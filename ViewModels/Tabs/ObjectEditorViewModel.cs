@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using GridMapper.ViewModels.Components;
 using GridMapper.Views.Components;
 
@@ -104,10 +106,10 @@ public partial class ObjectEditorViewModel : ViewModelBase
             switch (mapObject)
             {
                 case Chest chest:
-                    SubjectList = chest.GetSubjectIds();
+                    SubjectList = new ObservableCollection<byte>(chest.GetSubjectIds());
                     break;
                 case Group group:
-                    EnemyList = group.GetEnemyIds();
+                    EnemyList = new ObservableCollection<byte>(group.GetEnemyIds());
                     break;
                 case Transition transition:
                     FillTransition(transition);
@@ -124,14 +126,14 @@ public partial class ObjectEditorViewModel : ViewModelBase
     [ObservableProperty]
     public partial int SelectedSubject { get; set; } = -1;
     [ObservableProperty]
-    public partial List<byte> SubjectList { get; set; } = new List<byte>();
+    public partial ObservableCollection<byte> SubjectList { get; set; } = new ObservableCollection<byte>();
     [ObservableProperty]
     public partial decimal? SubjectId { get; set; } = null;
     //  Group
     [ObservableProperty]
     public partial int SelectedEnemy { get; set; } = -1;
     [ObservableProperty]
-    public partial List<byte> EnemyList { get; set; } = new List<byte>();
+    public partial ObservableCollection<byte> EnemyList { get; set; } = new ObservableCollection<byte>();
     [ObservableProperty]
     public partial decimal? EnemyId { get; set; } = null;
     //  Transition
@@ -234,11 +236,11 @@ public partial class ObjectEditorViewModel : ViewModelBase
         //chest
         SelectedSubject = -1;
         SubjectId = null;
-        SubjectList = new List<byte>();
+        SubjectList = new ObservableCollection<byte>();
         //group
         SelectedEnemy = -1;
         EnemyId = null;
-        EnemyList = new List<byte>();
+        EnemyList = new ObservableCollection<byte>();
         //transition
         SelectedNextMap = -1;
         NextXValue = NextZValue = null;
@@ -250,6 +252,40 @@ public partial class ObjectEditorViewModel : ViewModelBase
         SelectedNextMap = BearerIn.GetMaps()!.FindIndex(t => t.GetMapId() == obj!.GetMapId());
         NextXValue = obj.GetNextX(); NextZValue = obj.GetNextZ();
         NextXDirValue = obj.GetNextDirection().X; NextZDirValue = obj.GetNextDirection().Z;
+    }
+    #endregion
+
+    #region COMMANDS
+    [RelayCommand]
+    private void CreateSubject()
+    {
+        SubjectList.Add(0);
+        SelectedSubject = SubjectList.Count - 1;
+    }
+    [RelayCommand]
+    private void DeleteSubject()
+    {
+        if(SubjectList.Count > 0 && SelectedSubject != -1)
+        {
+            int toDel = SelectedSubject;
+            SelectedSubject = -1;
+            SubjectList.RemoveAt(toDel);
+        }
+    }
+    [RelayCommand]
+    private void CreateEnemy()
+    {
+        EnemyList.Add(0);
+        SelectedEnemy = EnemyList.Count - 1;
+    }
+    [RelayCommand]
+    private void DeleteEnemy()
+    {
+        if(EnemyList.Count > 0 && SelectedEnemy != -1){
+            int toDel = SelectedEnemy;
+            SelectedEnemy = -1;
+            EnemyList.RemoveAt(toDel);
+        }
     }
     #endregion
 }

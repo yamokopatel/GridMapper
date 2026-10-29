@@ -36,7 +36,8 @@
                                 SelectedIndex="{Binding SelectedSubject}"
                                 SelectionMode="Single"
                                 ItemsSource="{Binding SubjectList}" />
-                    <Button Content="Add" />
+                    <Button Content="Add"
+                            Command="{Binding CreateSubjectCommand}" />
                     <StackPanel Orientation="Horizontal">
                         <NumericUpDown  Minimum="0"
                                         Maximum="255"
@@ -44,7 +45,8 @@
                                         FormatString="N0"
                                         Width="110"
                                         Value="{Binding SubjectId}" />
-                        <Button Content="Delete" />
+                        <Button Content="Delete"
+                                Command="{Binding DeleteSubjectCommand}" />
                     </StackPanel>
                 </StackPanel>
                 <!-- Group -->
@@ -55,7 +57,8 @@
                                 SelectedIndex="{Binding SelectedEnemy}"
                                 SelectionMode="Single"
                                 ItemsSource="{Binding EnemyList}" />
-                    <Button Content="Add" />
+                    <Button Content="Add"
+                            Command="{Binding CreateEnemyCommand}" />
                     <StackPanel Orientation="Horizontal">
                         <NumericUpDown  Minimum="0"
                                         Maximum="255"
@@ -63,7 +66,8 @@
                                         FormatString="N0"
                                         Width="110"
                                         Value="{Binding EnemyId}" />
-                        <Button Content="Delete" />
+                        <Button Content="Delete"
+                                Command="{Binding DeleteEnemyCommand}" />
                     </StackPanel>
                 </StackPanel>
                 <!-- Transition -->

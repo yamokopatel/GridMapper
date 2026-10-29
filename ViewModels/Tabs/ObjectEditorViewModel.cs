@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GridMapper.ViewModels.Components;
@@ -123,12 +125,31 @@ public partial class ObjectEditorViewModel : ViewModelBase
     }
     //  PARAMETERS
     //  Chest
+    private bool ChangingSubject = false;
     [ObservableProperty]
     public partial int SelectedSubject { get; set; } = -1;
+    partial void OnSelectedSubjectChanged(int value)
+    {
+        ChangingSubject = true;
+            SubjectId = SubjectList[value];
+        ChangingSubject = false;
+    }
     [ObservableProperty]
     public partial ObservableCollection<byte> SubjectList { get; set; } = new ObservableCollection<byte>();
     [ObservableProperty]
     public partial decimal? SubjectId { get; set; } = null;
+    partial void OnSubjectIdChanged(decimal? value)
+    {
+        if (!ChangingSubject)
+        {
+            SubjectList[SelectedSubject] = (byte)value!;
+            // Chest chest = (Chest)mapObject!;
+            // chest.SetSubjectIds(SubjectList.ToList());
+            // int currentObjectIndex = BearerIn.GetMapObjects()!.FindIndex(c => c == mapObject);
+            // BearerIn.GetMapObjects()![currentObjectIndex] = chest;
+            // mapObject = BearerIn.GetMapObjects()![currentObjectIndex];
+        }
+    }
     //  Group
     [ObservableProperty]
     public partial int SelectedEnemy { get; set; } = -1;
@@ -265,12 +286,27 @@ public partial class ObjectEditorViewModel : ViewModelBase
     [RelayCommand]
     private void DeleteSubject()
     {
-        if(SubjectList.Count > 0 && SelectedSubject != -1)
+        int toDel = -256;
+        try
         {
-            int toDel = SelectedSubject;
-            SelectedSubject = -1;
-            SubjectList.RemoveAt(toDel);
+            if(SubjectList.Count > 0 && SelectedSubject != -1)
+            {
+                toDel = SelectedSubject;
+                SelectedSubject = -1;
+                SubjectList.RemoveAt(toDel);
+            }
         }
+        catch(Exception e)
+        {
+            NoticeWindow notice = new NoticeWindow();
+            NoticeWindowViewModel nwvm = new NoticeWindowViewModel(e.ToString());
+            notice.DataContext = nwvm;
+            notice.Show();
+        }
+        NoticeWindow notice1 = new NoticeWindow();
+        NoticeWindowViewModel nwvm1 = new NoticeWindowViewModel(toDel.ToString());
+        notice1.DataContext = nwvm1;
+        notice1.Show();
     }
     [RelayCommand]
     private void CreateEnemy()

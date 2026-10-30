@@ -12,7 +12,7 @@
                     Command="{Binding NewMapCommand}" />
             <ComboBox   MaxDropDownHeight="128"
                         ItemsSource="{Binding MapOptions}"
-                        SelectedItem="{Binding SelectedMap}"
+                        SelectedIndex="{Binding SelectedMap}"
                         Width="160">
                 <!-- Content should be generated programly -->    
             </ComboBox>

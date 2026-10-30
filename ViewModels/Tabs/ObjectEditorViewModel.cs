@@ -86,6 +86,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
                             case 1:
                                 newObj = new Chest(mapObject!.GetObjectId(), mapObject.GetMapId(),
                                     mapObject.GetX(), mapObject.GetZ(), []);
+                                processableSubject = -1;
                                 break;
                             case 2:
                                 newObj = new Chest(mapObject!.GetObjectId(), mapObject.GetMapId(),
@@ -108,6 +109,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
             switch (mapObject)
             {
                 case Chest chest:
+                    processableSubject = -1;
                     SubjectList = new ObservableCollection<byte>(chest.GetSubjectIds());
                     break;
                 case Group group:
@@ -126,12 +128,17 @@ public partial class ObjectEditorViewModel : ViewModelBase
     //  PARAMETERS
     //  Chest
     private bool ChangingSubject = false;
+    private int processableSubject = -1;
     [ObservableProperty]
     public partial int SelectedSubject { get; set; } = -1;
     partial void OnSelectedSubjectChanged(int value)
     {
         ChangingSubject = true;
-            SubjectId = SubjectList[value];
+        if(value > -1)
+        {
+            processableSubject = value;
+        }
+        SubjectId = SubjectList[processableSubject];
         ChangingSubject = false;
     }
     [ObservableProperty]
@@ -142,7 +149,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
     {
         if (!ChangingSubject)
         {
-            SubjectList[SelectedSubject] = (byte)value!;
+            SubjectList[processableSubject] = (byte)value!;
             // Chest chest = (Chest)mapObject!;
             // chest.SetSubjectIds(SubjectList.ToList());
             // int currentObjectIndex = BearerIn.GetMapObjects()!.FindIndex(c => c == mapObject);
@@ -286,27 +293,13 @@ public partial class ObjectEditorViewModel : ViewModelBase
     [RelayCommand]
     private void DeleteSubject()
     {
-        int toDel = -256;
-        try
+        int toDel;
+        if(SubjectList.Count > 0 && SelectedSubject != -1)
         {
-            if(SubjectList.Count > 0 && SelectedSubject != -1)
-            {
-                toDel = SelectedSubject;
-                SelectedSubject = -1;
-                SubjectList.RemoveAt(toDel);
-            }
+            toDel = processableSubject;
+            processableSubject = -1;
+            SubjectList.RemoveAt(toDel);
         }
-        catch(Exception e)
-        {
-            NoticeWindow notice = new NoticeWindow();
-            NoticeWindowViewModel nwvm = new NoticeWindowViewModel(e.ToString());
-            notice.DataContext = nwvm;
-            notice.Show();
-        }
-        NoticeWindow notice1 = new NoticeWindow();
-        NoticeWindowViewModel nwvm1 = new NoticeWindowViewModel(toDel.ToString());
-        notice1.DataContext = nwvm1;
-        notice1.Show();
     }
     [RelayCommand]
     private void CreateEnemy()

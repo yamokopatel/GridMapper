@@ -91,6 +91,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
                             case 2:
                                 newObj = new Chest(mapObject!.GetObjectId(), mapObject.GetMapId(),
                                     mapObject.GetX(), mapObject.GetZ(), []);
+                                processableEnemy = -1;
                                 break;
                             case 3:
                                 newObj = new Transition(mapObject!.GetObjectId(), mapObject.GetMapId(),
@@ -113,6 +114,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
                     SubjectList = new ObservableCollection<byte>(chest.GetSubjectIds());
                     break;
                 case Group group:
+                    processableEnemy = -1;
                     EnemyList = new ObservableCollection<byte>(group.GetEnemyIds());
                     break;
                 case Transition transition:
@@ -158,12 +160,36 @@ public partial class ObjectEditorViewModel : ViewModelBase
         }
     }
     //  Group
+    private bool ChangingEnemy = false;
+    private int processableEnemy = -1;
     [ObservableProperty]
     public partial int SelectedEnemy { get; set; } = -1;
+    partial void OnSelectedEnemyChanged(int value)
+    {
+        ChangingEnemy = true;
+        if(value > -1)
+        {
+            processableEnemy = value;
+        }
+        SubjectId = SubjectList[processableEnemy];
+        ChangingEnemy = false;
+    }
     [ObservableProperty]
     public partial ObservableCollection<byte> EnemyList { get; set; } = new ObservableCollection<byte>();
     [ObservableProperty]
     public partial decimal? EnemyId { get; set; } = null;
+    partial void OnEnemyIdChanged(decimal? value)
+    {
+        if (!ChangingEnemy)
+        {
+            SubjectList[processableEnemy] = (byte)value!;
+            // Group group = (Group)mapObject!;
+            // group.SetEnemyIds(SubjectList.ToList());
+            // int currentObjectIndex = BearerIn.GetMapObjects()!.FindIndex(c => c == mapObject);
+            // BearerIn.GetMapObjects()![currentObjectIndex] = group;
+            // mapObject = BearerIn.GetMapObjects()![currentObjectIndex];
+        }
+    }
     //  Transition
     //  map
     [ObservableProperty]
@@ -294,7 +320,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
     private void DeleteSubject()
     {
         int toDel;
-        if(SubjectList.Count > 0 && SelectedSubject != -1)
+        if(SubjectList.Count > 0 && processableSubject != -1)
         {
             toDel = processableSubject;
             processableSubject = -1;
@@ -310,9 +336,9 @@ public partial class ObjectEditorViewModel : ViewModelBase
     [RelayCommand]
     private void DeleteEnemy()
     {
-        if(EnemyList.Count > 0 && SelectedEnemy != -1){
-            int toDel = SelectedEnemy;
-            SelectedEnemy = -1;
+        if(EnemyList.Count > 0 && processableEnemy != -1){
+            int toDel = processableEnemy;
+            processableEnemy = -1;
             EnemyList.RemoveAt(toDel);
         }
     }

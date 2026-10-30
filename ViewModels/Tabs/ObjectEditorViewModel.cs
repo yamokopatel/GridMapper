@@ -171,7 +171,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
         {
             processableEnemy = value;
         }
-        SubjectId = SubjectList[processableEnemy];
+        EnemyId = EnemyList[processableEnemy];
         ChangingEnemy = false;
     }
     [ObservableProperty]
@@ -182,9 +182,9 @@ public partial class ObjectEditorViewModel : ViewModelBase
     {
         if (!ChangingEnemy)
         {
-            SubjectList[processableEnemy] = (byte)value!;
+            EnemyList[processableEnemy] = (byte)value!;
             // Group group = (Group)mapObject!;
-            // group.SetEnemyIds(SubjectList.ToList());
+            // group.SetEnemyIds(EnemyList.ToList());
             // int currentObjectIndex = BearerIn.GetMapObjects()!.FindIndex(c => c == mapObject);
             // BearerIn.GetMapObjects()![currentObjectIndex] = group;
             // mapObject = BearerIn.GetMapObjects()![currentObjectIndex];
@@ -336,8 +336,9 @@ public partial class ObjectEditorViewModel : ViewModelBase
     [RelayCommand]
     private void DeleteEnemy()
     {
+        int toDel;
         if(EnemyList.Count > 0 && processableEnemy != -1){
-            int toDel = processableEnemy;
+            toDel = processableEnemy;
             processableEnemy = -1;
             EnemyList.RemoveAt(toDel);
         }

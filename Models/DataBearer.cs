@@ -151,6 +151,14 @@ public class DataBearer
     }
     public void SaveData()
     {
+        try
+        {
+            Notify($"{MapMetadataFile == null}\n{MapStructureFile == null}\n{CellMetadataFile == null}\n{IsChanged}");
+        }
+        catch(Exception e)
+        {
+            Notify(e.ToString());
+        }
         if(MapMetadataFile != null
             && MapStructureFile != null
             && CellMetadataFile != null

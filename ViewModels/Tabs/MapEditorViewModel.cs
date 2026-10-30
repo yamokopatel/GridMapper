@@ -127,6 +127,7 @@ public partial class MapEditorViewModel : ViewModelBase
             NoticeWindow notice = new NoticeWindow();
             NoticeWindowViewModel nwvm = new NoticeWindowViewModel("Can not create new map. Map limit is reached.");
             notice.DataContext = nwvm;
+            notice.Show();
         }
     }
     [RelayCommand]
@@ -134,6 +135,7 @@ public partial class MapEditorViewModel : ViewModelBase
     {
         int deletable = SelectedMap;
         SelectedMap = -1;
+        BearerIn.GetMapObjects()!.RemoveAll(obj => obj.GetMapId() == BearerIn.GetMaps()![deletable].GetMapId());
         BearerIn.GetStructures()!.RemoveRange(BearerIn.GetMaps()![deletable].GetByteOffset(), 256);
         List<BaseObject> objectsWithoutMap = BearerIn.GetMapObjects()!.FindAll(owm => owm.GetMapId() == deletable);
         for(int a = 0; a < objectsWithoutMap.Count; a++)
@@ -145,6 +147,7 @@ public partial class MapEditorViewModel : ViewModelBase
             BearerIn.GetMaps()![a].SetByteOffset(BearerIn.GetMaps()![a].GetByteOffset() - 256);
         }
         BearerIn.GetMaps()!.RemoveAt(deletable);
+        MapOptions.RemoveAt(deletable);
         SelectedMap =   ((BearerIn.GetMaps()!.Count >= deletable) 
                         ? deletable 
                         : deletable - 1);

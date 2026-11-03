@@ -58,21 +58,21 @@ public class FileBearer
         {
             if(!CheckPathNotNull(ref MapMetadataFilePath, newPath))
             {
-                TryLaodFiles();
+                TryLoadData();
             }
         }
         public void SetStructurePath(string newPath)
         {
             if(!CheckPathNotNull(ref MapStructureFilePath, newPath))
             {
-                TryLaodFiles();
+                TryLoadData();
             }
         }
         public void SetCellMetaPath(string newPath)
         {
             if(!CheckPathNotNull(ref CellMetadataFilePath, newPath))
             {
-                TryLaodFiles();
+                TryLoadData();
             }
         }
     #endregion
@@ -198,6 +198,7 @@ public class FileBearer
                     }
                     reader.Dispose();
                 }
+                // Notify(values.ToString()!);
                 stream.Dispose();
                 if (isValid)
                 {

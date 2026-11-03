@@ -24,16 +24,16 @@ public partial class FileBrowserViewModel : ViewModelBase
     public void SetMapMetadataFilePath(string path)
     {
         MapMetadataFilePath = path;
-        BearerIn!.SetMapMetaPath(path);
+        BearerIn.SetMapMetaPath(path);
     }
     public void SetMapStructureFilePath(string path)
     {
         MapStructureFilePath = path;
-        BearerIn!.SetStructurePath(path);
+        BearerIn.SetStructurePath(path);
     }
     public void SetCellMetadataFilePath(string path)
     {
         CellMetadataFilePath = path;
-        BearerIn!.SetCellMetaPath(path);
+        BearerIn.SetCellMetaPath(path);
     }
 }

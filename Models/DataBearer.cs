@@ -151,4 +151,19 @@ public class DataBearer
         CellModified?.Invoke(cellIndex);
     }
     #endregion
+
+    #region FILES
+    public void SetMapMetaPath(string path)
+    {
+        fileBearer.SetMapMetaPath(path);
+    }
+    public void SetStructurePath(string path)
+    {
+        fileBearer.SetStructurePath(path);
+    }
+    public void SetCellMetaPath(string path)
+    {
+        fileBearer.SetCellMetaPath(path);
+    }
+    #endregion
 }

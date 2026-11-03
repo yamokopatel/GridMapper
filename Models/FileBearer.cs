@@ -39,10 +39,6 @@ public class FileBearer
         public string? GetMapMetadataPath() => MapMetadataFilePath;
         public string? GetMapStructureFilePath() => MapStructureFilePath;
         public string? GetCellMetadataFilePath() => CellMetadataFilePath;
-        //  Files
-        public FileInfo? GetMapMetadataFile() => MapMetadataFile;
-        public FileInfo? GetMapStructureFile() => MapStructureFile;
-        public FileInfo? GetCellMetadataFile() => CellMetadataFile;
     #endregion 
 
 
@@ -60,21 +56,21 @@ public class FileBearer
         //  Paths
         public void SetMapMetaPath(string newPath)
         {
-            if(CheckPathNotNull(ref MapMetadataFilePath, newPath))
+            if(!CheckPathNotNull(ref MapMetadataFilePath, newPath))
             {
                 TryLaodFiles();
             }
         }
         public void SetStructurePath(string newPath)
         {
-            if(CheckPathNotNull(ref MapStructureFilePath, newPath))
+            if(!CheckPathNotNull(ref MapStructureFilePath, newPath))
             {
                 TryLaodFiles();
             }
         }
         public void SetCellMetaPath(string newPath)
         {
-            if(CheckPathNotNull(ref CellMetadataFilePath, newPath))
+            if(!CheckPathNotNull(ref CellMetadataFilePath, newPath))
             {
                 TryLaodFiles();
             }
@@ -118,40 +114,41 @@ public class FileBearer
         }
         public void TryLoadData()
         {
-            if(MapMetadataFile != null
-                && MapStructureFile != null
-                && CellMetadataFile != null)
+            if(!string.IsNullOrWhiteSpace(MapMetadataFilePath)
+                && !string.IsNullOrWhiteSpace(MapStructureFilePath)
+                && !string.IsNullOrWhiteSpace(CellMetadataFilePath))
             {
                 try
                 {
-                    LoadList<Map>(MapMetadataFile);
+                    LoadList<Map>(MapMetadataFilePath);
                     LoadStructures();
-                    LoadList<BaseObject>(CellMetadataFile);
+                    LoadList<BaseObject>(CellMetadataFilePath);
                 }
                 catch(Exception e)
                 {
                     Notify(e.ToString());
                 }
             }
+            else
+            {
+                if(MapMetadataFilePath != null
+                    && MapStructureFilePath != null
+                    && CellMetadataFilePath != null)
+                {
+                    Notify("Any of provided paths is not valid.");
+                }
+            }
         }
         public void SaveData(List<Map>? maps, List<byte>? structures, List<BaseObject>? objects)
         {
-            try
-            {
-                Notify($"{MapMetadataFile != null}\n{MapStructureFile != null}\n{CellMetadataFile != null}\n{isChanged}");
-            }
-            catch(Exception e)
-            {
-                Notify(e.ToString());
-            }
-            if(MapMetadataFile != null
-                && MapStructureFile != null
-                && CellMetadataFile != null
+            if(MapMetadataFilePath != null
+                && MapStructureFilePath != null
+                && CellMetadataFilePath != null
                 && isChanged)
             {
-                SaveList<Map>(ref MapMetadataFile, maps!);
+                SaveList<Map>(MapMetadataFilePath, maps!);
                 SaveStructires(structures);
-                SaveList<BaseObject>(ref CellMetadataFile, objects!);
+                SaveList<BaseObject>(CellMetadataFilePath, objects!);
             }
             else
             {
@@ -159,10 +156,10 @@ public class FileBearer
             }
         }
         #region SAVERS
-            private void SaveList<T>(ref FileInfo file, List<T> values)
+            private void SaveList<T>(string fileAddress, List<T> values)
             {
                 Container<T> container = new Container<T>(VERSION, values.ToArray());
-                FileStream stream = file.OpenWrite();
+                FileStream stream = File.OpenWrite(fileAddress);
                 StreamWriter writer = new StreamWriter(stream);
                 string jsonContainer = JsonSerializer.Serialize<Container<T>>(container);
                 writer.Write(jsonContainer);
@@ -173,18 +170,18 @@ public class FileBearer
                 byte[] bytes = new byte[mapStructures!.Count + 2];
                 bytes[0] = VERSION / 256; bytes[1] = VERSION & 0xFF;
                 mapStructures.CopyTo(bytes, 2);
-                FileStream stream = MapStructureFile!.OpenWrite();
+                FileStream stream = File.OpenWrite(MapStructureFilePath!);
                 stream.Write(bytes);
                 stream.Dispose();
             }
         #endregion
 
         #region LOADERS
-            private Exception? LoadList<T>(FileInfo file)
+            private Exception? LoadList<T>(string? filePath)
             {
                 List<T> values = null!;
                 bool isValid = false;
-                FileStream stream = file!.OpenRead();
+                FileStream stream = File.OpenRead(filePath!);
                 if(stream.Length == 0)
                 {
                     values = new List<T>();
@@ -223,7 +220,7 @@ public class FileBearer
             {
                 List<byte> structures = null!;
                 bool isValid = false;
-                FileStream stream = MapStructureFile!.OpenRead();
+                FileStream stream = File.OpenRead(MapStructureFilePath!);
                 if(stream.Length == 0)
                 {
                     structures = new List<byte>();

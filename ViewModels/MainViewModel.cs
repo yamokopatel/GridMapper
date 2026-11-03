@@ -18,6 +18,6 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private void Undo()
     {
-        BearerOut.TryLoadData();
+        BearerOut.AskLoadData();
     }
 }

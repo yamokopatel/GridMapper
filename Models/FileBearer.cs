@@ -58,17 +58,26 @@ public class FileBearer
             return false;
         }
         //  Paths
-        public bool SetMapMetaPath(string newPath)
+        public void SetMapMetaPath(string newPath)
         {
-            return CheckPathNotNull(ref MapMetadataFilePath, newPath);
+            if(CheckPathNotNull(ref MapMetadataFilePath, newPath))
+            {
+                TryLaodFiles();
+            }
         }
-        public bool SetStructurePath(string newPath)
+        public void SetStructurePath(string newPath)
         {
-            return CheckPathNotNull(ref MapStructureFilePath, newPath);
+            if(CheckPathNotNull(ref MapStructureFilePath, newPath))
+            {
+                TryLaodFiles();
+            }
         }
-        public bool SetCellMetaPath(string newPath)
+        public void SetCellMetaPath(string newPath)
         {
-            return CheckPathNotNull(ref CellMetadataFilePath, newPath);
+            if(CheckPathNotNull(ref CellMetadataFilePath, newPath))
+            {
+                TryLaodFiles();
+            }
         }
     #endregion
 
@@ -107,11 +116,29 @@ public class FileBearer
                 Notify(e.ToString());
             }
         }
+        public void TryLoadData()
+        {
+            if(MapMetadataFile != null
+                && MapStructureFile != null
+                && CellMetadataFile != null)
+            {
+                try
+                {
+                    LoadList<Map>(MapMetadataFile);
+                    LoadStructures();
+                    LoadList<BaseObject>(CellMetadataFile);
+                }
+                catch(Exception e)
+                {
+                    Notify(e.ToString());
+                }
+            }
+        }
         public void SaveData(List<Map>? maps, List<byte>? structures, List<BaseObject>? objects)
         {
             try
             {
-                Notify($"{MapMetadataFile == null}\n{MapStructureFile == null}\n{CellMetadataFile == null}\n{isChanged}");
+                Notify($"{MapMetadataFile != null}\n{MapStructureFile != null}\n{CellMetadataFile != null}\n{isChanged}");
             }
             catch(Exception e)
             {
@@ -153,25 +180,6 @@ public class FileBearer
         #endregion
 
         #region LOADERS
-            public void TryLoadData()
-            {
-                if(MapMetadataFile != null
-                    && MapStructureFile != null
-                    && CellMetadataFile != null)
-                {
-                    try
-                    {
-                        LoadList<Map>(MapMetadataFile);
-                        LoadStructures();
-                        LoadList<BaseObject>(CellMetadataFile);
-                    }
-                    catch(Exception e)
-                    {
-                        Notify(e.ToString());
-                    }
-                }
-            }
-            
             private Exception? LoadList<T>(FileInfo file)
             {
                 List<T> values = null!;

@@ -8,7 +8,39 @@ using GridMapper.Views.Components;
 
 public class DataBearer
 {
-    //  PARAMETERS
+    //  CONSTRUCTOR
+    public DataBearer()
+    {
+        fileBearer = new FileBearer(this);
+
+        //  Subscriptions
+        fileBearer.MapsLoaded += (maps) =>
+        {
+            Maps = maps;
+            if(Maps != null && MapStructures != null && MapObjects != null)
+            {
+                FilesLoaded!();
+            }
+        };
+        fileBearer.StructuresLoaded += (strustures) =>
+        {
+            MapStructures = strustures;
+            if(Maps != null && MapStructures != null && MapObjects != null)
+            {
+                FilesLoaded!();
+            }
+        };
+        fileBearer.ObjectsLoaded += (objects) =>
+        {
+            MapObjects = objects;
+            if(Maps != null && MapStructures != null && MapObjects != null)
+            {
+                FilesLoaded!();
+            }
+        };
+    }
+
+    #region   PARAMETERS
     //  Eventable
     private bool IsChanged = false;
     private int MapInProcessingIndex = -1;
@@ -19,12 +51,7 @@ public class DataBearer
     private List<BaseObject>? MapObjects;
     //  FileBearer
     private FileBearer fileBearer;
-
-    //  CONSTRUCTOR
-    public DataBearer()
-    {
-        fileBearer = new FileBearer(this);
-    }
+    #endregion
 
     #region GETTERS
     public bool GetChanged() => IsChanged;
@@ -82,6 +109,14 @@ public class DataBearer
         NoticeWindowViewModel nwvm = new NoticeWindowViewModel(text);
         notice.DataContext = nwvm;
         notice.Show();
+    }
+    public void SaveData()
+    {
+        fileBearer.SaveData(Maps, MapStructures, MapObjects);
+    }
+    public void AskLoadData()
+    {
+        fileBearer.TryLoadData();
     }
     #endregion
 

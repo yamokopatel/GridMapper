@@ -12,6 +12,7 @@ public class FileBearer
     public const ushort VERSION = 0x7D_01;
     public FileBearer(DataBearer bearer)
     {
+        isChanged = false;
         this.bearer = bearer;
         bearer.DataChanged += (changed) =>
         {
@@ -21,7 +22,7 @@ public class FileBearer
 
 
     #region FIELDS
-        private bool isChanged = false;
+        private bool isChanged;
         private DataBearer bearer;
         //  File Paths
         private string? MapMetadataFilePath;
@@ -149,6 +150,7 @@ public class FileBearer
                 SaveList<Map>(MapMetadataFilePath, maps!);
                 SaveStructires(structures);
                 SaveList<BaseObject>(CellMetadataFilePath, objects!);
+                bearer.SetChanged(false);
             }
             else
             {

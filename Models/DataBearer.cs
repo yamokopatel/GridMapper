@@ -11,6 +11,7 @@ public class DataBearer
     //  CONSTRUCTOR
     public DataBearer()
     {
+        IsChanged = false;
         fileBearer = new FileBearer(this);
 
         //  Subscriptions
@@ -42,7 +43,7 @@ public class DataBearer
 
     #region   PARAMETERS
     //  Eventable
-    private bool IsChanged = false;
+    private bool IsChanged;
     private int MapInProcessingIndex = -1;
     private int CellInProcessingIndex = -1;
     //  File data
@@ -164,6 +165,47 @@ public class DataBearer
     public void SetCellMetaPath(string path)
     {
         fileBearer.SetCellMetaPath(path);
+    }
+    #endregion
+
+    #region MAPS
+    public int CreateMap()
+    {
+        int index = -1;
+        List<int> occupedIds = new List<int>();
+        byte? freeId = null;
+        for(int a = 0; a < Maps!.Count; a++)
+        {
+            occupedIds.Add(Maps![a].GetMapId());
+        }
+        for(int a = 0; a < 256; a++)
+        {
+            if (!occupedIds.Contains(a))
+            {
+                freeId = (byte)a;
+                break;
+            }
+        }
+        if(freeId != null)
+        {
+            byte newId = freeId.Value;
+            int newOffset = 0; 
+            if(Maps!.Count > 0)
+            {
+                newOffset = Maps![^1].GetByteOffset() + 256;
+            }
+            Map newMap = new Map(newId, 0, newOffset, "");
+            Maps!.Add(newMap);
+            MapStructures!.AddRange(Enumerable.Repeat<byte>(0, 256));
+            SetChanged(true);
+            index = Maps!.Count - 1;
+        }
+        else
+        {
+            Notify("Can not create new map. Map limit is reached.");
+        }
+        SetProcessingMap(index);
+        return index;
     }
     #endregion
 }

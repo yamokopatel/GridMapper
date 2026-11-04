@@ -93,42 +93,9 @@ public partial class MapEditorViewModel : ViewModelBase
     [RelayCommand]
     private void NewMap()
     {
-        List<int> existedIds = new List<int>();
-        byte? freeId = null;
-        for(int a = 0; a < BearerIn.GetMaps()!.Count; a++)
-        {
-            existedIds.Add(BearerIn.GetMaps()![a].GetMapId());
-        }
-        for(int a = 0; a < 256; a++)
-        {
-            if (!existedIds.Contains(a))
-            {
-                freeId = (byte)a;
-                break;
-            }
-        }
-        if(freeId != null)
-        {
-            byte newId = freeId.Value;
-            int newOffset = 0; 
-            if(BearerIn.GetMaps()!.Count > 0)
-            {
-                newOffset = BearerIn.GetMaps()![^1].GetByteOffset() + 256;
-            }
-            Map newMap = new Map(newId, 0, newOffset, "");
-            BearerIn.GetMaps()!.Add(newMap);
-            BearerIn.GetStructures()!.AddRange(Enumerable.Repeat<byte>(0, 256));
-            BearerIn.SetChanged(true);
-            MapsToItems();
-            SelectedMap = MapOptions.Count - 1;
-        }
-        else
-        {
-            NoticeWindow notice = new NoticeWindow();
-            NoticeWindowViewModel nwvm = new NoticeWindowViewModel("Can not create new map. Map limit is reached.");
-            notice.DataContext = nwvm;
-            notice.Show();
-        }
+        int newMapIndex = BearerIn.CreateMap();
+        MapsToItems();
+        SelectedMap = newMapIndex;
     }
     [RelayCommand]
     private void DeleteMap()

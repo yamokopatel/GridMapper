@@ -2,8 +2,16 @@ using System.Collections.Generic;
 
 public class Container<T>
 {
-    private readonly ushort version;
-    private T[] values;
+    public ushort version
+    {
+        get;
+        private set;
+    }
+    public T[] values
+    {
+        get;
+        set;
+    }
 
     public Container(ushort version, T[] values)
     {

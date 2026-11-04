@@ -28,10 +28,6 @@ public class FileBearer
         private string? MapMetadataFilePath;
         private string? MapStructureFilePath;
         private string? CellMetadataFilePath;
-        //  Files
-        private FileInfo? MapMetadataFile;
-        private FileInfo? MapStructureFile;
-        private FileInfo? CellMetadataFile;
     #endregion
 
 
@@ -86,32 +82,6 @@ public class FileBearer
             NoticeWindowViewModel nwvm = new NoticeWindowViewModel(text);
             notice.DataContext = nwvm;
             notice.Show();
-        }
-        public void TryLaodFiles()
-        {
-            try{
-                if(!string.IsNullOrWhiteSpace(MapMetadataFilePath)
-                    && !string.IsNullOrWhiteSpace(MapStructureFilePath)
-                    && !string.IsNullOrWhiteSpace(CellMetadataFilePath))
-                {
-                    MapMetadataFile = new FileInfo(MapMetadataFilePath!);
-                    MapStructureFile = new FileInfo(MapStructureFilePath!);
-                    CellMetadataFile = new FileInfo(CellMetadataFilePath!);
-                }
-                else
-                {
-                    if(MapMetadataFilePath != null
-                        && MapStructureFilePath != null
-                        && CellMetadataFilePath != null)
-                    {
-                        Notify("Any of provided paths is not valid.");
-                    }
-                }
-            }
-            catch(Exception e)
-            {
-                Notify(e.ToString());
-            }
         }
         public void TryLoadData()
         {

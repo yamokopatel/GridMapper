@@ -1,9 +1,21 @@
 public class Transition : BaseObject
 {
-    private byte NextMapId;
-    private byte NextX;
-    private byte NextZ;
-    private Direction NextDirection;
+    public byte NextMapId
+    {
+        get; private set;
+    }
+    public byte NextX
+    {
+        get; private set;
+    }
+    public byte NextZ
+    {
+        get; private set;
+    }
+    public Direction NextDirection
+    {
+        get; private set;
+    }
 
     public Transition (ushort objectId, byte mapId, byte x, byte z, byte nextMapId, byte nextX, byte nextZ, Direction nextDirection)
     : base(objectId, mapId, x, z)

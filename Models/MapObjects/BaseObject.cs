@@ -1,9 +1,21 @@
 public class BaseObject
 {
-    private readonly ushort ObjectId;
-    private readonly byte MapId;
-    private readonly byte X;
-    private readonly byte Z;
+    public ushort ObjectId
+    {
+        get; private set;
+    }
+    public byte MapId
+    {
+        get; private set;
+    }
+    public byte X
+    {
+        get; private set;
+    }
+    public byte Z
+    {
+        get; private set;
+    }
 
     public BaseObject(ushort objectId, byte mapId, byte x, byte z)
     {

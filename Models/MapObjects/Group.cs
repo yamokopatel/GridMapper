@@ -2,7 +2,10 @@ using System.Collections.Generic;
 
 public class Group : BaseObject
 {
-    private List<byte> EnemyIds;
+    public List<byte> EnemyIds
+    {
+        get; private set;
+    }
 
     public Group(ushort objectId, byte mapId, byte x, byte z, byte[] enemyIds)
     : base(objectId, mapId, x, z)

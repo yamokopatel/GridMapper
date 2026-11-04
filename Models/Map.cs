@@ -1,9 +1,21 @@
 public class Map
 {
-    private readonly byte MapId;
-    private byte BiomeId;
-    private int ByteOffset;
-    private string MapName;
+    public byte MapId
+    {
+        get; private set;
+    }
+    public byte BiomeId
+    {
+        get; private set;
+    }
+    public int ByteOffset
+    {
+        get; private set;
+    }
+    public string MapName
+    {
+        get; private set;
+    }
 
     public Map (byte mapId, byte biomeId, int byteOffset, string mapName)
     {

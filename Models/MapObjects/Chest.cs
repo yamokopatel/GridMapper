@@ -2,7 +2,10 @@ using System.Collections.Generic;
 
 public class Chest : BaseObject
 {
-    private List<byte> SubjectIds;
+    public List<byte> SubjectIds
+    {
+        get; private set;
+    }
 
     public Chest(ushort objectId, byte mapId, byte x, byte z, byte[] subjects) : base(objectId, mapId, x, z)
     {

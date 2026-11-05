@@ -46,12 +46,28 @@ public partial class StructureEditorViewModel : ViewModelBase
     ];
     [ObservableProperty]
     public partial int WestTypeIndex { get; set; } = 0;
+    partial void OnWestTypeIndexChanged(int value)
+    {
+        BearerIn.EditCell(0, (byte)value);
+    }
     [ObservableProperty]
     public partial int NorthTypeIndex { get; set; } = 0;
+    partial void OnNorthTypeIndexChanged(int value)
+    {
+        BearerIn.EditCell(1, (byte)value);
+    }
     [ObservableProperty]
     public partial int EastTypeIndex { get; set; } = 0;
+    partial void OnEastTypeIndexChanged(int value)
+    {
+        BearerIn.EditCell(2, (byte)value);
+    }
     [ObservableProperty]
     public partial int SouthTypeIndex { get; set; } = 0;
+    partial void OnSouthTypeIndexChanged(int value)
+    {
+        BearerIn.EditCell(3, (byte)value);
+    }
 
     public StructureEditorViewModel(DataBearer bearer)
     {

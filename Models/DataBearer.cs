@@ -240,4 +240,19 @@ public class DataBearer
         }
     }
     #endregion
+
+    #region STRUCTURES
+    public void EditCell(byte part, byte state)
+    {
+        byte[] parts = new byte[4];
+        parts[0] = (byte)((MapStructures![CellInProcessingIndex] >> 6) & 0b11);
+        parts[1] = (byte)((MapStructures![CellInProcessingIndex] >> 4) & 0b11);
+        parts[2] = (byte)((MapStructures![CellInProcessingIndex] >> 2) & 0b11);
+        parts[3] = (byte)(MapStructures![CellInProcessingIndex] & 0b11);
+        parts[part] = state;
+        byte cellState = (byte)((parts[0] * 64) + (parts[1] * 16) + (parts[2] * 4) + parts[3]);
+        MapStructures![CellInProcessingIndex] = cellState;
+        CellModified!(CellInProcessingIndex);
+    }
+    #endregion
 }

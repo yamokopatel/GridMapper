@@ -255,4 +255,48 @@ public class DataBearer
         CellModified!(CellInProcessingIndex);
     }
     #endregion
+
+    #region OBJECTS
+    public int CreateObject<T>() where T : BaseObject
+    {
+        int m = CellInProcessingIndex / 256, x = CellInProcessingIndex % 256 % 16;
+        int z = CellInProcessingIndex % 256 / 16, mid = Maps![m].GetMapId();
+        List<ushort> occupedIds = new List<ushort>();
+        for(int a = 0; a < MapObjects!.Count; a++)
+        {
+            occupedIds.Add(MapObjects![a].GetObjectId());
+        }
+        ushort? freeId = null;
+        for(int a = 0; a < 65_536; a++)
+        {
+            if (!occupedIds.Contains((ushort)a))
+            {
+                freeId = (ushort)a;
+                break;
+            }
+        }
+        if(freeId != null)
+        {
+            BaseObject newObject = new BaseObject(freeId!.Value, (byte)mid, (byte)x, (byte)z);
+            if(typeof(T) == typeof(Chest))
+            {
+                newObject = new Chest(freeId!.Value, (byte)mid, (byte)x, (byte)z, []);
+            }
+            else if(typeof(T) == typeof(Group))
+            {
+                newObject = new Group(freeId!.Value, (byte)mid, (byte)x, (byte)z, []);
+            }
+            else if(typeof(T) == typeof(Transition))
+            {
+                newObject = new Transition(freeId!.Value, (byte)mid, (byte)x, (byte)z, 0, 0, 0, new Direction());
+            }
+            MapObjects!.Add(newObject);
+        }
+        else
+        {
+            Notify("New map object will be out of limit.");
+        }
+        return MapObjects!.Count - 1;
+    }
+    #endregion
 }

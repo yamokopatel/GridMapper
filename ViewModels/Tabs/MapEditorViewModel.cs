@@ -41,7 +41,7 @@ public partial class MapEditorViewModel : ViewModelBase
     {
         if(SelectedMap != -1 && !ChangingMap)
         {
-            BearerIn.GetMaps()![SelectedMap].SetBiomeId((byte)value!.Value);
+            BearerIn.EditMap<byte>('b',(byte)value!.Value);
             BearerIn.SetChanged(true);
         }
     }
@@ -51,7 +51,7 @@ public partial class MapEditorViewModel : ViewModelBase
     {
         if(SelectedMap != -1 && !ChangingMap)
         {
-            BearerIn.GetMaps()![SelectedMap].SetMapName(value);
+            BearerIn.EditMap<string>('n', value);
             RenameItem(value);
             BearerIn.SetChanged(true);
         }
@@ -100,24 +100,8 @@ public partial class MapEditorViewModel : ViewModelBase
     [RelayCommand]
     private void DeleteMap()
     {
-        int deletable = SelectedMap;
-        SelectedMap = -1;
-        BearerIn.GetMapObjects()!.RemoveAll(obj => obj.GetMapId() == BearerIn.GetMaps()![deletable].GetMapId());
-        BearerIn.GetStructures()!.RemoveRange(BearerIn.GetMaps()![deletable].GetByteOffset(), 256);
-        List<BaseObject> objectsWithoutMap = BearerIn.GetMapObjects()!.FindAll(owm => owm.GetMapId() == deletable);
-        for(int a = 0; a < objectsWithoutMap.Count; a++)
-        {
-            BearerIn.GetMapObjects()!.Remove(objectsWithoutMap[a]);
-        }
-        for(int a = deletable; a < BearerIn.GetMaps()!.Count; a++)
-        {
-            BearerIn.GetMaps()![a].SetByteOffset(BearerIn.GetMaps()![a].GetByteOffset() - 256);
-        }
-        BearerIn.GetMaps()!.RemoveAt(deletable);
-        MapOptions.RemoveAt(deletable);
-        SelectedMap =   ((BearerIn.GetMaps()!.Count >= deletable) 
-                        ? deletable 
-                        : deletable - 1);
+        SelectedMap = BearerIn.DeleteMap();
+        MapsToItems();
     }
 
     private void MapsToItems()

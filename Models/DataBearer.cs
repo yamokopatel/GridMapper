@@ -207,5 +207,37 @@ public class DataBearer
         SetProcessingMap(index);
         return index;
     }
+    public int DeleteMap()
+    {
+        MapObjects!.RemoveAll(obj => obj.GetMapId() == Maps![MapInProcessingIndex].GetMapId());
+        MapStructures!.RemoveRange(Maps![MapInProcessingIndex].GetByteOffset(), 256);
+        List<Transition> transitionsWithoutNextMap = MapObjects.OfType<Transition>().ToList();
+        for(int a = 0; a < transitionsWithoutNextMap.Count; a++)
+        {
+            transitionsWithoutNextMap[a].SetNextMapId(0);
+            transitionsWithoutNextMap[a].SetNextX(0);
+            transitionsWithoutNextMap[a].SetNextZ(0);
+        }
+        for(int a = MapInProcessingIndex + 1; a < Maps.Count; a++)
+        {
+            Maps[a].SetByteOffset(Maps[a].GetByteOffset() - 256);
+        }
+        Maps.RemoveAt(MapInProcessingIndex);
+        return -1;
+    }
+    public void EditMap<T>(char field, T value)
+    {
+        switch (field)
+        {
+            case 'b':
+                Maps![MapInProcessingIndex].SetBiomeId((byte)(object)value!);
+                break;
+            case 'n':
+                Maps![MapInProcessingIndex].SetMapName((string)(object)value!);
+                break;
+            default:
+                throw new ArgumentException("Attempt to edit not existed field");
+        }
+    }
     #endregion
 }

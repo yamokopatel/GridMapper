@@ -295,8 +295,38 @@ public class DataBearer
         else
         {
             Notify("New map object will be out of limit.");
+            return -1;
         }
         return MapObjects!.Count - 1;
+    }
+    public BaseObject ChangeObject<T>()
+    {
+        int m = CellInProcessingIndex / 256, x = CellInProcessingIndex % 256 % 16;
+        int z = CellInProcessingIndex % 256 / 16, mid = Maps![m].GetMapId();
+        int index = MapObjects!.FindIndex(obj => obj.GetMapId() == mid && obj.GetX() == x && obj.GetZ() == z);
+        ushort oid = MapObjects![index].GetObjectId();
+        BaseObject newObject = new BaseObject(0, 0, 0, 0);
+        if(typeof(T) == typeof(Chest))
+        {
+            newObject = new Chest(oid, (byte)mid, (byte)x, (byte)z, []);
+        }
+        else if(typeof(T) == typeof(Group))
+        {
+            newObject = new Group(oid, (byte)mid, (byte)x, (byte)z, []);
+        }
+        else if(typeof(T) == typeof(Transition))
+        {
+            newObject = new Transition(oid, (byte)mid, (byte)x, (byte)z, 0, 0, 0, new Direction());
+        }
+        MapObjects![index] = newObject;
+        return MapObjects![index];
+    }
+    public void DeleteObject()
+    {
+        int m = CellInProcessingIndex / 256, x = CellInProcessingIndex % 256 % 16;
+        int z = CellInProcessingIndex % 256 / 16, mid = Maps![m].GetMapId();
+        int index = MapObjects!.FindIndex(obj => obj.GetMapId() == mid && obj.GetX() == x && obj.GetZ() == z);
+        MapObjects.RemoveAt(index);
     }
     #endregion
 }

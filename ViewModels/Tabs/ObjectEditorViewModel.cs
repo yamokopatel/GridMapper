@@ -35,43 +35,41 @@ public partial class ObjectEditorViewModel : ViewModelBase
             {
                 if(oldValue == 0)
                 {
+                    int newIndex = -1;
                     switch (newValue)
                     {
-                        case 1: BearerIn.CreateObject<Chest>(); break;
-                        case 2: BearerIn.CreateObject<Group>(); break;
-                        case 3: BearerIn.CreateObject<Transition>(); break;
+                        case 1: newIndex = BearerIn.CreateObject<Chest>(); break;
+                        case 2: newIndex = BearerIn.CreateObject<Group>(); break;
+                        case 3: newIndex = BearerIn.CreateObject<Transition>(); break;
+                    }
+                    if(newIndex > -1)
+                    {
+                        mapObject = BearerIn.GetMapObjects()![newIndex];
                     }
                 }
                 else
                 {
                     if(newValue == 0)
                     {
-                        BearerIn.GetMapObjects()!.Remove(mapObject!);
+                        BearerIn.DeleteObject();
                         mapObject = null;
                     }
                     else
                     {
-                        int currentIndex = BearerIn.GetMapObjects()!.FindIndex(obj => obj == mapObject);
-                        BaseObject newObj = null!;
                         switch (newValue)
                         {
                             case 1:
-                                newObj = new Chest(mapObject!.GetObjectId(), mapObject.GetMapId(),
-                                    mapObject.GetX(), mapObject.GetZ(), []);
+                                mapObject = BearerIn.ChangeObject<Chest>();
                                 processableSubject = -1;
                                 break;
                             case 2:
-                                newObj = new Chest(mapObject!.GetObjectId(), mapObject.GetMapId(),
-                                    mapObject.GetX(), mapObject.GetZ(), []);
+                                mapObject = BearerIn.ChangeObject<Group>();
                                 processableEnemy = -1;
                                 break;
                             case 3:
-                                newObj = new Transition(mapObject!.GetObjectId(), mapObject.GetMapId(),
-                                    mapObject.GetX(), mapObject.GetZ(), 0, 0, 0, new Direction());
+                                mapObject = BearerIn.ChangeObject<Transition>();
                                 break;
                         }
-                        BearerIn.GetMapObjects()![currentIndex] = newObj;
-                        mapObject = BearerIn.GetMapObjects()![currentIndex];
                     }
                 }
             }

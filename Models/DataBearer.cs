@@ -378,5 +378,34 @@ public class DataBearer
         return (Group)MapObjects!.Find(c => c.GetMapId() == mid && c.GetX() == x && c.GetZ() == z)!;
     }
     #endregion
+
+    #region Transition
+    public void SetNMapId(byte nextId)
+    {
+        Transition tran = GetTransition();
+        tran.SetNextMapId(nextId);
+    }
+    public void SetNX(byte nextX)
+    {
+        Transition tran = GetTransition();
+        tran.SetNextX(nextX);
+    }
+    public void SetNZ(byte nextZ)
+    {
+        Transition tran = GetTransition();
+        tran.SetNextZ(nextZ);
+    }
+    public void SetNDir(Direction nextDir)
+    {
+        Transition tran = GetTransition();
+        tran.SetNextDirection(nextDir);
+    }
+    private Transition GetTransition()
+    {
+        int m = CellInProcessingIndex / 256, x = CellInProcessingIndex % 256 % 16;
+        int z = CellInProcessingIndex % 256 / 16, mid = Maps![m].GetMapId();
+        return (Transition)MapObjects!.Find(c => c.GetMapId() == mid && c.GetX() == x && c.GetZ() == z)!;
+    }
+    #endregion
     #endregion
 }

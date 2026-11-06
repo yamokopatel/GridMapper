@@ -159,13 +159,31 @@ public partial class ObjectEditorViewModel : ViewModelBase
     partial void OnSelectedNextMapChanged(int value)
     {
         TransitionParametersVisible = (value > -1);
+        if(value > -1)
+        {
+            BearerIn.SetNMapId((byte)value);
+        }
     }
     //  x
     [ObservableProperty]
     public partial decimal? NextXValue { get; set; } = null;
-    //  y
+    partial void OnNextXValueChanged(decimal? value)
+    {
+        if(value != null)
+        {
+            BearerIn.SetNX((byte)value);
+        }
+    }
+    //  z
     [ObservableProperty]
     public partial decimal? NextZValue { get; set; } = null;
+    partial void OnNextZValueChanged(decimal? value)
+    {
+        if(value != null)
+        {
+            BearerIn.SetNZ((byte)value);
+        }
+    }
     //  x direction
     [ObservableProperty]
     public partial decimal? NextXDirValue { get; set; } = null;
@@ -178,15 +196,17 @@ public partial class ObjectEditorViewModel : ViewModelBase
                 if(newValue != 0 && NextZDirValue != 0)
                 {
                     NextZDirValue = 0;
+                    BearerIn.SetNDir(new Direction((sbyte)newValue, 0));
                 }
             }
             else if(NextZDirValue != null)
             {
                 NextZDirValue = null;
+                BearerIn.SetNDir(new Direction());
             }
         }
     }
-    //  y direction
+    //  z direction
     [ObservableProperty]
     public partial decimal? NextZDirValue { get; set; } = null;
     partial void OnNextZDirValueChanged(decimal? oldValue, decimal? newValue)
@@ -198,11 +218,13 @@ public partial class ObjectEditorViewModel : ViewModelBase
                 if(newValue != 0 && NextXDirValue != 0)
                 {
                     NextXDirValue = 0;
+                    BearerIn.SetNDir(new Direction(0, (sbyte)newValue));
                 }
             }
             else if(NextXDirValue != null)
             {
                 NextXDirValue = null;
+                BearerIn.SetNDir(new Direction());
             }
         }
     }

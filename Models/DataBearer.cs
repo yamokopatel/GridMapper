@@ -353,5 +353,30 @@ public class DataBearer
         return (Chest)MapObjects!.Find(c => c.GetMapId() == mid && c.GetX() == x && c.GetZ() == z)!;
     }
     #endregion
+
+    #region ENEMIES
+    public int AddEnemy()
+    {
+        Group group = GetGroup();
+        group.GetEnemyIds().Add(0);
+        return group.GetEnemyIds().Count - 1;
+    }
+    public void SetEnemy(int index, byte value)
+    {
+        Group group = GetGroup();
+        group.GetEnemyIds()[index] = value;
+    }
+    public void RemoveEnemy(int index)
+    {
+        Group group = GetGroup();
+        group.GetEnemyIds().RemoveAt(index);
+    }
+    private Group GetGroup()
+    {
+        int m = CellInProcessingIndex / 256, x = CellInProcessingIndex % 256 % 16;
+        int z = CellInProcessingIndex % 256 / 16, mid = Maps![m].GetMapId();
+        return (Group)MapObjects!.Find(c => c.GetMapId() == mid && c.GetX() == x && c.GetZ() == z)!;
+    }
+    #endregion
     #endregion
 }

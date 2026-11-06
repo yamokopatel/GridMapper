@@ -149,11 +149,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
         if (!ChangingEnemy)
         {
             EnemyList[processableEnemy] = (byte)value!;
-            // Group group = (Group)mapObject!;
-            // group.SetEnemyIds(EnemyList.ToList());
-            // int currentObjectIndex = BearerIn.GetMapObjects()!.FindIndex(c => c == mapObject);
-            // BearerIn.GetMapObjects()![currentObjectIndex] = group;
-            // mapObject = BearerIn.GetMapObjects()![currentObjectIndex];
+            BearerIn.SetEnemy(processableSubject, (byte)value);
         }
     }
     //  Transition
@@ -298,7 +294,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
     private void CreateEnemy()
     {
         EnemyList.Add(0);
-        SelectedEnemy = EnemyList.Count - 1;
+        SelectedEnemy = BearerIn.AddEnemy();
     }
     [RelayCommand]
     private void DeleteEnemy()
@@ -308,6 +304,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
             toDel = processableEnemy;
             processableEnemy = -1;
             EnemyList.RemoveAt(toDel);
+            BearerIn.RemoveEnemy(toDel);
         }
     }
     #endregion

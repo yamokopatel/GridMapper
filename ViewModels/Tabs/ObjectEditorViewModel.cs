@@ -91,7 +91,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
                     FillTransition(transition);
                     break;
                 default:
-
+                    // I don't remember, what I wanted here...
                     break;
             }
             isObjLoaded = false;
@@ -122,11 +122,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
         if (!ChangingSubject)
         {
             SubjectList[processableSubject] = (byte)value!;
-            // Chest chest = (Chest)mapObject!;
-            // chest.SetSubjectIds(SubjectList.ToList());
-            // int currentObjectIndex = BearerIn.GetMapObjects()!.FindIndex(c => c == mapObject);
-            // BearerIn.GetMapObjects()![currentObjectIndex] = chest;
-            // mapObject = BearerIn.GetMapObjects()![currentObjectIndex];
+            BearerIn.SetSubject(processableSubject, (byte)value);
         }
     }
     //  Group
@@ -284,7 +280,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
     private void CreateSubject()
     {
         SubjectList.Add(0);
-        SelectedSubject = SubjectList.Count - 1;
+        SelectedSubject = BearerIn.AddSubject();
     }
     [RelayCommand]
     private void DeleteSubject()
@@ -295,6 +291,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
             toDel = processableSubject;
             processableSubject = -1;
             SubjectList.RemoveAt(toDel);
+            BearerIn.RemoveSubject(toDel);
         }
     }
     [RelayCommand]

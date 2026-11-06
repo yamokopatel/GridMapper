@@ -328,5 +328,30 @@ public class DataBearer
         int index = MapObjects!.FindIndex(obj => obj.GetMapId() == mid && obj.GetX() == x && obj.GetZ() == z);
         MapObjects.RemoveAt(index);
     }
+
+    #region SUBJECTS
+    public int AddSubject()
+    {
+        Chest chest = GetChest();
+        chest.GetSubjectIds().Add(0);
+        return chest.GetSubjectIds().Count - 1;
+    }
+    public void SetSubject(int index, byte value)
+    {
+        Chest chest = GetChest();
+        chest.GetSubjectIds()[index] = value;
+    }
+    public void RemoveSubject(int index)
+    {
+        Chest chest = GetChest();
+        chest.GetSubjectIds().RemoveAt(index);
+    }
+    private Chest GetChest()
+    {
+        int m = CellInProcessingIndex / 256, x = CellInProcessingIndex % 256 % 16;
+        int z = CellInProcessingIndex % 256 / 16, mid = Maps![m].GetMapId();
+        return (Chest)MapObjects!.Find(c => c.GetMapId() == mid && c.GetX() == x && c.GetZ() == z)!;
+    }
+    #endregion
     #endregion
 }

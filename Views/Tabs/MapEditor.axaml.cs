@@ -1,31 +1,52 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using GridMapper.ViewModels.Tabs;
 
 namespace GridMapper.Views.Tabs;
 
 public partial class MapEditor : UserControl
 {
-    public static readonly StyledProperty<DataBearer> BearerInProperty =
-        AvaloniaProperty.Register<FileBrowser, DataBearer>(nameof(BearerIn));
-    public DataBearer BearerIn
-    {
-        get => GetValue(BearerInProperty);
-        set => SetValue(BearerInProperty, value);
-    }
-    private MapEditorViewModel mevm = null!;
+    #region FIELDS
+    private MapEditorViewModel mevm;
+    #endregion
+
+    #region CONSTRUCTOR
     public MapEditor()
     {
+        mevm = new MapEditorViewModel();
+        DataContext = mevm;
+        // Initialization
         InitializeComponent();
-    }
-
-    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-    {
-        base.OnPropertyChanged(change);
-        if(change.Property == BearerInProperty)
+        // Substription
+        mevm.OtherMapSelected += (mapIndex) =>
         {
-            mevm = new MapEditorViewModel(BearerIn);
-            DataContext = mevm;
-        }
+            OnSelectedMapChanged(mapIndex);
+        };
     }
+    #endregion
+    
+    #region EVENTS
+    public static readonly RoutedEvent<NumberChangedEventArgs<int>> SelectedMapChangedEvent =
+        RoutedEvent.Register<MapEditor, NumberChangedEventArgs<int>>(
+            nameof(SelectedMapChanged),
+            RoutingStrategies.Bubble
+        );
+    #endregion
+
+    #region EVENT HANDLERS
+    public event EventHandler<NumberChangedEventArgs<int>> SelectedMapChanged
+    {
+        add => AddHandler(SelectedMapChangedEvent, value);
+        remove => RemoveHandler(SelectedMapChangedEvent, value);
+    }
+    #endregion
+
+    #region EVENT SENDERS
+    protected virtual void OnSelectedMapChanged(int mapIndex)
+    {
+        RaiseEvent(new NumberChangedEventArgs<int>(SelectedMapChangedEvent, mapIndex));
+    }
+    #endregion
 }

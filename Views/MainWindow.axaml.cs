@@ -46,6 +46,7 @@ public partial class MainWindow : Window
 
         #region avalonia
         this.AddHandler(MapEditor.SelectedMapChangedEvent, OnSelectedMapChanged);
+        this.AddHandler(StructureEditor.SelectedMapChangedEvent, OnSelectedMapChanged);
         #endregion
         #endregion
     }

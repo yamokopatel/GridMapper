@@ -64,6 +64,7 @@ public partial class MapEditorViewModel : ViewModelBase
     {
         if(SelectedMap != index)
         {
+            SelectedMap = index;
             if(index > -1)
             {
 //              SettingsVisible = true;
@@ -84,8 +85,8 @@ public partial class MapEditorViewModel : ViewModelBase
     partial void OnSelectedMapChanged(int value)
     {
         ChangingMap = true;
-        // BearerIn.SetProcessingMap(value);
-        // AbleToDelete = value > -1;
+        OnOtherMapSelected(value);
+        AbleToDelete = value > -1;
         // MapID = (value > -1) ? BearerIn.GetMaps()![value].GetMapId() : null;
         // MapBiomeID = (value > -1) ? BearerIn.GetMaps()![value].GetBiomeId() : null;
         // MapName = (value > -1) ? BearerIn.GetMaps()![value].GetMapName() : "";

@@ -8,6 +8,7 @@ namespace GridMapper.ViewModels.Tabs;
 public partial class StructureEditorViewModel : ViewModelBase
 {
     #region PROPERTIES
+    private bool ParentMapChanging = false;
     [ObservableProperty]
     public partial List<ComboBoxItem> MapOptions { get; set; } = new List<ComboBoxItem>();
     [ObservableProperty]
@@ -53,7 +54,9 @@ public partial class StructureEditorViewModel : ViewModelBase
     #region PROPERTY EVENTS
     partial void OnSelectedMapChanged(int value)
     {
-        OnOtherMapSelected(value);
+        if(!ParentMapChanging){
+            OnOtherMapSelected(value);
+        }
     }
     partial void OnWestTypeIndexChanged(int value)
     {
@@ -88,7 +91,9 @@ public partial class StructureEditorViewModel : ViewModelBase
     {
         if(SelectedMap != index)
         {
+            ParentMapChanging = true;
             SelectedMap = index;
+            ParentMapChanging = false;
         }
     }
     #endregion

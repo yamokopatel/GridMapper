@@ -39,6 +39,7 @@ public partial class MapEditorViewModel : ViewModelBase
 
     #region  FIELDS
     private bool ChangingMap = false;
+    private bool ParentMapChanging = false;
 
     //  PROPERTIES
     [ObservableProperty]
@@ -64,19 +65,9 @@ public partial class MapEditorViewModel : ViewModelBase
     {
         if(SelectedMap != index)
         {
+            ParentMapChanging = true;
             SelectedMap = index;
-            if(index > -1)
-            {
-//              SettingsVisible = true;
-//              MapBiomeID = (decimal?)BearerIn.GetMaps()![index].GetBiomeId();
-//              MapName = BearerIn.GetMaps()![index].GetMapName();
-            }
-            else
-            {
-                SettingsVisible = false;
-                MapBiomeID = null;
-                MapName = "";
-            }
+            ParentMapChanging = false;
         }
     }
     #endregion
@@ -85,7 +76,9 @@ public partial class MapEditorViewModel : ViewModelBase
     partial void OnSelectedMapChanged(int value)
     {
         ChangingMap = true;
-        OnOtherMapSelected(value);
+        if(!ParentMapChanging){
+            OnOtherMapSelected(value);
+        }
         AbleToDelete = value > -1;
         // MapID = (value > -1) ? BearerIn.GetMaps()![value].GetMapId() : null;
         // MapBiomeID = (value > -1) ? BearerIn.GetMaps()![value].GetBiomeId() : null;

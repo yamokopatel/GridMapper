@@ -1,42 +1,87 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 using GridMapper.ViewModels;
+using GridMapper.Views.Tabs;
 
 namespace GridMapper.Views;
 
 public partial class MainWindow : Window
 {
+    #region FIELDS
     private MainViewModel mvm;
-    public static readonly StyledProperty<DataBearer> BearerOutProperty =
-        AvaloniaProperty.Register<MainWindow, DataBearer>(nameof(BearerOut));
-    public DataBearer BearerOut
-    {
-        get => GetValue(BearerOutProperty);
-        set => SetValue(BearerOutProperty, value);
-    }
-    public static readonly StyledProperty<IBrush> SaveUndoColorProperty = 
-        AvaloniaProperty.Register<MainWindow, IBrush>(nameof(SaveUndoColor));
     public IBrush SaveUndoColor
     {
         get => GetValue(SaveUndoColorProperty);
         set => SetValue(SaveUndoColorProperty, value);
     }
+    #endregion
+    
+    #region PROPERTIES
+    public static readonly StyledProperty<IBrush> SaveUndoColorProperty = 
+        AvaloniaProperty.Register<MainWindow, IBrush>(nameof(SaveUndoColor));
+    #endregion
+
+    #region CONSTRUCTOR
     public MainWindow()
     {
         mvm = new MainViewModel();
         DataContext = mvm;
-        BearerOut = mvm.BearerOut;
-        SetSaveUndoColor();
+        // Initialization
+        SaveUndoColor = Brushes.DarkGray;
         InitializeComponent();
-        BearerOut.DataChanged += (changed) =>
+        #region Subscriptions
+        #region native
+        mvm.SelectedMapChanged += (mapIndex) =>
         {
-            SetSaveUndoColor();
+            OnProcessableMapChanged(mapIndex);
         };
-    }
+        // BearerOut.DataChanged += (changed) =>
+        // {
+        //     SetSaveUndoColor(changed);
+        // };
+        #endregion
 
-    private void SetSaveUndoColor()
-    {
-        SaveUndoColor = (BearerOut.GetChanged() ? Brushes.LightGray : Brushes.DarkGray);
+        #region avalonia
+        this.AddHandler(MapEditor.SelectedMapChangedEvent, OnSelectedMapChanged);
+        #endregion
+        #endregion
     }
+    #endregion
+
+    #region FUNCTIONS
+    private void SetSaveUndoColor(bool changed)
+    {
+        SaveUndoColor = (changed ? Brushes.LightGray : Brushes.DarkGray);
+    }
+    private void OnSelectedMapChanged(object? sender, NumberChangedEventArgs<int> e)
+    {
+        mvm.SetProcessingMap(e.Value);
+    }
+    #endregion
+
+    #region EVENTS
+    public static readonly RoutedEvent<NumberChangedEventArgs<int>> ProcessableMapChangedEvent =
+        RoutedEvent.Register<MainWindow, NumberChangedEventArgs<int>>(
+            nameof(ProcessableMapChanged),
+            RoutingStrategies.Tunnel
+        );
+    #endregion
+
+    #region EVENT HANDLERS
+    public event EventHandler<NumberChangedEventArgs<int>> ProcessableMapChanged
+    {
+        add => AddHandler(ProcessableMapChangedEvent, value);
+        remove => RemoveHandler(ProcessableMapChangedEvent, value);
+    }
+    #endregion
+
+    #region EVENT SENDERS
+    protected virtual void OnProcessableMapChanged(int mapIndex)
+    {
+        RaiseEvent(new NumberChangedEventArgs<int>(ProcessableMapChangedEvent, mapIndex));
+    }
+    #endregion
 }

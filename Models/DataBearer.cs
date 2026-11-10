@@ -70,7 +70,7 @@ public class DataBearer
     public void SetProcessingMap(int index)
     {
         MapInProcessingIndex = index;
-        SelectedMapChanged!(index);
+        OnSelectedMapChanged(index);
     }
     public void SetProcessingCell(int index)
     {

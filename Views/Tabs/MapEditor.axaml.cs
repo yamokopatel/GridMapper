@@ -19,11 +19,25 @@ public partial class MapEditor : UserControl
         DataContext = mevm;
         // Initialization
         InitializeComponent();
-        // Substription
+        #region Subscriptions
+        #region native
         mevm.OtherMapSelected += (mapIndex) =>
         {
             OnSelectedMapChanged(mapIndex);
         };
+        #endregion
+
+        #region avalonia
+        this.AddHandler(MainWindow.ProcessableMapChangedEvent, OnProcessableMapChanged);
+        #endregion
+        #endregion
+    }
+    #endregion
+
+    #region FUNCTIONS
+    private void OnProcessableMapChanged(object? sender, NumberChangedEventArgs<int> e)
+    {
+        mevm.SetSelectedMap(e.Value);
     }
     #endregion
     

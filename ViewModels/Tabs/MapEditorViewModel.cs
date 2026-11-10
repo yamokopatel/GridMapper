@@ -59,6 +59,27 @@ public partial class MapEditorViewModel : ViewModelBase
     // public partial string DebugText { get; set; } = ""; // Extra field to see this view errors
     #endregion
 
+    #region SETTERS
+    public void SetSelectedMap(int index)
+    {
+        if(SelectedMap != index)
+        {
+            if(index > -1)
+            {
+//              SettingsVisible = true;
+//              MapBiomeID = (decimal?)BearerIn.GetMaps()![index].GetBiomeId();
+//              MapName = BearerIn.GetMaps()![index].GetMapName();
+            }
+            else
+            {
+                SettingsVisible = false;
+                MapBiomeID = null;
+                MapName = "";
+            }
+        }
+    }
+    #endregion
+
     #region FIELD EVENTS
     partial void OnSelectedMapChanged(int value)
     {

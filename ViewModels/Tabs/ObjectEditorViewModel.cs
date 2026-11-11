@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GridMapper.ViewModels.Components;
@@ -11,23 +12,113 @@ namespace GridMapper.ViewModels.Tabs;
 
 public partial class ObjectEditorViewModel : ViewModelBase
 {
-    private DataBearer BearerIn;
+    #region FIELDS
     private int CellIndex = -1;
     private BaseObject? mapObject;
     private bool isObjLoaded = false;
+    private bool ParentMapChanging = false;
+    #endregion
+
+    #region CONSTRUCTOR
+    public ObjectEditorViewModel()
+    {
+        // BearerIn.SelectedCellChanged += (cellIndex) =>
+        // {
+        //     CellIndex = cellIndex;
+        //     if(cellIndex > -1){
+        //         int m = cellIndex / 256, x = cellIndex % 256 % 16, z = cellIndex % 256 / 16;
+        //         int mid = BearerIn.GetMaps()![m].GetMapId();
+        //         mapObject = BearerIn.GetMapObjects()!.Find(mo => mo.GetMapId() == mid 
+        //             && mo.GetX() == x 
+        //             && mo.GetZ() == z);
+        //         isObjLoaded = true;
+        //         switch (mapObject)
+        //         {
+        //             case null: SelectedObjectType = 0; break;
+        //             case Chest: SelectedObjectType = 1; break;
+        //             case Group: SelectedObjectType = 2; break;
+        //             case Transition: SelectedObjectType = 3; break;
+        //         }
+        //     }
+        // };
+    }
+    #endregion
 
     #region PROPERTIES
+    [ObservableProperty]
+    public partial ObservableCollection<ComboBoxItem> MapOptions { get; set; } = new ObservableCollection<ComboBoxItem>();
+    [ObservableProperty]
+    public partial int SelectedMap { get; set; } = -1;
     //  CHOSES
     //  Object Type
     [ObservableProperty]
     public partial int SelectedObjectType { get; set; } = 0;
+    //  PARAMETERS
+    //  Chest
+    private bool ChangingSubject = false;
+    private int processableSubject = -1;
+    [ObservableProperty]
+    public partial int SelectedSubject { get; set; } = -1;
+    [ObservableProperty]
+    public partial ObservableCollection<byte> SubjectList { get; set; } = new ObservableCollection<byte>();
+    [ObservableProperty]
+    public partial decimal? SubjectId { get; set; } = null;
+    //  Group
+    private bool ChangingEnemy = false;
+    private int processableEnemy = -1;
+    [ObservableProperty]
+    public partial int SelectedEnemy { get; set; } = -1;
+    [ObservableProperty]
+    public partial ObservableCollection<byte> EnemyList { get; set; } = new ObservableCollection<byte>();
+    [ObservableProperty]
+    public partial decimal? EnemyId { get; set; } = null;
+    //  Transition
+    //  map
+    [ObservableProperty]
+    public partial int SelectedNextMap { get; set; } = -1;
+    //  x
+    [ObservableProperty]
+    public partial decimal? NextXValue { get; set; } = null;
+    //  z
+    [ObservableProperty]
+    public partial decimal? NextZValue { get; set; } = null;
+    //  x direction
+    [ObservableProperty]
+    public partial decimal? NextXDirValue { get; set; } = null;
+    //  z direction
+    [ObservableProperty]
+    public partial decimal? NextZDirValue { get; set; } = null;
+    //  VISIBILITY
+    //  Object
+    //  chest
+    [ObservableProperty]
+    public partial bool ChestChosen { get; set; } = false;
+    //  group
+    [ObservableProperty]
+    public partial bool GroupChosen { get; set; } = false;
+    //  transition
+    [ObservableProperty]
+    public partial bool TransitionChosen { get; set; } = false;
+    //  transition parameters
+    [ObservableProperty]
+    public partial bool TransitionParametersVisible { get; set; } = false;
+    #endregion
+
+    #region PROPERTY EVENTS
+    partial void OnSelectedMapChanged(int value)
+    {
+        if (!ParentMapChanging)
+        {
+            OnOtherMapSelected(value);
+        }
+    }
     partial void OnSelectedObjectTypeChanged(int value)
     {
         ChestChosen = (value == 1);
         GroupChosen = (value == 2);
         TransitionChosen = (value ==3);
     }
-    partial void OnSelectedObjectTypeChanged(int oldValue, int newValue)
+    /*partial void OnSelectedObjectTypeChanged(int oldValue, int newValue)
     {
         if(!isObjLoaded)
         {
@@ -96,13 +187,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
             }
             isObjLoaded = false;
         }
-    }
-    //  PARAMETERS
-    //  Chest
-    private bool ChangingSubject = false;
-    private int processableSubject = -1;
-    [ObservableProperty]
-    public partial int SelectedSubject { get; set; } = -1;
+    }*/
     partial void OnSelectedSubjectChanged(int value)
     {
         ChangingSubject = true;
@@ -113,23 +198,14 @@ public partial class ObjectEditorViewModel : ViewModelBase
         SubjectId = SubjectList[processableSubject];
         ChangingSubject = false;
     }
-    [ObservableProperty]
-    public partial ObservableCollection<byte> SubjectList { get; set; } = new ObservableCollection<byte>();
-    [ObservableProperty]
-    public partial decimal? SubjectId { get; set; } = null;
-    partial void OnSubjectIdChanged(decimal? value)
+    /*partial void OnSubjectIdChanged(decimal? value)
     {
         if (!ChangingSubject)
         {
             SubjectList[processableSubject] = (byte)value!;
             BearerIn.SetSubject(processableSubject, (byte)value);
         }
-    }
-    //  Group
-    private bool ChangingEnemy = false;
-    private int processableEnemy = -1;
-    [ObservableProperty]
-    public partial int SelectedEnemy { get; set; } = -1;
+    }*/
     partial void OnSelectedEnemyChanged(int value)
     {
         ChangingEnemy = true;
@@ -140,54 +216,37 @@ public partial class ObjectEditorViewModel : ViewModelBase
         EnemyId = EnemyList[processableEnemy];
         ChangingEnemy = false;
     }
-    [ObservableProperty]
-    public partial ObservableCollection<byte> EnemyList { get; set; } = new ObservableCollection<byte>();
-    [ObservableProperty]
-    public partial decimal? EnemyId { get; set; } = null;
-    partial void OnEnemyIdChanged(decimal? value)
+    /*partial void OnEnemyIdChanged(decimal? value)
     {
         if (!ChangingEnemy)
         {
             EnemyList[processableEnemy] = (byte)value!;
             BearerIn.SetEnemy(processableSubject, (byte)value);
         }
-    }
-    //  Transition
-    //  map
-    [ObservableProperty]
-    public partial int SelectedNextMap { get; set; } = -1;
-    partial void OnSelectedNextMapChanged(int value)
+    }*/
+    /*partial void OnSelectedNextMapChanged(int value)
     {
         TransitionParametersVisible = (value > -1);
         if(value > -1)
         {
             BearerIn.SetNMapId((byte)value);
         }
-    }
-    //  x
-    [ObservableProperty]
-    public partial decimal? NextXValue { get; set; } = null;
-    partial void OnNextXValueChanged(decimal? value)
+    }*/
+    /*partial void OnNextXValueChanged(decimal? value)
     {
         if(value != null)
         {
             BearerIn.SetNX((byte)value);
         }
-    }
-    //  z
-    [ObservableProperty]
-    public partial decimal? NextZValue { get; set; } = null;
-    partial void OnNextZValueChanged(decimal? value)
+    }*/
+    /*partial void OnNextZValueChanged(decimal? value)
     {
         if(value != null)
         {
             BearerIn.SetNZ((byte)value);
         }
-    }
-    //  x direction
-    [ObservableProperty]
-    public partial decimal? NextXDirValue { get; set; } = null;
-    partial void OnNextXDirValueChanged(decimal? oldValue, decimal? newValue)
+    }*/
+    /*partial void OnNextXDirValueChanged(decimal? oldValue, decimal? newValue)
     {
         if(oldValue != newValue)
         {
@@ -205,11 +264,8 @@ public partial class ObjectEditorViewModel : ViewModelBase
                 BearerIn.SetNDir(new Direction());
             }
         }
-    }
-    //  z direction
-    [ObservableProperty]
-    public partial decimal? NextZDirValue { get; set; } = null;
-    partial void OnNextZDirValueChanged(decimal? oldValue, decimal? newValue)
+    }*/
+    /*partial void OnNextZDirValueChanged(decimal? oldValue, decimal? newValue)
     {
         if(oldValue != newValue)
         {
@@ -227,46 +283,20 @@ public partial class ObjectEditorViewModel : ViewModelBase
                 BearerIn.SetNDir(new Direction());
             }
         }
-    }
-    //  VISIBILITY
-    //  Object
-    //  chest
-    [ObservableProperty]
-    public partial bool ChestChosen { get; set; } = false;
-    //  group
-    [ObservableProperty]
-    public partial bool GroupChosen { get; set; } = false;
-    //  transition
-    [ObservableProperty]
-    public partial bool TransitionChosen { get; set; } = false;
-    //  transition parameters
-    [ObservableProperty]
-    public partial bool TransitionParametersVisible { get; set; } = false;
+    }*/
     #endregion
 
-    public ObjectEditorViewModel(DataBearer bearerIn)
+    #region SETTERS
+    public void SetSelectedMap(int index)
     {
-        BearerIn = bearerIn;
-        BearerIn.SelectedCellChanged += (cellIndex) =>
+        if(SelectedMap != index)
         {
-            CellIndex = cellIndex;
-            if(cellIndex > -1){
-                int m = cellIndex / 256, x = cellIndex % 256 % 16, z = cellIndex % 256 / 16;
-                int mid = BearerIn.GetMaps()![m].GetMapId();
-                mapObject = BearerIn.GetMapObjects()!.Find(mo => mo.GetMapId() == mid 
-                    && mo.GetX() == x 
-                    && mo.GetZ() == z);
-                isObjLoaded = true;
-                switch (mapObject)
-                {
-                    case null: SelectedObjectType = 0; break;
-                    case Chest: SelectedObjectType = 1; break;
-                    case Group: SelectedObjectType = 2; break;
-                    case Transition: SelectedObjectType = 3; break;
-                }
-            }
-        };
+            ParentMapChanging = true;
+            SelectedMap = index;
+            ParentMapChanging = false;
+        }
     }
+    #endregion
 
     #region FUNCTIONS
     private void ClearFields()
@@ -285,22 +315,22 @@ public partial class ObjectEditorViewModel : ViewModelBase
         NextXDirValue = null;
 
     }
-    private void FillTransition(Transition obj)
+    /*private void FillTransition(Transition obj)
     {
         SelectedNextMap = BearerIn.GetMaps()!.FindIndex(t => t.GetMapId() == obj!.GetMapId());
         NextXValue = obj.GetNextX(); NextZValue = obj.GetNextZ();
         NextXDirValue = obj.GetNextDirection().X; NextZDirValue = obj.GetNextDirection().Z;
-    }
+    }*/
     #endregion
 
     #region COMMANDS
-    [RelayCommand]
+    /*[RelayCommand]
     private void CreateSubject()
     {
         SubjectList.Add(0);
         SelectedSubject = BearerIn.AddSubject();
-    }
-    [RelayCommand]
+    }*/
+    /*[RelayCommand]
     private void DeleteSubject()
     {
         int toDel;
@@ -311,14 +341,14 @@ public partial class ObjectEditorViewModel : ViewModelBase
             SubjectList.RemoveAt(toDel);
             BearerIn.RemoveSubject(toDel);
         }
-    }
-    [RelayCommand]
+    }*/
+    /*[RelayCommand]
     private void CreateEnemy()
     {
         EnemyList.Add(0);
         SelectedEnemy = BearerIn.AddEnemy();
-    }
-    [RelayCommand]
+    }*/
+    /*[RelayCommand]
     private void DeleteEnemy()
     {
         int toDel;
@@ -328,6 +358,17 @@ public partial class ObjectEditorViewModel : ViewModelBase
             EnemyList.RemoveAt(toDel);
             BearerIn.RemoveEnemy(toDel);
         }
+    }*/
+    #endregion
+
+    #region EVENTS
+    public event Action<int>? OtherMapSelected;
+    #endregion
+
+    #region EVENT SENDERS
+    protected virtual void OnOtherMapSelected(int mapIndex)
+    {
+        OtherMapSelected?.Invoke(mapIndex);
     }
     #endregion
 }

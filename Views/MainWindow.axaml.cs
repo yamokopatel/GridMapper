@@ -47,6 +47,7 @@ public partial class MainWindow : Window
         #region avalonia
         this.AddHandler(MapEditor.SelectedMapChangedEvent, OnSelectedMapChanged);
         this.AddHandler(StructureEditor.SelectedMapChangedEvent, OnSelectedMapChanged);
+        this.AddHandler(ObjectEditor.SelectedMapChangedEvent, OnSelectedMapChanged);
         this.AddHandler(FileBrowser.MapMetaPathChangedEvent, OnMapMetaPathChanged);
         this.AddHandler(FileBrowser.StructurePathChangedEvent, OnStructurePathChanged);
         this.AddHandler(FileBrowser.CellMetaPathChangedEvent, OnCellMetaPathChanged);

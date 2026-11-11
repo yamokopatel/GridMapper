@@ -16,7 +16,9 @@
             <ComboBox   MaxDropDownHeight="128"
                         Width="220"
                         PlaceholderText="Select map"
-                        Margin="3" />
+                        Margin="3"
+                        ItemsSource="{Binding MapOptions}"
+                        SelectedIndex="{Binding SelectedMap}" />
             <StackPanel Orientation="Vertical">
                 <ComboBox   MaxDropDownHeight="128"
                             Width="150"

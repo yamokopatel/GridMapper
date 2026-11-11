@@ -17,7 +17,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
     private BaseObject? mapObject;
     private bool isObjLoaded = false;
     private bool ParentMapChanging = false;
-    private List<Map> maps;
+    private List<Map>? maps;
     #endregion
 
     #region CONSTRUCTOR
@@ -314,6 +314,10 @@ public partial class ObjectEditorViewModel : ViewModelBase
             item.Content = $"{maps![a].GetMapName()} ({maps![a].GetMapId()})";
             MapOptions.Add(item);
         }
+    }
+    public void UpdateSelector()
+    {
+        MapsToItems();
     }
     private void ClearFields()
     {

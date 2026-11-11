@@ -36,7 +36,7 @@ public partial class MainViewModel : ViewModelBase
     {
         bearer.SetProcessingMap(mapIndex);
     }
-
+    #region Paths
     public void SetMapMetaPath(string path)
     {
         bearer.SetMapMetaPath(path);
@@ -50,10 +50,16 @@ public partial class MainViewModel : ViewModelBase
         bearer.SetCellMetaPath(path);
     }
     #endregion
+    public void SetChanged(bool changed)
+    {
+        bearer.SetChanged(changed);
+    }
+    #endregion
 
     #region EVENTS
     public event Action<List<Map>>? MapsLoaded;
     public event Action<int>? SelectedMapChanged;
+    public event Action<bool>? DataChanged;
     #endregion
 
     #region EVENT SENDERS
@@ -64,6 +70,10 @@ public partial class MainViewModel : ViewModelBase
     protected virtual void OnSelectedMapChanged(int selectedMap)
     {
         SelectedMapChanged?.Invoke(selectedMap);
+    }
+    protected virtual void OnDataChanged(bool changed)
+    {
+        DataChanged?.Invoke(changed);
     }
     #endregion
 

@@ -30,6 +30,7 @@ public partial class StructureEditor : UserControl
         #region avalonia
         this.AddHandler(MainWindow.MapListLoadedEvent, OnMapListLoaded);
         this.AddHandler(MainWindow.ProcessableMapChangedEvent, OnProcessableMapChanged);
+        this.AddHandler(MainWindow.MapListEditedEvent, OnMapListEdited);
         #endregion
         #endregion
     }
@@ -43,6 +44,10 @@ public partial class StructureEditor : UserControl
     private void OnProcessableMapChanged(object? sender, NumberChangedEventArgs<int> e)
     {
         sevm.SetSelectedMap(e.Value);
+    }
+    private void OnMapListEdited(object? sender)
+    {
+        sevm.UpdateSelector();
     }
     #endregion
 

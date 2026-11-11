@@ -25,6 +25,10 @@ public partial class MapEditor : UserControl
         {
             OnSelectedMapChanged(mapIndex);
         };
+        mevm.MapsChanged += () =>
+        {
+            OnMapListEdited();
+        };
         #endregion
 
         #region avalonia
@@ -52,6 +56,11 @@ public partial class MapEditor : UserControl
             nameof(SelectedMapChanged),
             RoutingStrategies.Bubble
         );
+    public static readonly RoutedEvent<RoutedEventArgs> MapListEditedEvent =
+        RoutedEvent.Register<MapEditor, RoutedEventArgs>(
+            nameof(MapListEdited),
+            RoutingStrategies.Bubble
+        );
     #endregion
 
     #region EVENT HANDLERS
@@ -60,12 +69,21 @@ public partial class MapEditor : UserControl
         add => AddHandler(SelectedMapChangedEvent, value);
         remove => RemoveHandler(SelectedMapChangedEvent, value);
     }
+    public event EventHandler<RoutedEventArgs> MapListEdited
+    {
+        add => AddHandler(MapListEditedEvent, value);
+        remove => RemoveHandler(MapListEditedEvent, value);
+    }
     #endregion
 
     #region EVENT SENDERS
     protected virtual void OnSelectedMapChanged(int mapIndex)
     {
         RaiseEvent(new NumberChangedEventArgs<int>(SelectedMapChangedEvent, mapIndex));
+    }
+    protected virtual void OnMapListEdited()
+    {
+        RaiseEvent(new RoutedEventArgs(MapListEditedEvent));
     }
     #endregion
 }

@@ -43,10 +43,10 @@ public partial class MainWindow : Window
         {
             OnProcessableMapChanged(mapIndex);
         };
-        // BearerOut.DataChanged += (changed) =>
-        // {
-        //     SetSaveUndoColor(changed);
-        // };
+        mvm.DataChanged += (changed) =>
+        {
+            SetSaveUndoColor(changed);
+        };
         #endregion
 
         #region avalonia
@@ -82,6 +82,11 @@ public partial class MainWindow : Window
     {
         mvm.SetCellMetaPath(args.S);
     }
+    private void OnMapListEdited(object? sender)
+    {
+        mvm.SetChanged(true);
+        OnMapListEdited();
+    }
     #endregion
 
     #region EVENTS
@@ -95,6 +100,12 @@ public partial class MainWindow : Window
             nameof(MapListLoaded),
             RoutingStrategies.Tunnel
         );
+    public static readonly RoutedEvent<RoutedEventArgs> MapListEditedEvent =
+        RoutedEvent.Register<MapEditor, RoutedEventArgs>(
+            nameof(MapListEdited),
+            RoutingStrategies.Tunnel
+        );
+    
     #endregion
 
     #region EVENT HANDLERS
@@ -108,6 +119,11 @@ public partial class MainWindow : Window
         add => AddHandler(MapListLoadedEvent, value);
         remove => RemoveHandler(MapListLoadedEvent, value);
     }
+    public event EventHandler<RoutedEventArgs> MapListEdited
+    {
+        add => AddHandler(MapListEditedEvent, value);
+        remove => RemoveHandler(MapListEditedEvent, value);
+    }
     #endregion
 
     #region EVENT SENDERS
@@ -118,6 +134,10 @@ public partial class MainWindow : Window
     protected virtual void OnMapListLoaded(List<Map> maps)
     {
         RaiseEvent(new ListEventAgrs<Map>(MapListLoadedEvent, maps));
+    }
+    protected virtual void OnMapListEdited()
+    {
+        RaiseEvent(new RoutedEventArgs(MapListEditedEvent));
     }
     #endregion
 }

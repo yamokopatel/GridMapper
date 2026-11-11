@@ -116,6 +116,10 @@ public partial class StructureEditorViewModel : ViewModelBase
             MapOptions.Add(item);
         }
     }
+    public void UpdateSelector()
+    {
+        MapsToItems();
+    }
     #endregion
 
     #region EVENTS

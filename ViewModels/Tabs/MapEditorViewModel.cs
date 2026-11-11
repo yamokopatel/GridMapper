@@ -12,30 +12,7 @@ namespace GridMapper.ViewModels.Tabs;
 
 public partial class MapEditorViewModel : ViewModelBase
 {
-    #region CONSTRUCTOR
-    public  MapEditorViewModel()
-    {
-        // BearerIn.FilesLoaded += () => 
-        // {
-        //     MapsToItems();
-        // };
-        // BearerIn.SelectedMapChanged += (index) =>
-        // {
-        //     if(index > -1)
-        //     {
-        //         SettingsVisible = true;
-        //         MapBiomeID = (decimal?)BearerIn.GetMaps()![index].GetBiomeId();
-        //         MapName = BearerIn.GetMaps()![index].GetMapName();
-        //     }
-        //     else
-        //     {
-        //         SettingsVisible = false;
-        //         MapBiomeID = null;
-        //         MapName = "";
-        //     }
-        // };
-    }
-    #endregion
+    public  MapEditorViewModel(){}
 
     #region  FIELDS
     private bool ChangingMap = false;
@@ -149,12 +126,17 @@ public partial class MapEditorViewModel : ViewModelBase
     
     #region EVENTS
     public event Action<int>? OtherMapSelected;
+    public event Action? MapsChanged;
     #endregion
     
     #region EVENT SENDERS
     protected virtual void OnOtherMapSelected(int mapIndex)
     {
         OtherMapSelected?.Invoke(mapIndex);
+    }
+    protected virtual void OnMapsChanged()
+    {
+        MapsChanged?.Invoke();
     }
     #endregion
 }

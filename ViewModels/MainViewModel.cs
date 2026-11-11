@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -18,6 +19,10 @@ public partial class MainViewModel : ViewModelBase
         bearer = new DataBearer();
 
         #region Subscriptions
+        bearer.FilesLoaded += (maps) =>
+        {
+            
+        };
         bearer.SelectedMapChanged += (mapIndex) =>
         {
             OnSelectedMapChanged(mapIndex);
@@ -47,10 +52,15 @@ public partial class MainViewModel : ViewModelBase
     #endregion
 
     #region EVENTS
+    public event Action<List<Map>>? MapsLoaded;
     public event Action<int>? SelectedMapChanged;
     #endregion
 
     #region EVENT SENDERS
+    protected virtual void OnMapsLoaded(List<Map> maps)
+    {
+        MapsLoaded?.Invoke(maps);
+    }
     protected virtual void OnSelectedMapChanged(int selectedMap)
     {
         SelectedMapChanged?.Invoke(selectedMap);

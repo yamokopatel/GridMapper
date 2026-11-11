@@ -20,7 +20,7 @@ public class DataBearer
             Maps = maps;
             if(Maps != null && MapStructures != null && MapObjects != null)
             {
-                FilesLoaded!();
+                FilesLoaded!(Maps);
             }
         };
         fileBearer.StructuresLoaded += (strustures) =>
@@ -28,7 +28,7 @@ public class DataBearer
             MapStructures = strustures;
             if(Maps != null && MapStructures != null && MapObjects != null)
             {
-                FilesLoaded!();
+                FilesLoaded!(Maps);
             }
         };
         fileBearer.ObjectsLoaded += (objects) =>
@@ -36,7 +36,7 @@ public class DataBearer
             MapObjects = objects;
             if(Maps != null && MapStructures != null && MapObjects != null)
             {
-                FilesLoaded!();
+                FilesLoaded!(Maps);
             }
         };
     }
@@ -141,10 +141,10 @@ public class DataBearer
         SelectedCellChanged?.Invoke(selectedCell);
     }
     //  Files Loaded
-    public event Action? FilesLoaded;
-    protected virtual void OnFilesLoaded()
+    public event Action<List<Map>>? FilesLoaded;
+    protected virtual void OnFilesLoaded(List<Map> maps)
     {
-        FilesLoaded?.Invoke();
+        FilesLoaded?.Invoke(maps);
     }
     public event Action<int>? CellModified;
     protected virtual void OnCellModified(int cellIndex)

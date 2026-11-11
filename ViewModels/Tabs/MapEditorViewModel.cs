@@ -40,6 +40,7 @@ public partial class MapEditorViewModel : ViewModelBase
     #region  FIELDS
     private bool ChangingMap = false;
     private bool ParentMapChanging = false;
+    private List<Map>? maps;
 
     //  PROPERTIES
     [ObservableProperty]
@@ -70,6 +71,11 @@ public partial class MapEditorViewModel : ViewModelBase
             ParentMapChanging = false;
         }
     }
+    public void SetMapList(List<Map> maps)
+    {
+        this.maps = maps;
+        MapsToItems();
+    }
     #endregion
 
     #region FIELD EVENTS
@@ -80,9 +86,9 @@ public partial class MapEditorViewModel : ViewModelBase
             OnOtherMapSelected(value);
         }
         AbleToDelete = value > -1;
-        // MapID = (value > -1) ? BearerIn.GetMaps()![value].GetMapId() : null;
-        // MapBiomeID = (value > -1) ? BearerIn.GetMaps()![value].GetBiomeId() : null;
-        // MapName = (value > -1) ? BearerIn.GetMaps()![value].GetMapName() : "";
+        MapID = (value > -1) ? maps![value].GetMapId() : null;
+        MapBiomeID = (value > -1) ? maps![value].GetBiomeId() : null;
+        MapName = (value > -1) ? maps![value].GetMapName() : "";
         ChangingMap = false;
     }
     partial void OnMapBiomeIDChanged(decimal? value)
@@ -107,13 +113,13 @@ public partial class MapEditorViewModel : ViewModelBase
     #region FUNCTIONS
     private void MapsToItems()
     {
-        // MapOptions.Clear();
-        // for(int a = 0; a < BearerIn.GetMaps()!.Count; a++)
-        // {
-        //     ComboBoxItem item = new ComboBoxItem();
-        //     item.Content = $"{BearerIn.GetMaps()![a].GetMapName()}\t({BearerIn.GetMaps()![a].GetMapId()})";
-        //     MapOptions.Add(item);
-        // }
+        MapOptions.Clear();
+        for(int a = 0; a < maps!.Count; a++)
+        {
+            ComboBoxItem item = new ComboBoxItem();
+            item.Content = $"{maps![a].GetMapName()}\t({maps![a].GetMapId()})";
+            MapOptions.Add(item);
+        }
     }
     private void RenameItem(string name)
     {

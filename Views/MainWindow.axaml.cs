@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -34,6 +35,10 @@ public partial class MainWindow : Window
         InitializeComponent();
         #region Subscriptions
         #region native
+        mvm.MapsLoaded += (maps) =>
+        {
+            OnMapListLoaded(maps);
+        };
         mvm.SelectedMapChanged += (mapIndex) =>
         {
             OnProcessableMapChanged(mapIndex);
@@ -85,6 +90,11 @@ public partial class MainWindow : Window
             nameof(ProcessableMapChanged),
             RoutingStrategies.Tunnel
         );
+    public static readonly RoutedEvent<ListEventAgrs<Map>> MapListLoadedEvent =
+        RoutedEvent.Register<MainWindow, ListEventAgrs<Map>>(
+            nameof(MapListLoaded),
+            RoutingStrategies.Tunnel
+        );
     #endregion
 
     #region EVENT HANDLERS
@@ -93,12 +103,21 @@ public partial class MainWindow : Window
         add => AddHandler(ProcessableMapChangedEvent, value);
         remove => RemoveHandler(ProcessableMapChangedEvent, value);
     }
+    public event EventHandler<ListEventAgrs<Map>> MapListLoaded
+    {
+        add => AddHandler(MapListLoadedEvent, value);
+        remove => RemoveHandler(MapListLoadedEvent, value);
+    }
     #endregion
 
     #region EVENT SENDERS
     protected virtual void OnProcessableMapChanged(int mapIndex)
     {
         RaiseEvent(new NumberChangedEventArgs<int>(ProcessableMapChangedEvent, mapIndex));
+    }
+    protected virtual void OnMapListLoaded(List<Map> maps)
+    {
+        RaiseEvent(new ListEventAgrs<Map>(MapListLoadedEvent, maps));
     }
     #endregion
 }

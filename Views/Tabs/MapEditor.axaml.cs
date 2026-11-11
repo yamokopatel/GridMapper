@@ -28,6 +28,7 @@ public partial class MapEditor : UserControl
         #endregion
 
         #region avalonia
+        this.AddHandler(MainWindow.MapListLoadedEvent, OnMapListLoaded);
         this.AddHandler(MainWindow.ProcessableMapChangedEvent, OnProcessableMapChanged);
         #endregion
         #endregion
@@ -35,9 +36,13 @@ public partial class MapEditor : UserControl
     #endregion
 
     #region FUNCTIONS
-    private void OnProcessableMapChanged(object? sender, NumberChangedEventArgs<int> e)
+    private void OnMapListLoaded(object? sender, ListEventAgrs<Map> args)
     {
-        mevm.SetSelectedMap(e.Value);
+        mevm.SetMapList(args.Values);
+    }
+    private void OnProcessableMapChanged(object? sender, NumberChangedEventArgs<int> args)
+    {
+        mevm.SetSelectedMap(args.Value);
     }
     #endregion
     

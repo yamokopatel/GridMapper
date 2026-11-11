@@ -17,6 +17,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
     private BaseObject? mapObject;
     private bool isObjLoaded = false;
     private bool ParentMapChanging = false;
+    private List<Map> maps;
     #endregion
 
     #region CONSTRUCTOR
@@ -296,9 +297,24 @@ public partial class ObjectEditorViewModel : ViewModelBase
             ParentMapChanging = false;
         }
     }
+    public void SetMapList(List<Map> maps)
+    {
+        this.maps = maps;
+        MapsToItems();
+    }
     #endregion
 
     #region FUNCTIONS
+    private void MapsToItems()
+    {
+        MapOptions.Clear();
+        for(int a = 0; a < maps!.Count; a++)
+        {
+            ComboBoxItem item = new ComboBoxItem();
+            item.Content = $"{maps![a].GetMapName()} ({maps![a].GetMapId()})";
+            MapOptions.Add(item);
+        }
+    }
     private void ClearFields()
     {
         //chest

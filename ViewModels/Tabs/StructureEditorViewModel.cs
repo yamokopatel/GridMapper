@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -8,9 +9,10 @@ namespace GridMapper.ViewModels.Tabs;
 public partial class StructureEditorViewModel : ViewModelBase
 {
     #region PROPERTIES
+    private List<Map>? maps;
     private bool ParentMapChanging = false;
     [ObservableProperty]
-    public partial List<ComboBoxItem> MapOptions { get; set; } = new List<ComboBoxItem>();
+    public partial ObservableCollection<ComboBoxItem> MapOptions { get; set; } = new ObservableCollection<ComboBoxItem>();
     [ObservableProperty]
     public partial int SelectedMap { get; set; } = -1;
     [ObservableProperty]
@@ -96,18 +98,23 @@ public partial class StructureEditorViewModel : ViewModelBase
             ParentMapChanging = false;
         }
     }
+    public void SetMapList(List<Map> maps)
+    {
+        this.maps = maps;
+        MapsToItems();
+    }
     #endregion
 
     #region FUNCTIONS
     private void MapsToItems()
     {
-        // MapOptions.Clear();
-        // for(int a = 0; a < BearerIn.GetMaps()!.Count; a++)
-        // {
-        //     ComboBoxItem item = new ComboBoxItem();
-        //     item.Content = $"{BearerIn.GetMaps()![a].GetMapName()} ({BearerIn.GetMaps()![a].GetMapId()})";
-        //     MapOptions.Add(item);
-        // }
+        MapOptions.Clear();
+        for(int a = 0; a < maps!.Count; a++)
+        {
+            ComboBoxItem item = new ComboBoxItem();
+            item.Content = $"{maps![a].GetMapName()} ({maps![a].GetMapId()})";
+            MapOptions.Add(item);
+        }
     }
     #endregion
 

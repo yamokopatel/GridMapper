@@ -31,6 +31,19 @@ public partial class MainViewModel : ViewModelBase
     {
         bearer.SetProcessingMap(mapIndex);
     }
+
+    public void SetMapMetaPath(string path)
+    {
+        bearer.SetMapMetaPath(path);
+    }
+    public void SetStructurePath(string path)
+    {
+        bearer.SetStructurePath(path);
+    }
+    public void SetCellMetaPath(string path)
+    {
+        bearer.SetCellMetaPath(path);
+    }
     #endregion
 
     #region EVENTS

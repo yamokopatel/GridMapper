@@ -47,6 +47,9 @@ public partial class MainWindow : Window
         #region avalonia
         this.AddHandler(MapEditor.SelectedMapChangedEvent, OnSelectedMapChanged);
         this.AddHandler(StructureEditor.SelectedMapChangedEvent, OnSelectedMapChanged);
+        this.AddHandler(FileBrowser.MapMetaPathChangedEvent, OnMapMetaPathChanged);
+        this.AddHandler(FileBrowser.StructurePathChangedEvent, OnStructurePathChanged);
+        this.AddHandler(FileBrowser.CellMetaPathChangedEvent, OnCellMetaPathChanged);
         #endregion
         #endregion
     }
@@ -57,9 +60,21 @@ public partial class MainWindow : Window
     {
         SaveUndoColor = (changed ? Brushes.LightGray : Brushes.DarkGray);
     }
-    private void OnSelectedMapChanged(object? sender, NumberChangedEventArgs<int> e)
+    private void OnSelectedMapChanged(object? sender, NumberChangedEventArgs<int> args)
     {
-        mvm.SetProcessingMap(e.Value);
+        mvm.SetProcessingMap(args.Value);
+    }
+    private void OnMapMetaPathChanged(object? sender, StringChangedEventArgs args)
+    {
+        mvm.SetMapMetaPath(args.S);
+    }
+    private void OnStructurePathChanged(object? sender, StringChangedEventArgs args)
+    {
+        mvm.SetStructurePath(args.S);
+    }
+    private void OnCellMetaPathChanged(object? sender, StringChangedEventArgs args)
+    {
+        mvm.SetCellMetaPath(args.S);
     }
     #endregion
 

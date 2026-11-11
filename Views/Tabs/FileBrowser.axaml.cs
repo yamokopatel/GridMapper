@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
@@ -9,31 +10,17 @@ namespace GridMapper.Views.Tabs;
 
 public partial class FileBrowser : UserControl
 {
-    public static readonly StyledProperty<DataBearer> BearerInProperty =
-        AvaloniaProperty.Register<FileBrowser, DataBearer>(nameof(BearerIn));
-    public DataBearer BearerIn
-    {
-        get => GetValue(BearerInProperty);
-        set => SetValue(BearerInProperty, value);
-    }
-    private FileBrowserViewModel fbvm = null!;
+    private FileBrowserViewModel fbvm;
     //  CONSTRUCTOR
     public FileBrowser()
     {
+        fbvm = new FileBrowserViewModel();
+        DataContext = fbvm;
+        // Initialization
         InitializeComponent();
     }
 
-    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-    {
-        base.OnPropertyChanged(change);
-        if(change.Property == BearerInProperty)
-        {
-            fbvm = new FileBrowserViewModel(BearerIn);
-            DataContext = fbvm;
-        }
-    }
-
-    //  BUTTON FUNCTIONS
+    #region  BUTTON FUNCTIONS
     //  Select Map Meta
     private async void SelectMapMeta_Clicked(object sender, RoutedEventArgs args)
     {
@@ -48,6 +35,7 @@ public partial class FileBrowser : UserControl
         if(files.Count >= 1)
         {
             fbvm.SetMapMetadataFilePath(files[0].Path.LocalPath);
+            OnMapMetaPathChanged(files[0].Path.LocalPath);
         }
     }
     //  Select Map Struct
@@ -64,6 +52,7 @@ public partial class FileBrowser : UserControl
         if(files.Count >= 1)
         {
             fbvm.SetMapStructureFilePath(files[0].Path.LocalPath);
+            OnStructurePathChanged(files[0].Path.LocalPath);
         }
     }
     //  Select Cell Meta
@@ -80,6 +69,59 @@ public partial class FileBrowser : UserControl
         if(files.Count >= 1)
         {
             fbvm.SetCellMetadataFilePath(files[0].Path.LocalPath);
+            OnCellMetaPathChanged(files[0].Path.LocalPath);
         }
     }
+    #endregion
+
+    #region EVENTS
+    public static readonly RoutedEvent<StringChangedEventArgs> MapMetaPathChangedEvent =
+        RoutedEvent.Register<FileBrowser, StringChangedEventArgs>(
+            nameof(MapMetaPathChanged),
+            RoutingStrategies.Bubble
+        );
+    public static readonly RoutedEvent<StringChangedEventArgs> StructurePathChangedEvent =
+        RoutedEvent.Register<FileBrowser, StringChangedEventArgs>(
+            nameof(StructurePathChanged),
+            RoutingStrategies.Bubble
+        );
+    public static readonly RoutedEvent<StringChangedEventArgs> CellMetaPathChangedEvent =
+        RoutedEvent.Register<FileBrowser, StringChangedEventArgs>(
+            nameof(CellMetaPathChanged),
+            RoutingStrategies.Bubble
+        );
+    #endregion
+
+    #region EVENT HANDLERS
+    public event EventHandler<StringChangedEventArgs> MapMetaPathChanged
+    {
+        add => AddHandler(MapMetaPathChangedEvent, value);
+        remove => RemoveHandler(MapMetaPathChangedEvent, value);
+    }
+    public event EventHandler<StringChangedEventArgs> StructurePathChanged
+    {
+        add => AddHandler(StructurePathChangedEvent, value);
+        remove => RemoveHandler(StructurePathChangedEvent, value);
+    }
+    public event EventHandler<StringChangedEventArgs> CellMetaPathChanged
+    {
+        add => AddHandler(CellMetaPathChangedEvent, value);
+        remove => RemoveHandler(CellMetaPathChangedEvent, value);
+    }
+    #endregion
+
+    #region EVENT SENDERS
+    protected virtual void OnMapMetaPathChanged(string path)
+    {
+        RaiseEvent(new StringChangedEventArgs(MapMetaPathChangedEvent, path));
+    }
+    protected virtual void OnStructurePathChanged(string path)
+    {
+        RaiseEvent(new StringChangedEventArgs(StructurePathChangedEvent, path));
+    }
+    protected virtual void OnCellMetaPathChanged(string path)
+    {
+        RaiseEvent(new StringChangedEventArgs(CellMetaPathChangedEvent, path));
+    }
+    #endregion
 }

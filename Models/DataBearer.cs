@@ -134,6 +134,11 @@ public class DataBearer
     {
         SelectedMapChanged?.Invoke(selectedMap);
     }
+    public event Action? MapCreatedOrDeleted;
+    protected virtual void OnMapCreatedOrDeleted()
+    {
+        MapCreatedOrDeleted?.Invoke();
+    }
     //  Cell
     public event Action<int>? SelectedCellChanged;
     protected virtual void OnSelectedCellChanged(int selectedCell)
@@ -169,7 +174,7 @@ public class DataBearer
     #endregion
 
     #region MAPS
-    public int CreateMap()
+    public void CreateMap()
     {
         int index = -1;
         List<int> occupedIds = new List<int>();
@@ -199,19 +204,20 @@ public class DataBearer
             MapStructures!.AddRange(Enumerable.Repeat<byte>(0, 256));
             SetChanged(true);
             index = Maps!.Count - 1;
+            OnMapCreatedOrDeleted();
         }
         else
         {
             Notify("Can not create new map. Map limit is reached.");
         }
         SetProcessingMap(index);
-        return index;
     }
-    public int DeleteMap()
+    public void DeleteMap()
     {
         MapObjects!.RemoveAll(obj => obj.GetMapId() == Maps![MapInProcessingIndex].GetMapId());
         MapStructures!.RemoveRange(Maps![MapInProcessingIndex].GetByteOffset(), 256);
-        List<Transition> transitionsWithoutNextMap = MapObjects.OfType<Transition>().ToList();
+        List<Transition> transitionsWithoutNextMap = MapObjects.OfType<Transition>().ToList()
+            .FindAll(tran => tran.GetNextMapId() == Maps![MapInProcessingIndex].GetMapId());
         for(int a = 0; a < transitionsWithoutNextMap.Count; a++)
         {
             transitionsWithoutNextMap[a].SetNextMapId(0);
@@ -223,21 +229,8 @@ public class DataBearer
             Maps[a].SetByteOffset(Maps[a].GetByteOffset() - 256);
         }
         Maps.RemoveAt(MapInProcessingIndex);
-        return -1;
-    }
-    public void EditMap<T>(char field, T value)
-    {
-        switch (field)
-        {
-            case 'b':
-                Maps![MapInProcessingIndex].SetBiomeId((byte)(object)value!);
-                break;
-            case 'n':
-                Maps![MapInProcessingIndex].SetMapName((string)(object)value!);
-                break;
-            default:
-                throw new ArgumentException("Attempt to edit not existed field");
-        }
+        OnMapCreatedOrDeleted();
+        SetProcessingMap(-1);
     }
     #endregion
 

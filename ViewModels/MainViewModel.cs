@@ -21,11 +21,15 @@ public partial class MainViewModel : ViewModelBase
         #region Subscriptions
         bearer.FilesLoaded += (maps) =>
         {
-            
+            OnMapsLoaded(maps);
         };
         bearer.SelectedMapChanged += (mapIndex) =>
         {
             OnSelectedMapChanged(mapIndex);
+        };
+        bearer.MapCreatedOrDeleted += () =>
+        {
+            OnMapCreatedOrDeleted();
         };
         #endregion
     }
@@ -56,10 +60,22 @@ public partial class MainViewModel : ViewModelBase
     }
     #endregion
 
+    #region FUNCTIONS
+    public void CreateMap()
+    {
+        bearer.CreateMap();
+    }
+    public void DeleteMap()
+    {
+        bearer.DeleteMap();
+    }
+    #endregion
+
     #region EVENTS
     public event Action<List<Map>>? MapsLoaded;
     public event Action<int>? SelectedMapChanged;
     public event Action<bool>? DataChanged;
+    public event Action? MapCreatedOrDeleted;
     #endregion
 
     #region EVENT SENDERS
@@ -74,6 +90,10 @@ public partial class MainViewModel : ViewModelBase
     protected virtual void OnDataChanged(bool changed)
     {
         DataChanged?.Invoke(changed);
+    }
+    protected virtual void OnMapCreatedOrDeleted()
+    {
+        MapCreatedOrDeleted?.Invoke();
     }
     #endregion
 

@@ -29,11 +29,20 @@ public partial class MapEditor : UserControl
         {
             OnMapListEdited();
         };
+        mevm.MapCreated += () =>
+        {
+            OnMapCreated();
+        };
+        mevm.MapDeleted += () =>
+        {
+            OnMapDeleted();
+        };
         #endregion
 
         #region avalonia
         this.AddHandler(MainWindow.MapListLoadedEvent, OnMapListLoaded);
         this.AddHandler(MainWindow.ProcessableMapChangedEvent, OnProcessableMapChanged);
+        this.AddHandler(MainWindow.MapCreatedOrDeletedEvent, OnMapCreatedOrDeleted);
         #endregion
         #endregion
     }
@@ -48,6 +57,10 @@ public partial class MapEditor : UserControl
     {
         mevm.SetSelectedMap(args.Value);
     }
+    private void OnMapCreatedOrDeleted(object? sender)
+    {
+        mevm.UpdateSelector();
+    }
     #endregion
     
     #region EVENTS
@@ -59,6 +72,16 @@ public partial class MapEditor : UserControl
     public static readonly RoutedEvent<RoutedEventArgs> MapListEditedEvent =
         RoutedEvent.Register<MapEditor, RoutedEventArgs>(
             nameof(MapListEdited),
+            RoutingStrategies.Bubble
+        );
+    public static readonly RoutedEvent<RoutedEventArgs> MapCreatedEvent =
+        RoutedEvent.Register<MapEditor, RoutedEventArgs>(
+            nameof(MapCreated),
+            RoutingStrategies.Bubble
+        );
+    public static readonly RoutedEvent<RoutedEventArgs> MapDeletedEvent =
+        RoutedEvent.Register<MapEditor, RoutedEventArgs>(
+            nameof(MapDeleted),
             RoutingStrategies.Bubble
         );
     #endregion
@@ -74,6 +97,16 @@ public partial class MapEditor : UserControl
         add => AddHandler(MapListEditedEvent, value);
         remove => RemoveHandler(MapListEditedEvent, value);
     }
+    public event EventHandler<RoutedEventArgs> MapCreated
+    {
+        add => AddHandler(MapCreatedEvent, value);
+        remove => RemoveHandler(MapCreatedEvent, value);
+    }
+    public event EventHandler<RoutedEventArgs> MapDeleted
+    {
+        add => AddHandler(MapDeletedEvent, value);
+        remove => RemoveHandler(MapDeletedEvent, value);
+    }
     #endregion
 
     #region EVENT SENDERS
@@ -84,6 +117,14 @@ public partial class MapEditor : UserControl
     protected virtual void OnMapListEdited()
     {
         RaiseEvent(new RoutedEventArgs(MapListEditedEvent));
+    }
+    protected virtual void OnMapCreated()
+    {
+        RaiseEvent(new RoutedEventArgs(MapCreatedEvent));
+    }
+    protected virtual void OnMapDeleted()
+    {
+        RaiseEvent(new RoutedEventArgs(MapDeletedEvent));
     }
     #endregion
 }

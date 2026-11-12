@@ -47,15 +47,26 @@ public partial class MainWindow : Window
         {
             SetSaveUndoColor(changed);
         };
+        mvm.MapCreatedOrDeleted += () =>
+        {
+            OnMapCreatedOrDeleted();
+            OnMapListEdited();
+        };
         #endregion
 
         #region avalonia
+        // MAP SELECTED
         this.AddHandler(MapEditor.SelectedMapChangedEvent, OnSelectedMapChanged);
         this.AddHandler(StructureEditor.SelectedMapChangedEvent, OnSelectedMapChanged);
         this.AddHandler(ObjectEditor.SelectedMapChangedEvent, OnSelectedMapChanged);
+        // PATHS
         this.AddHandler(FileBrowser.MapMetaPathChangedEvent, OnMapMetaPathChanged);
         this.AddHandler(FileBrowser.StructurePathChangedEvent, OnStructurePathChanged);
         this.AddHandler(FileBrowser.CellMetaPathChangedEvent, OnCellMetaPathChanged);
+        // DATA CHANGED
+        this.AddHandler(MapEditor.MapListEditedEvent, OnMapsEdited);
+        this.AddHandler(MapEditor.MapCreatedEvent, OnMapCreated);
+        this.AddHandler(MapEditor.MapDeletedEvent, OnMapDeleted);
         #endregion
         #endregion
     }
@@ -82,10 +93,18 @@ public partial class MainWindow : Window
     {
         mvm.SetCellMetaPath(args.S);
     }
-    private void OnMapListEdited(object? sender)
+    private void OnMapsEdited(object? sender)
     {
         mvm.SetChanged(true);
         OnMapListEdited();
+    }
+    private void OnMapCreated(object? sender)
+    {
+        mvm.CreateMap();
+    }
+    private void OnMapDeleted(object? sender)
+    {
+        mvm.DeleteMap();
     }
     #endregion
 
@@ -103,6 +122,11 @@ public partial class MainWindow : Window
     public static readonly RoutedEvent<RoutedEventArgs> MapListEditedEvent =
         RoutedEvent.Register<MapEditor, RoutedEventArgs>(
             nameof(MapListEdited),
+            RoutingStrategies.Tunnel
+        );
+    public static readonly RoutedEvent<RoutedEventArgs> MapCreatedOrDeletedEvent =
+        RoutedEvent.Register<MapEditor, RoutedEventArgs>(
+            nameof(MapCreatedOrDeleted),
             RoutingStrategies.Tunnel
         );
     
@@ -124,6 +148,11 @@ public partial class MainWindow : Window
         add => AddHandler(MapListEditedEvent, value);
         remove => RemoveHandler(MapListEditedEvent, value);
     }
+    public event EventHandler<RoutedEventArgs> MapCreatedOrDeleted
+    {
+        add => AddHandler(MapCreatedOrDeletedEvent, value);
+        remove => RemoveHandler(MapCreatedOrDeletedEvent, value);
+    }
     #endregion
 
     #region EVENT SENDERS
@@ -138,6 +167,10 @@ public partial class MainWindow : Window
     protected virtual void OnMapListEdited()
     {
         RaiseEvent(new RoutedEventArgs(MapListEditedEvent));
+    }
+    protected virtual void OnMapCreatedOrDeleted()
+    {
+        RaiseEvent(new RoutedEventArgs(MapCreatedOrDeletedEvent));
     }
     #endregion
 }

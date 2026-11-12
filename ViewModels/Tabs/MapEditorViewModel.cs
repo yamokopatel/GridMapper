@@ -53,6 +53,10 @@ public partial class MapEditorViewModel : ViewModelBase
         this.maps = maps;
         MapsToItems();
     }
+    public void UpdateSelector()
+    {
+        MapsToItems();
+    }
     #endregion
 
     #region FIELD EVENTS
@@ -70,20 +74,20 @@ public partial class MapEditorViewModel : ViewModelBase
     }
     partial void OnMapBiomeIDChanged(decimal? value)
     {
-        // if(SelectedMap != -1 && !ChangingMap)
-        // {
-        //     BearerIn.EditMap<byte>('b',(byte)value!.Value);
-        //     BearerIn.SetChanged(true);
-        // }
+        if(SelectedMap != -1 && !ChangingMap)
+        {
+            maps![SelectedMap].SetBiomeId((byte)value!.Value);
+            OnMapsChanged();
+        }
     }
     partial void OnMapNameChanged(string value)
     {
-        // if(SelectedMap != -1 && !ChangingMap)
-        // {
-        //     BearerIn.EditMap<string>('n', value);
-        //     RenameItem(value);
-        //     BearerIn.SetChanged(true);
-        // }
+        if(SelectedMap != -1 && !ChangingMap)
+        {
+            maps![SelectedMap].SetMapName(value);
+            RenameItem(value);
+            OnMapsChanged();
+        }
     }
     #endregion
     
@@ -127,6 +131,8 @@ public partial class MapEditorViewModel : ViewModelBase
     #region EVENTS
     public event Action<int>? OtherMapSelected;
     public event Action? MapsChanged;
+    public event Action? MapCreated;
+    public event Action? MapDeleted;
     #endregion
     
     #region EVENT SENDERS
@@ -137,6 +143,14 @@ public partial class MapEditorViewModel : ViewModelBase
     protected virtual void OnMapsChanged()
     {
         MapsChanged?.Invoke();
+    }
+    protected virtual void OnMapCreated()
+    {
+        MapCreated?.Invoke();
+    }
+    protected virtual void OnMapDeleted()
+    {
+        MapDeleted?.Invoke();
     }
     #endregion
 }

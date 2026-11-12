@@ -28,6 +28,8 @@ public partial class ObjectEditor : UserControl
         this.AddHandler(MainWindow.MapListLoadedEvent, OnMapListLoaded);
         this.AddHandler(MainWindow.ProcessableMapChangedEvent, OnProcessableMapChanged);
         this.AddHandler(MainWindow.MapListEditedEvent, OnMapListEdited);
+        this.AddHandler(MainWindow.StructureListGotEvent, OnStructuresGot);
+        this.AddHandler(MainWindow.ObjectListGotEvent, OnObjectsGot);
         #endregion
         #endregion
     }
@@ -37,13 +39,21 @@ public partial class ObjectEditor : UserControl
     {
         oevm.SetMapList(args.Values);
     }
-    private void OnProcessableMapChanged(object? sender, NumberChangedEventArgs<int> e)
+    private void OnProcessableMapChanged(object? sender, NumberChangedEventArgs<int> args)
     {
-        oevm.SetSelectedMap(e.Value);
+        oevm.SetSelectedMap(args.Value);
     }
     private void OnMapListEdited(object? sender)
     {
         oevm.UpdateSelector();
+    }
+    private void OnStructuresGot(object? sender, ListEventAgrs<byte> agrs)
+    {
+        oevm.SetStructureList(agrs.Values);
+    }
+    private void OnObjectsGot(object? sender, ListEventAgrs<BaseObject> agrs)
+    {
+        oevm.SetObjectList(agrs.Values);
     }
     #endregion
 

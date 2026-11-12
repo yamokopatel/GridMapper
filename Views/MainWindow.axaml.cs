@@ -35,6 +35,11 @@ public partial class MainWindow : Window
         InitializeComponent();
         #region Subscriptions
         #region native
+        mvm.DataChanged += (changed) =>
+        {
+            SetSaveUndoColor(changed);
+        };
+        #region _map
         mvm.MapsLoaded += (maps) =>
         {
             OnMapListLoaded(maps);
@@ -43,15 +48,24 @@ public partial class MainWindow : Window
         {
             OnProcessableMapChanged(mapIndex);
         };
-        mvm.DataChanged += (changed) =>
-        {
-            SetSaveUndoColor(changed);
-        };
         mvm.MapCreatedOrDeleted += () =>
         {
             OnMapCreatedOrDeleted();
             OnMapListEdited();
         };
+        #endregion
+        #region _structure
+        mvm.StructuresGot += (structures) =>
+        {
+            OnStructuresGot(structures);
+        };
+        #endregion
+        #region _objects
+        mvm.ObjectsGot += (objects) =>
+        {
+            OnObjectsGot(objects);
+        };
+        #endregion
         #endregion
 
         #region avalonia
@@ -120,16 +134,25 @@ public partial class MainWindow : Window
             RoutingStrategies.Tunnel
         );
     public static readonly RoutedEvent<RoutedEventArgs> MapListEditedEvent =
-        RoutedEvent.Register<MapEditor, RoutedEventArgs>(
+        RoutedEvent.Register<MainWindow, RoutedEventArgs>(
             nameof(MapListEdited),
             RoutingStrategies.Tunnel
         );
     public static readonly RoutedEvent<RoutedEventArgs> MapCreatedOrDeletedEvent =
-        RoutedEvent.Register<MapEditor, RoutedEventArgs>(
+        RoutedEvent.Register<MainWindow, RoutedEventArgs>(
             nameof(MapCreatedOrDeleted),
             RoutingStrategies.Tunnel
         );
-    
+    public static readonly RoutedEvent<ListEventAgrs<byte>> StructureListGotEvent =
+        RoutedEvent.Register<MainWindow, ListEventAgrs<byte>>(
+            nameof(StructureListGot),
+            RoutingStrategies.Tunnel
+        );
+    public static readonly RoutedEvent<ListEventAgrs<BaseObject>> ObjectListGotEvent =
+        RoutedEvent.Register<MainWindow, ListEventAgrs<BaseObject>>(
+            nameof(ObjectListGot),
+            RoutingStrategies.Tunnel
+        );
     #endregion
 
     #region EVENT HANDLERS
@@ -153,6 +176,16 @@ public partial class MainWindow : Window
         add => AddHandler(MapCreatedOrDeletedEvent, value);
         remove => RemoveHandler(MapCreatedOrDeletedEvent, value);
     }
+    public event EventHandler<ListEventAgrs<byte>> StructureListGot
+    {
+        add => AddHandler(StructureListGotEvent, value);
+        remove => RemoveHandler(StructureListGotEvent, value);
+    }
+    public event EventHandler<ListEventAgrs<BaseObject>> ObjectListGot
+    {
+        add => AddHandler(ObjectListGotEvent, value);
+        remove => RemoveHandler(ObjectListGotEvent, value);
+    }
     #endregion
 
     #region EVENT SENDERS
@@ -171,6 +204,14 @@ public partial class MainWindow : Window
     protected virtual void OnMapCreatedOrDeleted()
     {
         RaiseEvent(new RoutedEventArgs(MapCreatedOrDeletedEvent));
+    }
+    protected virtual void OnStructuresGot(List<byte> structures)
+    {
+        RaiseEvent(new ListEventAgrs<byte>(StructureListGotEvent, structures));
+    }
+    protected virtual void OnObjectsGot(List<BaseObject> objects)
+    {
+        RaiseEvent(new ListEventAgrs<BaseObject>(ObjectListGotEvent, objects));
     }
     #endregion
 }

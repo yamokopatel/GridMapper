@@ -31,6 +31,8 @@ public partial class StructureEditor : UserControl
         this.AddHandler(MainWindow.MapListLoadedEvent, OnMapListLoaded);
         this.AddHandler(MainWindow.ProcessableMapChangedEvent, OnProcessableMapChanged);
         this.AddHandler(MainWindow.MapListEditedEvent, OnMapListEdited);
+        this.AddHandler(MainWindow.StructureListGotEvent, OnStructuresGot);
+        this.AddHandler(MainWindow.ObjectListGotEvent, OnObjectsGot);
         #endregion
         #endregion
     }
@@ -41,13 +43,21 @@ public partial class StructureEditor : UserControl
     {
         sevm.SetMapList(args.Values);
     }
-    private void OnProcessableMapChanged(object? sender, NumberChangedEventArgs<int> e)
+    private void OnProcessableMapChanged(object? sender, NumberChangedEventArgs<int> args)
     {
-        sevm.SetSelectedMap(e.Value);
+        sevm.SetSelectedMap(args.Value);
     }
     private void OnMapListEdited(object? sender)
     {
         sevm.UpdateSelector();
+    }
+    private void OnStructuresGot(object? sender, ListEventAgrs<byte> agrs)
+    {
+        sevm.SetStructureList(agrs.Values);
+    }
+    private void OnObjectsGot(object? sender, ListEventAgrs<BaseObject> agrs)
+    {
+        sevm.SetObjectList(agrs.Values);
     }
     #endregion
 

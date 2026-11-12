@@ -8,9 +8,14 @@ namespace GridMapper.ViewModels.Tabs;
 
 public partial class StructureEditorViewModel : ViewModelBase
 {
-    #region PROPERTIES
+    #region FIELDS
     private List<Map>? maps;
     private bool ParentMapChanging = false;
+    private List<byte>? structures;
+    private List<BaseObject>? mapObjects;
+    #endregion
+
+    #region PROPERTIES
     [ObservableProperty]
     public partial ObservableCollection<ComboBoxItem> MapOptions { get; set; } = new ObservableCollection<ComboBoxItem>();
     [ObservableProperty]
@@ -102,6 +107,14 @@ public partial class StructureEditorViewModel : ViewModelBase
     {
         this.maps = maps;
         MapsToItems();
+    }
+    public void SetStructureList(List<byte> structures)
+    {
+        this.structures = structures;
+    }
+    public void SetObjectList(List<BaseObject> objects)
+    {
+        this.mapObjects = objects;
     }
     #endregion
 

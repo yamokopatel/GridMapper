@@ -31,6 +31,14 @@ public partial class MainViewModel : ViewModelBase
         {
             OnMapCreatedOrDeleted();
         };
+        bearer.StructuresLoaded += (structures) =>
+        {
+            OnStructuresGot(structures);
+        };
+        bearer.ObjectsLoaded += (objects) =>
+        {
+            OnObjectsGot(objects);
+        };
         #endregion
     }
     #endregion
@@ -76,6 +84,8 @@ public partial class MainViewModel : ViewModelBase
     public event Action<int>? SelectedMapChanged;
     public event Action<bool>? DataChanged;
     public event Action? MapCreatedOrDeleted;
+    public event Action<List<byte>>? StructuresGot;
+    public event Action<List<BaseObject>>? ObjectsGot;
     #endregion
 
     #region EVENT SENDERS
@@ -94,6 +104,14 @@ public partial class MainViewModel : ViewModelBase
     protected virtual void OnMapCreatedOrDeleted()
     {
         MapCreatedOrDeleted?.Invoke();
+    }
+    protected virtual void OnStructuresGot(List<byte> structures)
+    {
+        StructuresGot?.Invoke(structures);
+    }
+    protected virtual void OnObjectsGot(List<BaseObject> objects)
+    {
+        ObjectsGot?.Invoke(objects);
     }
     #endregion
 

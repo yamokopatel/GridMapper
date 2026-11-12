@@ -20,7 +20,9 @@ public class DataBearer
             Maps = maps;
             if(Maps != null && MapStructures != null && MapObjects != null)
             {
-                FilesLoaded!(Maps);
+                OnFilesLoaded(Maps);
+                OnStructuresLoaded(MapStructures);
+                OnObjectsLoaded(MapObjects);
             }
         };
         fileBearer.StructuresLoaded += (strustures) =>
@@ -28,7 +30,9 @@ public class DataBearer
             MapStructures = strustures;
             if(Maps != null && MapStructures != null && MapObjects != null)
             {
-                FilesLoaded!(Maps);
+                OnFilesLoaded(Maps);
+                OnStructuresLoaded(MapStructures);
+                OnObjectsLoaded(MapObjects);
             }
         };
         fileBearer.ObjectsLoaded += (objects) =>
@@ -36,7 +40,9 @@ public class DataBearer
             MapObjects = objects;
             if(Maps != null && MapStructures != null && MapObjects != null)
             {
-                FilesLoaded!(Maps);
+                OnFilesLoaded(Maps);
+                OnStructuresLoaded(MapStructures);
+                OnObjectsLoaded(MapObjects);
             }
         };
     }
@@ -155,6 +161,16 @@ public class DataBearer
     protected virtual void OnCellModified(int cellIndex)
     {
         CellModified?.Invoke(cellIndex);
+    }
+    public event Action<List<byte>>? StructuresLoaded;
+    protected virtual void OnStructuresLoaded(List<byte> structures)
+    {
+        StructuresLoaded?.Invoke(structures);
+    }
+    public event Action<List<BaseObject>>? ObjectsLoaded;
+    protected virtual void OnObjectsLoaded(List<BaseObject> objects)
+    {
+        ObjectsLoaded?.Invoke(objects);
     }
     #endregion
 

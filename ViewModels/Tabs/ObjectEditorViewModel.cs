@@ -18,6 +18,8 @@ public partial class ObjectEditorViewModel : ViewModelBase
     private bool isObjLoaded = false;
     private bool ParentMapChanging = false;
     private List<Map>? maps;
+    private List<byte>? structures;
+    private List<BaseObject>? mapObjects;
     #endregion
 
     #region CONSTRUCTOR
@@ -301,6 +303,14 @@ public partial class ObjectEditorViewModel : ViewModelBase
     {
         this.maps = maps;
         MapsToItems();
+    }
+    public void SetStructureList(List<byte> structures)
+    {
+        this.structures = structures;
+    }
+    public void SetObjectList(List<BaseObject> objects)
+    {
+        this.mapObjects = objects;
     }
     #endregion
 

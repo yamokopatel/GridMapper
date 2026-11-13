@@ -362,13 +362,24 @@ public partial class ObjectEditorViewModel : ViewModelBase
     #endregion
 
     #region COMMANDS
-    /*[RelayCommand]
+    [RelayCommand]
     private void CreateSubject()
     {
-        SubjectList.Add(0);
-        SelectedSubject = BearerIn.AddSubject();
-    }*/
-    /*[RelayCommand]
+        Chest chest = (Chest)mapObjects![objectIndex];
+        if(chest.GetSubjectIds().Count < 8)
+        {
+            SubjectList.Add(0);
+            chest.GetSubjectIds().Add(0);
+        }
+        else
+        {
+            NoticeWindow notice = new NoticeWindow();
+            NoticeWindowViewModel nwvm = new NoticeWindowViewModel("Subject maximal count in this chest\nalready reached.");
+            notice.DataContext = nwvm;
+            notice.Show();
+        }
+    }
+    [RelayCommand]
     private void DeleteSubject()
     {
         int toDel;
@@ -377,16 +388,28 @@ public partial class ObjectEditorViewModel : ViewModelBase
             toDel = processableSubject;
             processableSubject = -1;
             SubjectList.RemoveAt(toDel);
-            BearerIn.RemoveSubject(toDel);
+            Chest chest = (Chest)mapObjects![objectIndex];
+            chest.GetSubjectIds().RemoveAt(toDel);
         }
-    }*/
-    /*[RelayCommand]
+    }
+    [RelayCommand]
     private void CreateEnemy()
     {
-        EnemyList.Add(0);
-        SelectedEnemy = BearerIn.AddEnemy();
-    }*/
-    /*[RelayCommand]
+        Group group = (Group)mapObjects![objectIndex];
+        if(group.GetEnemyIds().Count < 8)
+        {
+            EnemyList.Add(0);
+            group.GetEnemyIds().Add(0);
+        }
+        else
+        {
+            NoticeWindow notice = new NoticeWindow();
+            NoticeWindowViewModel nwvm = new NoticeWindowViewModel("Subject maximal enemy in this group\nalready reached.");
+            notice.DataContext = nwvm;
+            notice.Show();
+        }
+    }
+    [RelayCommand]
     private void DeleteEnemy()
     {
         int toDel;
@@ -394,9 +417,10 @@ public partial class ObjectEditorViewModel : ViewModelBase
             toDel = processableEnemy;
             processableEnemy = -1;
             EnemyList.RemoveAt(toDel);
-            BearerIn.RemoveEnemy(toDel);
+            Group group = (Group)mapObjects![objectIndex];
+            group.GetEnemyIds().RemoveAt(toDel);
         }
-    }*/
+    }
     #endregion
 
     #region EVENTS

@@ -122,51 +122,59 @@ public partial class ObjectEditorViewModel : ViewModelBase
         GroupChosen = (value == 2);
         TransitionChosen = (value ==3);
     }
-    /*partial void OnSelectedObjectTypeChanged(int oldValue, int newValue)
+    partial void OnSelectedObjectTypeChanged(int oldValue, int newValue)
     {
         if(!isObjLoaded)
         {
             if(oldValue != newValue)
             {
-                if(oldValue == 0)
-                {
-                    int newIndex = -1;
-                    switch (newValue)
-                    {
-                        case 1: newIndex = BearerIn.CreateObject<Chest>(); break;
-                        case 2: newIndex = BearerIn.CreateObject<Group>(); break;
-                        case 3: newIndex = BearerIn.CreateObject<Transition>(); break;
-                    }
-                    if(newIndex > -1)
-                    {
-                        mapObject = BearerIn.GetMapObjects()![newIndex];
-                    }
-                }
-                else
-                {
-                    if(newValue == 0)
-                    {
-                        BearerIn.DeleteObject();
-                        mapObject = null;
-                    }
-                    else
-                    {
+                // if(oldValue == 0)
+                // {
+                //     int newIndex = -1;
+                //     switch (newValue)
+                //     {
+                //         case 1: newIndex = BearerIn.CreateObject<Chest>(); break;
+                //         case 2: newIndex = BearerIn.CreateObject<Group>(); break;
+                //         case 3: newIndex = BearerIn.CreateObject<Transition>(); break;
+                //     }
+                //     if(newIndex > -1)
+                //     {
+                //         mapObject = BearerIn.GetMapObjects()![newIndex];
+                //     }
+                // }
+                // else
+                // {
+                    // if(newValue == 0)
+                    // {
+                    //     BearerIn.DeleteObject();
+                    //     mapObject = null;
+                    // }
+                    // else
+                    // {
+                        BaseObject current;
                         switch (newValue)
                         {
                             case 1:
-                                mapObject = BearerIn.ChangeObject<Chest>();
+                                current = mapObjects![objectIndex];
+                                Chest chest = new Chest(current.GetObjectId(), current.GetMapId(), current.GetX(), current.GetZ());
+                                mapObjects![objectIndex] = chest;
                                 processableSubject = -1;
                                 break;
                             case 2:
-                                mapObject = BearerIn.ChangeObject<Group>();
+                                current = mapObjects![objectIndex];
+                                Group group = new Group(current.GetObjectId(), current.GetMapId(), current.GetX(), current.GetZ());
+                                mapObjects![objectIndex] = group;
                                 processableEnemy = -1;
                                 break;
                             case 3:
-                                mapObject = BearerIn.ChangeObject<Transition>();
+                                current = mapObjects![objectIndex];
+                                Transition tran = new Transition(current.GetObjectId(), current.GetMapId(), current.GetX(), current.GetZ());
+                                mapObjects![objectIndex] = tran;
                                 break;
                         }
-                    }
-                }
+                        /// Need event to update button field
+                    // }
+                // }
             }
         }
         else
@@ -191,7 +199,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
             }
             isObjLoaded = false;
         }
-    }*/
+    }
     partial void OnSelectedSubjectChanged(int value)
     {
         ChangingSubject = true;

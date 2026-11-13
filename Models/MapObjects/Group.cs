@@ -8,9 +8,14 @@ public class Group : BaseObject
     }
 
     public Group(ushort objectId, byte mapId, byte x, byte z, byte[] enemyIds)
-    : base(objectId, mapId, x, z)
+        : base(objectId, mapId, x, z)
     {
         this.EnemyIds = new List<byte>(enemyIds);
+    }
+    public Group(ushort objectId, byte mapId, byte x, byte z)
+        : base(objectId, mapId, x, z)
+    {
+        this.EnemyIds = new List<byte>();
     }
 
     public List<byte> GetEnemyIds() => new List<byte>(EnemyIds);

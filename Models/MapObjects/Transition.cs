@@ -25,6 +25,14 @@ public class Transition : BaseObject
         this.NextZ = nextZ;
         this.NextDirection = nextDirection;
     }
+    public Transition (ushort objectId, byte mapId, byte x, byte z)
+        : base(objectId, mapId, x, z)
+    {
+        this.NextMapId = 0;
+        this.NextX = 0;
+        this.NextZ = 0;
+        this.NextDirection = new Direction();
+    }
 
     public byte GetNextMapId() => NextMapId;
     public byte GetNextX() => NextX;

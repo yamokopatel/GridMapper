@@ -11,6 +11,11 @@ public class Chest : BaseObject
     {
         this.SubjectIds = new List<byte>(subjects);
     }
+    public Chest(ushort objectId, byte mapId, byte x, byte z) 
+        : base(objectId, mapId, x, z)
+    {
+        this.SubjectIds = new List<byte>();
+    }
 
     public List<byte> GetSubjectIds() => new List<byte>(SubjectIds);
     public void SetSubjectIds(List<byte> subjectIds)

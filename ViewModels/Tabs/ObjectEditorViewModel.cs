@@ -15,6 +15,7 @@ public partial class ObjectEditorViewModel : ViewModelBase
     #region FIELDS
     private int CellIndex = -1;
     private BaseObject? mapObject;
+    private int objectIndex = -1;
     private bool isObjLoaded = false;
     private bool ParentMapChanging = false;
     private List<Map>? maps;
@@ -201,14 +202,15 @@ public partial class ObjectEditorViewModel : ViewModelBase
         SubjectId = SubjectList[processableSubject];
         ChangingSubject = false;
     }
-    /*partial void OnSubjectIdChanged(decimal? value)
+    partial void OnSubjectIdChanged(decimal? value)
     {
         if (!ChangingSubject)
         {
             SubjectList[processableSubject] = (byte)value!;
-            BearerIn.SetSubject(processableSubject, (byte)value);
+            Chest chest = (Chest)mapObjects![objectIndex];
+            chest.GetSubjectIds()[processableSubject] = (byte)value;
         }
-    }*/
+    }
     partial void OnSelectedEnemyChanged(int value)
     {
         ChangingEnemy = true;
@@ -219,74 +221,80 @@ public partial class ObjectEditorViewModel : ViewModelBase
         EnemyId = EnemyList[processableEnemy];
         ChangingEnemy = false;
     }
-    /*partial void OnEnemyIdChanged(decimal? value)
+    partial void OnEnemyIdChanged(decimal? value)
     {
         if (!ChangingEnemy)
         {
             EnemyList[processableEnemy] = (byte)value!;
-            BearerIn.SetEnemy(processableSubject, (byte)value);
+            Group group = (Group)mapObjects![objectIndex];
+            group.GetEnemyIds()[processableEnemy] = (byte)value;
         }
-    }*/
-    /*partial void OnSelectedNextMapChanged(int value)
+    }
+    partial void OnSelectedNextMapChanged(int value)
     {
         TransitionParametersVisible = (value > -1);
         if(value > -1)
         {
-            BearerIn.SetNMapId((byte)value);
+            Transition tran = (Transition)mapObjects![objectIndex];
+            tran.SetNextMapId(maps![value].GetMapId());
         }
-    }*/
-    /*partial void OnNextXValueChanged(decimal? value)
+    }
+    partial void OnNextXValueChanged(decimal? value)
     {
         if(value != null)
         {
-            BearerIn.SetNX((byte)value);
+            Transition tran = (Transition)mapObjects![objectIndex];
+            tran.SetNextX((byte)value);
         }
-    }*/
-    /*partial void OnNextZValueChanged(decimal? value)
+    }
+    partial void OnNextZValueChanged(decimal? value)
     {
         if(value != null)
         {
-            BearerIn.SetNZ((byte)value);
+            Transition tran = (Transition)mapObjects![objectIndex];
+            tran.SetNextZ((byte)value);
         }
-    }*/
-    /*partial void OnNextXDirValueChanged(decimal? oldValue, decimal? newValue)
+    }
+    partial void OnNextXDirValueChanged(decimal? oldValue, decimal? newValue)
     {
         if(oldValue != newValue)
         {
+            Transition tran = (Transition)mapObjects![objectIndex];
             if(newValue != null)
             {
                 if(newValue != 0 && NextZDirValue != 0)
                 {
                     NextZDirValue = 0;
-                    BearerIn.SetNDir(new Direction((sbyte)newValue, 0));
+                    tran.SetNextDirection(new Direction((sbyte)newValue, 0));
                 }
             }
             else if(NextZDirValue != null)
             {
                 NextZDirValue = null;
-                BearerIn.SetNDir(new Direction());
+                tran.SetNextDirection(new Direction());
             }
         }
-    }*/
-    /*partial void OnNextZDirValueChanged(decimal? oldValue, decimal? newValue)
+    }
+    partial void OnNextZDirValueChanged(decimal? oldValue, decimal? newValue)
     {
         if(oldValue != newValue)
         {
+            Transition tran = (Transition)mapObjects![objectIndex];
             if(newValue != null)
             {
                 if(newValue != 0 && NextXDirValue != 0)
                 {
                     NextXDirValue = 0;
-                    BearerIn.SetNDir(new Direction(0, (sbyte)newValue));
+                    tran.SetNextDirection(new Direction(0, (sbyte)newValue));
                 }
             }
             else if(NextXDirValue != null)
             {
                 NextXDirValue = null;
-                BearerIn.SetNDir(new Direction());
+                tran.SetNextDirection(new Direction());
             }
         }
-    }*/
+    }
     #endregion
 
     #region SETTERS
@@ -345,12 +353,12 @@ public partial class ObjectEditorViewModel : ViewModelBase
         NextXDirValue = null;
 
     }
-    /*private void FillTransition(Transition obj)
+    private void FillTransition(Transition obj)
     {
-        SelectedNextMap = BearerIn.GetMaps()!.FindIndex(t => t.GetMapId() == obj!.GetMapId());
+        SelectedNextMap = maps!.FindIndex(t => t.GetMapId() == obj.GetMapId());
         NextXValue = obj.GetNextX(); NextZValue = obj.GetNextZ();
         NextXDirValue = obj.GetNextDirection().X; NextZDirValue = obj.GetNextDirection().Z;
-    }*/
+    }
     #endregion
 
     #region COMMANDS
